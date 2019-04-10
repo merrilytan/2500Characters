@@ -3,7 +3,6 @@
   box-sizing: border-box; }
 
 html, body {
-  height: 100%;
   font-size: 10px; }
 
 .navbar {
@@ -12,11 +11,14 @@ html, body {
 body {
   background-color: #A5AAAE;
   /* background: linear-gradient(to bottom, #8c7a7a 0%, #af877c 65%, #af877c 100%) fixed; */
-  font: 1.2rem/1.5rem "Lato", Arial, sans-serif; }
+  font: 1.2rem/1.5rem "Lato", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; }
 
 .wrapper {
-  height: 90%;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   -webkit-justify-content: center;
@@ -255,6 +257,7 @@ body {
   width: auto; }
 
 .setContainer {
+  display: block;
   width: 50%;
   border-color: yellow; }
 

@@ -1,8 +1,13 @@
 import Deck from './models/Deck';
 import Session from './models/Session';
-import * as cardView from './views/cardView';
+import * as appView from './views/appView';
 import * as sessionView from './views/sessionView';
+import * as cardView from './views/cardView';
 import { elements } from './views/base';
+
+/** DEV App Notes 
+ * Each time Start Session OR Characters accessed, make API call to server for info
+*/
 
 /** App Notes
  *  - Each Deck contains 100 Cards numbered 1 onwards
@@ -29,13 +34,15 @@ const controlApp = (event) => {
     console.log('view', view);
 
     if(view === 'learn'){
-      
+      appView.renderLearn();
     } else if (view === 'characters') {
 
     } else if (view === 'favourites') {
 
+    } else if (view.startsWith('session')){
+        const id = view.split('-');
+        controlSession(id[1]);
     }
-
 }
 
 /**
@@ -43,7 +50,6 @@ const controlApp = (event) => {
  */
 const controlDeck = (id) => {
 
-    
     if(!state.deck) {
       //1. Create new Deck
       state.deck = new Deck(id);
@@ -208,17 +214,15 @@ const controlSession = (task, nextStep) => {
     } else if (nextStep === 'home') {
       control.log('THE END!');
     }
-
   }
 }
-
 
 //controlApp();
 
 document.querySelector('.wrapper').addEventListener('click', e => {
   if (e.target.closest('.btn-startSession')) {
     const id = e.target.getAttribute('data-itemid');
-    controlDeck(id);
+    window.location.hash = `#session-${id}`;
   }
 });   
 
