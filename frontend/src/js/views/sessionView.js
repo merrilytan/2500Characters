@@ -41,6 +41,7 @@ export const renderSessionTemplate = (sessionID) => {
     const markup = `
         <div class="session-header">
             SESSION ${sessionID}
+            <button class="btn-exitSession">&#10006;</button>
         </div>
         <div class="scene">
             <div class="card">
@@ -54,6 +55,19 @@ export const renderSessionTemplate = (sessionID) => {
                 </div>
             </div>
         </div>
+        <div class="cd-popup" role="alert">
+            <div class="cd-popup-container">
+                <div class="cd-message">
+                    This session's progress won't be saved at exit. &nbspAre you sure you want to exit this session?
+                </div>
+                <div class="cd-buttons">
+                    <button class="btn btn-popupYes">Yes, Exit</button>
+                    <button class="btn btn-popupNo">No, Return to Session</button>
+                </div>
+                <button class="btn-exitSessionExitAlert">&#10006;</button>
+                <!--<a href="#0" class="cd-popup-close img-replace">Close</a>-->
+            </div> <!-- cd-popup-container -->
+        </div> <!-- cd-popup -->
     `;
     elements.wrapper.innerHTML = markup;
 };

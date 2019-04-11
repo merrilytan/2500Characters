@@ -41,7 +41,7 @@ const controlApp = (event) => {
 
     } else if (view.startsWith('session')){
         const id = view.split('-');
-        controlSession(id[1]);
+        controlDeck(id[1]);
     }
 }
 
@@ -94,17 +94,17 @@ const controlCard = (() =>
 const controlSession = (task, nextStep) => {
 
   if (task === 'beginSession'){
-      //1. Create new Session
-      state.deck.IDLastSessionShown++;
-      state.session = new Session(state.deck.IDLastSessionShown);
-      state.deck.IDLastSessionShown = state.session.sessionID;
-    
-      //2. Add cards saved in state.deck.deckSessions
-      if (state.session.sessionID != 1) {
-        state.session.addDeckSessionCards(state.deck.deckCards, state.deck.deckSessions[state.session.sessionID]);
+      //Create new Session
+      if(state.deck.IDLastSessionShown === state.deck.IDLastSessionCompleted){
+        state.session = new Session(state.deck.IDLastSessionCompleted+1);
+        state.deck.IDLastSessionShown = state.session.sessionID;
+      
+        //Add cards saved in state.deck.deckSessions
+        if (state.session.sessionID != 1) {
+          state.session.addDeckSessionCards(state.deck.deckCards, state.deck.deckSessions[state.session.sessionID]);
+        }
       }
-
-      //3. Render Session Template
+      //Render Session Template
       sessionView.renderSessionTemplate(state.session.sessionID);
 
       if (state.session.sessionCards.length !== 0){
@@ -196,7 +196,9 @@ const controlSession = (task, nextStep) => {
 
   } else if (task === 'renderSummary'){     
     sessionView.renderSummaryCard();
-    
+    state.deck.IDLastSessionCompleted++;
+    state.session = '';
+    state.card = '';
     document.querySelector('.card__face--back').addEventListener('click', e => {
       if (e.target.matches('.btn-nextSession')) {
         controlSession('endSession', 'next');
@@ -207,17 +209,13 @@ const controlSession = (task, nextStep) => {
 
   } else if (task === 'endSession', nextStep){     
     sessionView.clearSessionUI();
-    state.session = '';
-    state.card = '';
     if (nextStep === 'next'){
       controlSession('beginSession');
     } else if (nextStep === 'home') {
-      control.log('THE END!');
+      window.location.hash = '#learn';
     }
   }
 }
-
-//controlApp();
 
 document.querySelector('.wrapper').addEventListener('click', e => {
   if (e.target.closest('.btn-startSession')) {
@@ -227,5 +225,28 @@ document.querySelector('.wrapper').addEventListener('click', e => {
 });   
 
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlApp));
+
+document.querySelector('.wrapper').addEventListener('click', e => {
+  if (e.target.matches('.btn-exitSession') && !state.session) {
+    controlSession('endSession', 'home');
+  } else if (e.target.matches('.btn-exitSession')) {
+    event.preventDefault();
+    document.querySelector('.cd-popup').classList.add('is-visible');
+  } else if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
+    event.preventDefault();
+    document.querySelector('.cd-popup').classList.remove('is-visible');
+  } else if (e.target.matches('.btn-popupYes')){
+    event.preventDefault();
+    controlSession('endSession', 'home');
+  } 
+});
+
+document.querySelector('.navbar').addEventListener('click', e => {
+  if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
+    event.preventDefault();
+    document.querySelector('.cd-popup').classList.add('is-visible');
+  }
+});
+
 
 

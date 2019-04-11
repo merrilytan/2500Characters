@@ -10,6 +10,9 @@ export default class Deck {
         //Create array for deck's sessions
         this.deckSessions = [];
 
+        //Create property to save index of last session completed
+        this.IDLastSessionCompleted = 0;
+
         //Create property to save index of last session shown
         this.IDLastSessionShown = 0;
 

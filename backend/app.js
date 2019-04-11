@@ -15,9 +15,9 @@ require('./config/passport')(passport);
 const db = require('./config/keys').MongoURI;
 
 // Connect to Mongo
-mongoose.connect(db, { useNewUrlParser: true })
-    .then(() => console.log('MongoDB Connected...'))
-    .catch(err => console.log(err));
+// mongoose.connect(db, { useNewUrlParser: true })
+//     .then(() => console.log('MongoDB Connected...'))
+//     .catch(err => console.log(err));
 
 // EJS -- app.use is to bind middleware to your application
 app.use(expressLayouts);
