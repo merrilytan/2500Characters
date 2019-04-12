@@ -39,7 +39,7 @@ const controlApp = (event) => {
 
     } else if (view === 'favourites') {
 
-    } else if (view.startsWith('session')){
+    } else if (view.startsWith('deck')){
         const id = view.split('-');
         controlDeck(id[1]);
     }
@@ -95,15 +95,14 @@ const controlSession = (task, nextStep) => {
 
   if (task === 'beginSession'){
       //Create new Session
-      if(state.deck.IDLastSessionShown === state.deck.IDLastSessionCompleted){
-        state.session = new Session(state.deck.IDLastSessionCompleted+1);
-        state.deck.IDLastSessionShown = state.session.sessionID;
-      
-        //Add cards saved in state.deck.deckSessions
-        if (state.session.sessionID != 1) {
-          state.session.addDeckSessionCards(state.deck.deckCards, state.deck.deckSessions[state.session.sessionID]);
-        }
+      state.session = new Session(state.deck.IDLastSessionCompleted+1);
+      state.deck.IDLastSessionShown = state.session.sessionID;
+    
+      //Add cards saved in state.deck.deckSessions
+      if (state.session.sessionID != 1) {
+        state.session.addDeckSessionCards(state.deck.deckCards, state.deck.deckSessions[state.session.sessionID]);
       }
+
       //Render Session Template
       sessionView.renderSessionTemplate(state.session.sessionID);
 
@@ -192,8 +191,9 @@ const controlSession = (task, nextStep) => {
         sessionView.addNewCardFlag();
         //Render first card
         controlSession('renderNextIntroducedCard');
+      } else {
+        controlSession('renderSummary');
       }
-
   } else if (task === 'renderSummary'){     
     sessionView.renderSummaryCard();
     state.deck.IDLastSessionCompleted++;
@@ -206,21 +206,26 @@ const controlSession = (task, nextStep) => {
         controlSession('endSession', 'home');
       }
     });    
-
+  } else if (task === 'cancelSession'){     
+    //Rollback state.deck.indexLastCardIntroduced
+    state.deck.indexLastCardIntroduced -= state.session.sessionIntroducedCards.length;
+    state.session = '';
+    state.card = '';
+    controlSession('endSession', 'home');
   } else if (task === 'endSession', nextStep){     
     sessionView.clearSessionUI();
     if (nextStep === 'next'){
       controlSession('beginSession');
     } else if (nextStep === 'home') {
       window.location.hash = '#learn';
-    }
+    } 
   }
 }
 
 document.querySelector('.wrapper').addEventListener('click', e => {
   if (e.target.closest('.btn-startSession')) {
     const id = e.target.getAttribute('data-itemid');
-    window.location.hash = `#session-${id}`;
+    window.location.hash = `#deck-${id}`;
   }
 });   
 
@@ -237,7 +242,7 @@ document.querySelector('.wrapper').addEventListener('click', e => {
     document.querySelector('.cd-popup').classList.remove('is-visible');
   } else if (e.target.matches('.btn-popupYes')){
     event.preventDefault();
-    controlSession('endSession', 'home');
+    controlSession('cancelSession');
   } 
 });
 

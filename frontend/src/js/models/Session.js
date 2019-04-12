@@ -15,6 +15,9 @@ export default class Session {
 
         //Set number of cards to introduce at each session
         this.numOfCardsIntroduce = 5;
+
+         //Create property to track if session shown previously
+         this.shownAlready = 0;
     }
 
     //----------------------------------------------------------------
