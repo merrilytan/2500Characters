@@ -1,4 +1,4 @@
-export const renderLearn = () => {
+export const renderPractice = () => {
     const markup = `
         <div class="setContainer">
             <div class="sets">

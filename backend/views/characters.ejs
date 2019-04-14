@@ -1,0 +1,26 @@
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <h1 class="text-center mb-3">
+          <i class="fas fa-user-plus"></i> Retrieve Characters
+        </h1>
+        <form action="/characters" method="POST">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="name"
+              id="characterID"
+              name="characterID"
+              class="form-control"
+              placeholder="Enter ID"
+              value="<%= typeof characterID != 'undefined' ? characterID : '' %>"
+            />
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">
+            Retrieve
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>

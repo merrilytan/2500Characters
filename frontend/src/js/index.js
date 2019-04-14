@@ -33,8 +33,8 @@ const controlApp = (event) => {
 
     console.log('view', view);
 
-    if(view === 'learn'){
-      appView.renderLearn();
+    if(view === 'practice'){
+      appView.renderPractice();
     } else if (view === 'characters') {
 
     } else if (view === 'favourites') {
@@ -199,6 +199,9 @@ const controlSession = (task, nextStep) => {
     state.deck.IDLastSessionCompleted++;
     state.session = '';
     state.card = '';
+
+    //save deckSession in to appSession
+    
     document.querySelector('.card__face--back').addEventListener('click', e => {
       if (e.target.matches('.btn-nextSession')) {
         controlSession('endSession', 'next');
@@ -217,11 +220,12 @@ const controlSession = (task, nextStep) => {
     if (nextStep === 'next'){
       controlSession('beginSession');
     } else if (nextStep === 'home') {
-      window.location.hash = '#learn';
+      window.location.hash = '#practice';
     } 
   }
 }
 
+//--------------------------------------------------------------------------------------------------
 document.querySelector('.wrapper').addEventListener('click', e => {
   if (e.target.closest('.btn-startSession')) {
     const id = e.target.getAttribute('data-itemid');

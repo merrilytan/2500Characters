@@ -15,9 +15,9 @@ require('./config/passport')(passport);
 const db = require('./config/keys').MongoURI;
 
 // Connect to Mongo
-// mongoose.connect(db, { useNewUrlParser: true })
-//     .then(() => console.log('MongoDB Connected...'))
-//     .catch(err => console.log(err));
+mongoose.connect(db, { useNewUrlParser: true })
+     .then(() => console.log('MongoDB Connected...'))
+     .catch(err => console.log(err));
 
 // EJS -- app.use is to bind middleware to your application
 app.use(expressLayouts);
@@ -52,6 +52,7 @@ app.use((req, res, next) => {
 // Routes 
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+app.use('/characters', require('./routes/characters'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 27017;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
