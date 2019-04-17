@@ -8,7 +8,7 @@ html, body {
 .navbar {
   font-size: 1.5rem; }
 
-body {
+.app {
   background-color: #A5AAAE;
   /* background: linear-gradient(to bottom, #8c7a7a 0%, #af877c 65%, #af877c 100%) fixed; */
   font: 1.2rem/1.5rem "Lato", Arial, sans-serif;
@@ -16,7 +16,7 @@ body {
   flex-direction: column;
   height: 100vh; }
 
-.wrapper {
+.app__inner {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -113,10 +113,10 @@ body {
   background-color: #82c7bf;
   text-transform: uppercase; }
 
-.card__resultButtons__container {
+.card__ratingButtons__container {
   padding-top: 3%; }
 
-.card__resultButtons {
+.card__ratingButtons {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -124,7 +124,7 @@ body {
   height: 25%;
   text-align: center; }
 
-.btn-result {
+.btn-rating {
   background-color: #A5AAAE;
   border: none;
   color: white;

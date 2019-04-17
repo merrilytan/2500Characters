@@ -1,3 +1,5 @@
+import { elements } from "./base";
+
 export const renderPractice = () => {
     const markup = `
         <div class="setContainer">
@@ -70,7 +72,7 @@ export const renderPractice = () => {
         </div>
     `;
 
-    document.querySelector('.wrapper').innerHTML = markup;  
+    elements.appInner.innerHTML = markup;  
 }
 
 

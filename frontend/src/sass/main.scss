@@ -41,7 +41,7 @@ $new-color: #82c7bf;
   font-size: 1.5rem;
 }
 
-body {
+.app {
   background-color: $theme-color1;
   /* background: linear-gradient(to bottom, #8c7a7a 0%, #af877c 65%, #af877c 100%) fixed; */
   font: 1.2rem/1.5rem "Lato", Arial, sans-serif;
@@ -50,12 +50,13 @@ body {
   height: 100vh;
 }
   
-.wrapper {
+.app__inner {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   justify-content: center;
-  -webkit-justify-content: center;
+  -webkit-justify-content: ce
+  +nter;
   -ms-flex-pack: center;
   align-items: center;
 }
@@ -166,11 +167,11 @@ body {
   text-transform: uppercase;
 }
 
-.card__resultButtons__container {
+.card__ratingButtons__container {
   padding-top: 3%;
 }
 
-.card__resultButtons {
+.card__ratingButtons {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -179,7 +180,7 @@ body {
   text-align: center;
 }
 
-.btn-result {
+.btn-rating {
   background-color: $theme-color1;
   border: none;
   color: white;

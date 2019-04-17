@@ -1,261 +1,346 @@
-import Deck from './models/Deck';
+import App from './models/App';
+import Set from './models/Set';
 import Session from './models/Session';
+import Character from './models/Character';
 import * as appView from './views/appView';
 import * as sessionView from './views/sessionView';
-import * as cardView from './views/cardView';
+import * as characterView from './views/characterView';
 import { elements } from './views/base';
 
-/** DEV App Notes 
- * Each time Start Session OR Characters accessed, make API call to server for info
-*/
-
 /** App Notes
- *  - Each Deck contains 100 Cards numbered 1 onwards
- *  - Each Deck contains Sessions numbered 1 onwards
- *  - 5 new Cards are introduced at each Session until all 100 Cards in set has been introduced
+ *  - Each Set contains 100 Characters
+ *  - Each Set contains Sessions numbered 1 onwards
+ *  - 5 new Characters are introduced at each Session until all 100 Characters in Set has been introduced
  */
 
-/** Global state of the app -------------------------------------------------------
+/** Global state of the app 
  *  - App object
- *  - Deck object
+ *  - Set object
  *  - Session object
- *  - Card object
+ *  - Character object
  */
 
 const state = {};
 
 /**
- * App CONTROLLER -------------------------------------------------------
+ * App CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-const controlApp = (event) => {
+const controlApp = async (userID) => {
+  
+    if(!state.app) {
+        userID = 1;
+        state.app = new App(userID); 
+    }
 
+    //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
 
-    console.log('view', view);
-
-    if(view === 'practice'){
-      appView.renderPractice();
+    if(view === ''){
+        window.location.hash = '#practice';
+    } else if (view === 'practice'){
+        appView.renderPractice();
     } else if (view === 'characters') {
 
-    } else if (view === 'favourites') {
+    } else if (view === 'about') {
 
-    } else if (view.startsWith('deck')){
-        const id = view.split('-');
-        controlDeck(id[1]);
-    }
-}
-
-/**
- * Deck CONTROLLER -------------------------------------------------------
- */
-const controlDeck = (id) => {
-
-    if(!state.deck) {
-      //1. Create new Deck
-      state.deck = new Deck(id);
-
-      //2. Get Character Data and create cards in Deck
-      state.deck.createDeckCards();
+    } else if (view.startsWith('set')){
+        const res = view.split('-');
+        controlSet(res[1]);
     }
 
-    controlSession('beginSession');
-}
-
-/**
- * CARD CONTROLLER -------------------------------------------------------
- */
-const controlCard = (() => 
-    
-  ({
-    updateCard: (result) => {
-      //Update Card's level 
-      state.card.updateLevel(result);
-      //Update Card's nextSession
-      return state.card.updateNextSession(state.session.sessionID);
-    },
-    removeCard: () => {
-      cardView.clearCard();
-    },
-    renderNextCard: (index, length, task) => {
-      sessionView.updateCardNumber(index, length, task);
-      if (task === 'renderNextSessionCard'){
-        cardView.renderCard(state.card);
-      } else if (task === 'renderNextIntroducedCard'){
-        cardView.renderNewCard(state.card);
-      }
-    }
-  })
-)();
-
-/**
- * SESSION CONTROLLER -------------------------------------------------------
- */
-
-const controlSession = (task, nextStep) => {
-
-  if (task === 'beginSession'){
-      //Create new Session
-      state.session = new Session(state.deck.IDLastSessionCompleted+1);
-      state.deck.IDLastSessionShown = state.session.sessionID;
-    
-      //Add cards saved in state.deck.deckSessions
-      if (state.session.sessionID != 1) {
-        state.session.addDeckSessionCards(state.deck.deckCards, state.deck.deckSessions[state.session.sessionID]);
-      }
-
-      //Render Session Template
-      sessionView.renderSessionTemplate(state.session.sessionID);
-
-      if (state.session.sessionCards.length !== 0){
-        //Render result buttons in UI
-        sessionView.renderResultButtons();
-
-        //Render first card
-        controlSession('renderNextSessionCard');
-      } else {
-        controlSession('introduceCards');
-      }
-
-      document.querySelector('.card__resultButtons').addEventListener('click', e => {
-        event.preventDefault();
-      
-        if (e.target.matches('.btn-result--cross')) {
-          controlSession('cross');
-        } else if (e.target.matches('.btn-result--line')) {
-          controlSession('line');
-        } else if (e.target.matches('.btn-result--check')) {
-          controlSession('check');
-        } else if (e.target.matches('.btn-gotIt')) {
-          controlSession('gotIt');
-        } 
-      }); 
-
-      document.querySelector('.card__face--front').addEventListener('click', e => {
-        if (e.target.closest('.btn-showAnswer')) {
-          event.preventDefault();
-          document.querySelector('.btn-showAnswer').classList.add('disappear');
-          document.querySelector('.card__inner__answer__showAnswer').classList.add('appear');
+    elements.appInner.addEventListener('click', e => {
+        if (e.target.closest('.btn-startSession')) {
+          const id = e.target.getAttribute('data-itemid');
+          window.location.hash = `#set-${id}`;
         }
-      });       
-    
-  } else if (task === 'renderNextSessionCard' || task === 'renderNextIntroducedCard') {
-      let length, cardSet, action;
-
-      if (task === 'renderNextSessionCard'){
-        length =  state.session.sessionCards.length;
-        cardSet = state.session.sessionCards;
-        action = 'introduceCards';
-      } else if (task === 'renderNextIntroducedCard'){
-        length =  state.session.sessionIntroducedCards.length;
-        cardSet = state.session.sessionIntroducedCards;
-        action = 'renderSummary';
-      }
-
-      state.card = state.session.getNextCard(length, cardSet);
-
-      if (state.card) {
-        //Render Next Session Card
-        controlCard.renderNextCard(state.session.indexLastCardShown, length, task);
-      } else {
-        controlSession(action);
-      }
-
-  } else if (task === 'cross' || task === 'line' || task === 'check' || task === 'gotIt') {
-      //Update Card's data 
-      const nextSession = controlCard.updateCard(task);
-
-      //Update Deck's deckSessions
-      console.log('next session', nextSession, 'state.card.cardID-1', state.card.cardID-1);
-      state.deck.updateDeckSessions(nextSession, state.card.cardID-1);
-
-      //Clear card from UI
-      controlCard.removeCard();
-      if (task === 'cross' || task === 'line' || task === 'check') {
-        //Get Next Card
-        controlSession('renderNextSessionCard');
-      } else {
-        //Get Next Card
-        controlSession('renderNextIntroducedCard');       
-      }
-
-  } else if (task === 'introduceCards'){
-      state.session.indexLastCardShown = -1;
-      // Introduce new cards
-      state.deck.indexLastCardIntroduced = state.session.addNewCards(state.deck.deckCards, state.deck.indexLastCardIntroduced, state.deck.numOfCards);
-      if (state.session.sessionIntroducedCards.length != 0) {
-        // Remove result buttons and replace with got it button
-        sessionView.renderGotItButton();
-        // Remove NumberInSetFlag
-        sessionView.removeNumberInSetFlag();
-        // Add new card flag + Change card number color
-        sessionView.addNewCardFlag();
-        //Render first card
-        controlSession('renderNextIntroducedCard');
-      } else {
-        controlSession('renderSummary');
-      }
-  } else if (task === 'renderSummary'){     
-    sessionView.renderSummaryCard();
-    state.deck.IDLastSessionCompleted++;
-    state.session = '';
-    state.card = '';
-
-    //save deckSession in to appSession
-    
-    document.querySelector('.card__face--back').addEventListener('click', e => {
-      if (e.target.matches('.btn-nextSession')) {
-        controlSession('endSession', 'next');
-      } else if (e.target.matches('.btn-home')) {
-        controlSession('endSession', 'home');
-      }
-    });    
-  } else if (task === 'cancelSession'){     
-    //Rollback state.deck.indexLastCardIntroduced
-    state.deck.indexLastCardIntroduced -= state.session.sessionIntroducedCards.length;
-    state.session = '';
-    state.card = '';
-    controlSession('endSession', 'home');
-  } else if (task === 'endSession', nextStep){     
-    sessionView.clearSessionUI();
-    if (nextStep === 'next'){
-      controlSession('beginSession');
-    } else if (nextStep === 'home') {
-      window.location.hash = '#practice';
-    } 
-  }
+    });   
 }
 
-//--------------------------------------------------------------------------------------------------
-document.querySelector('.wrapper').addEventListener('click', e => {
-  if (e.target.closest('.btn-startSession')) {
-    const id = e.target.getAttribute('data-itemid');
-    window.location.hash = `#deck-${id}`;
-  }
-});   
+/**
+ * Set CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
+ */
+const controlSet = async (setID) => {
 
-['hashchange', 'load'].forEach(event => window.addEventListener(event, controlApp));
+    /* //TESTING PURPOSES
+        state.app.setStates[setID -1] = {
+        //Set's Status (-1 locked, 0 ongoing, 1 completed)
+        status: 5,
 
-document.querySelector('.wrapper').addEventListener('click', e => {
-  if (e.target.matches('.btn-exitSession') && !state.session) {
-    controlSession('endSession', 'home');
-  } else if (e.target.matches('.btn-exitSession')) {
-    event.preventDefault();
-    document.querySelector('.cd-popup').classList.add('is-visible');
-  } else if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
-    event.preventDefault();
-    document.querySelector('.cd-popup').classList.remove('is-visible');
-  } else if (e.target.matches('.btn-popupYes')){
-    event.preventDefault();
-    controlSession('cancelSession');
-  } 
-});
+        //Set's Character IDs (used to populate this.characters)
+        characterIDs: [0,3],
 
-document.querySelector('.navbar').addEventListener('click', e => {
-  if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
-    event.preventDefault();
-    document.querySelector('.cd-popup').classList.add('is-visible');
-  }
-});
+        //Set's Character Data (temporarily stored)
+        characters: [],
+
+        //Index of most recent Character introduced from Set.characters 
+        indexLastCharacterIntroduced: -1,
+
+        //Array of Character IDs to be practiced in future Sessions (Set.sessionCharacters[0] is for Session.id=1)
+        sessionCharacters: [],
+
+        //Index of last Session completed
+        idLastSessionCompleted: 100,
+
+        //Index of last session practiced
+        idLastSessionPracticed: 0
+    } */
+
+    state.set = new Set(setID, state.app.setStates[setID -1]); 
+    console.log(state.set);
+
+
+    //At beginning of Session, create new Set OR retrieve existing Set info
+/*     if(setStates[id - 1]) {
+        state.set = setStates[id - 1];
+    } else {
+        state.set = new Set(id);
+    } */
+
+/*         try {
+            //Retrieve data from API to create state.set.characters
+            await state.set.getCharacters(id);
+        } catch (err) {
+            console.log(err);
+            alert('Error creating set!');
+        }
+    } */
+
+    //controlSession('beginSession');
+}
+
+/**
+ * Character CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
+ */
+// const controlCharacter = (() => 
+    
+//   ({
+//     // updateCharacter: (result) => {
+//     //     console.log('shhh', state.character);
+//     //     //Update Characters level in state.app.characterStates
+//     //     state.app.characterStates[state.character.id-1].updateLevel(result);
+//     //     //Update Character's nextSessionID
+//     //     return state.app.characterStates[state.character.id-1].updateNextSessionID(state.session.id);
+//     // },
+
+//     removeCharacter: () => {
+//         characterView.clearCharacter();
+//     },
+
+//     renderNextCharacter: (index, length, task) => {
+//         sessionView.updateCardFlag(index, length, task);
+//         if (task === 'renderNextPracticeCharacter'){
+//             characterView.renderCharacter(state.character, 'practice');
+//         } else if (task === 'renderNextIntroduceCharacter'){
+//             characterView.renderCharacter(state.character, 'introduce');
+//         }
+//     }
+//   })
+// )();
+
+/**
+ * Session CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
+ */
+// const controlSession = (task, nextStep) => {
+
+//     if (task === 'renderNextPracticeCharacter' || task === 'renderNextIntroduceCharacter') {
+//         let length, characterIDs, action;
+
+//         if (task === 'renderNextPracticeCharacter'){
+//             length =  state.session.practiceCharacters.length;
+//             characterIDs = state.session.practiceCharacters;
+//             action = 'introduceCharacters';
+//         } else if (task === 'renderNextIntroduceCharacter'){
+//             length =  state.session.introduceCharacters.length;
+//             characterIDs = state.session.introduceCharacters;
+//             action = 'renderSummary';
+//         }
+
+//         state.character = state.session.getNextCharacter(length, characterIDs, state.app.);
+
+//         if (state.character) {
+//             //Render Next Session Character
+//             controlCharacter.renderNextCharacter(state.session.indexLastCharacterShown, length, task);
+//         } else {
+//             controlSession(action);
+//         }
+//     } 
+    
+//     //--------------------------------------------------------------------------------------------------------------------
+//     else if (task === 'cross' || task === 'line' || task === 'check' || task === 'gotIt') {
+
+//         //Clear Character from UI
+//         controlCharacter.removeCharacter();
+
+//         //Save Character rating
+//         state.session.characterRatings.push([state.character.characterID, task]);
+//         console.log('state.session.characterRatings', state.session.characterRatings);
 
 
 
+//         // Update Character's state in state.app.characterStates 
+//         //const nextSessionID = controlCharacter.updateCharacter(task);
+//         //console.log('nextSessionID', nextSessionID);
+//         //Update Set's sessionCharacters
+//         //state.set.updateSessionCharacters(nextSessionID, state.character.id);
+
+//         if (task === 'cross' || task === 'line' || task === 'check') {
+//             controlSession('renderNextPracticeCharacter');
+//         } else if (task === 'gotIt') {
+//             controlSession('renderNextIntroduceCharacter');       
+//         }
+//     } 
+
+//     //--------------------------------------------------------------------------------------------------------------------
+//     else if (task === 'beginSession'){
+
+//         //Create new Session 
+//         state.session = new Session(state.set.idLastSessionCompleted+1);
+//         state.set.IDLastSessionPracticed = state.session.id;
+        
+//         //Add 'practice' Characters from state.set.practiceCharacters 
+//         // if (state.session.id != 1) {
+//         //     state.session.addPracticeCharacters(state.set.characters, state.set.sessionCharacters[state.session.id - 1]);
+//         // }
+
+//         //Render Template with general elements (to setup event listeners)
+//         sessionView.renderTemplate(state.session.id, 'setup');
+
+//         /* if (state.session.practiceCharacters.length !== 0){
+//             //Render Template for 'practice' Characters
+//             sessionView.renderTemplate(state.session.id, 'practice');
+//             //Render first 'practice' Character
+//             controlSession('renderNextPracticeCharacter');
+//         } else { */
+//             controlSession('introduceCharacters');
+//         //}
+
+//         //Event Listener
+//         document.querySelector('.card__ratingButtons').addEventListener('click', e => {
+//             event.preventDefault();
+        
+//             if (e.target.matches('.btn-rating--cross')) {
+//                 controlSession('cross');
+//             } else if (e.target.matches('.btn-rating--line')) {
+//                 controlSession('line');
+//             } else if (e.target.matches('.btn-rating--check')) {
+//                 controlSession('check');
+//             }
+//         });
+
+//         document.querySelector('.card__face--front').addEventListener('click', e => {
+//             if (e.target.closest('.btn-showAnswer')) {
+//                 event.preventDefault();
+//                 document.querySelector('.btn-showAnswer').classList.add('disappear');
+//                 document.querySelector('.card__inner__answer__showAnswer').classList.add('appear');
+//             }
+//         });   
+//     } 
+
+//     //--------------------------------------------------------------------------------------------------------------------
+//     else if (task === 'introduceCharacters'){ 
+//         state.session.indexLastCharacterShown = -1;
+        
+//         //Add 'introduce' Characters from state.set.introduceCharacters
+//         state.set.indexLastCharacterIntroduced = state.session.addIntroduceCharacters(state.set.characters, state.set.indexLastCharacterIntroduced, state.set.numOfCharacters);
+
+//         if (state.session.introduceCharacters.length != 0) {
+//             //Render Template for 'introduce' Character
+//             sessionView.renderTemplate(state.session.id, 'introduce');
+//             //Render first 'introduce' Character
+//             controlSession('renderNextIntroduceCharacter');
+//         } else {
+//             controlSession('renderSummary');
+//         }
+
+//         //Event Listeners
+//         document.querySelector('.card__ratingButtons').addEventListener('click', e => {
+//             event.preventDefault();
+        
+//             if (e.target.matches('.btn-gotIt')) {
+//                 controlSession('gotIt');
+//             } 
+//         });
+
+//         document.querySelector('.session-header').addEventListener('click', e => {
+//             if (e.target.matches('.btn-exitSession') && !state.session) {
+//                 controlSession('endSession', 'home');
+//             } else if (e.target.matches('.btn-exitSession')) {
+//                 event.preventDefault();
+//                 document.querySelector('.cd-popup').classList.add('is-visible');
+//             }
+//         });
+    
+//         document.querySelector('.cd-popup').addEventListener('click', e => {
+//             if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
+//                 event.preventDefault();
+//                 document.querySelector('.cd-popup').classList.remove('is-visible');
+//             } else if (e.target.matches('.btn-popupYes')){
+//                 event.preventDefault();
+//                 controlSession('cancelSession');
+//             } 
+//         });
+    
+//         document.querySelector('.navbar').addEventListener('click', e => {
+//             if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
+//               event.preventDefault();
+//               document.querySelector('.cd-popup').classList.add('is-visible');
+//             }
+//         });
+//     }
+
+//     //--------------------------------------------------------------------------------------------------------------------
+//     else if (task === 'renderSummary'){
+
+//         //Render summary card
+//         sessionView.renderSummaryCard();
+
+//         //Add 'introduce' Characters to state.set.characterStates and next Session set.sessionCharacters
+//         //Added here to ensure Session completed before update.
+//         // state.session.introduceCharacters.forEach((el) => {
+//         //     state.app.characterStates[el.characterID-1] = new Character(el.characterID, state.session.id + 1);
+//         // });
+
+//         //console.log('state.app.characterStates', state.app.characterStates);
+
+//         state.set.idLastSessionCompleted++;
+//         state.session = '';
+//         state.character = '';
+
+//         //save state.set into state.app's setStates
+//         //state.app.saveSetStates(state.set);
+
+//         document.querySelector('.card__face--back').addEventListener('click', e => {
+//             if (e.target.matches('.btn-nextSession')) {
+//                 controlSession('endSession', 'next');
+//             } else if (e.target.matches('.btn-home')) {
+//                 controlSession('endSession', 'home');
+//             }
+//         }); 
+//     } 
+
+//     //--------------------------------------------------------------------------------------------------------------------
+//     else if (task === 'cancelSession'){     
+//         //Rollback state.set.indexLastCharacterIntroduced
+//         state.set.indexLastCharacterIntroduced -= state.session.introduceCharacters.length;
+//         state.session = '';
+//         state.character = '';
+//         controlSession('endSession', 'home');
+//     }
+
+//     //--------------------------------------------------------------------------------------------------------------------
+//     else if (task === 'endSession', nextStep){     
+//         sessionView.clearAppInnerUI();
+
+//         if (nextStep === 'next'){
+//             controlSession('beginSession');
+//         } else if (nextStep === 'home') {
+//             state.session = '';
+//             window.location.hash = '#practice';
+//         } 
+//     }
+// }
+
+/**
+ * Event Listeners //////////////////////////////////////////////////////////////////////////////////////////////////////
+ */
+['hashchange', 'load'].forEach((event) => window.addEventListener(event, controlApp));

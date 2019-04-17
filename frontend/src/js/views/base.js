@@ -1,4 +1,3 @@
 export const elements = {
-    wrapper: document.querySelector('.wrapper')
-    //goodButton: document.querySelector('.good')
+    appInner: document.querySelector('.app__inner')
 }

@@ -1,65 +1,72 @@
 export default class Session {
     constructor(sessionID) {
 
-        //Assign session's ID
-        this.sessionID = sessionID;
+        //Session's ID
+        this.id = sessionID;
 
-        //Create array for session's cards
-        this.sessionCards = [];
+        //Characters to practice in Session
+        this.practiceCharacters = [];
 
-        //Create array for introduced cards
-        this.sessionIntroducedCards = [];
+        //Characters to introduce in Session
+        this.introduceCharacters = [];
 
-        //Create property to save index of last card shown
-        this.indexLastCardShown = -1;
+        //Index of last Character shown (used for practiceCharacters and introduceCharacters)
+        this.indexLastCharacterShown = -1;
 
-        //Set number of cards to introduce at each session
-        this.numOfCardsIntroduce = 5;
+        //Number of Characters to introduce at each Session
+        this.numOfCharactersIntroduce = 5;
 
-         //Create property to track if session shown previously
-         this.shownAlready = 0;
+        //Character ratings in Session
+        this.characterRatings = [];
+
+        //Session shown previously (0 False, 1 True)
+        //this.shownAlready = 0;
     }
 
     //----------------------------------------------------------------
-    addDeckSessionCards(deckCards, deckSession) {
-        if(deckSession){
-            deckSession.forEach(el => {
-                this.sessionCards = [...this.sessionCards, ...deckCards.slice(el, el+1)];
+/*     addPracticeCharacters(setCharacters, setSessionCharacters) {
+        if(setSessionCharacters){
+            setSessionCharacters.forEach(el => {
+                this.practiceCharacters = [...this.practiceCharacters, ...practiceCharacters.slice(el, el+1)];
             });
         }
-    }
+    } */
 
     //----------------------------------------------------------------
-    addNewCards(deckCards, indexLastCardIntroduced, numOfDeckCards) {
-        //Add unintroduced cards to session by copying cards from deckCards
-        if(indexLastCardIntroduced <= numOfDeckCards-1) {
+    addIntroduceCharacters(setCharacters, indexLastCharacterIntroduced, numOfSetCharacters) {
+        //Add unintroduced cards to session by copying cards from setCharacters
+        if(indexLastCharacterIntroduced <= numOfSetCharacters-1) {
             let start, end;
         
-            //Determine start index to copy from deckCards
-            indexLastCardIntroduced === -1 ? start = 0 : start = (indexLastCardIntroduced + 1);
+            //Determine start index to copy characterIDs from setCharacters
+            indexLastCharacterIntroduced === -1 ? start = 0 : start = (indexLastCharacterIntroduced + 1);
             
-            //Determine end index to copy from deckCards
-            indexLastCardIntroduced <= numOfDeckCards - 5 ? end = (start + 5) : end = (numOfDeckCards - indexLastCardIntroduced);
+            //Determine end index to copy characterIDs from setCharacters
+            indexLastCharacterIntroduced <= numOfSetCharacters - 5 ? end = (start + 5) : end = (numOfSetCharacters - indexLastCharacterIntroduced);
 
-            //Copy array from start to end, and push to sessionCards
-            const cardsToAdd = deckCards.slice(start, end);
-            this.sessionIntroducedCards = [...this.sessionIntroducedCards, ...cardsToAdd];
+            //Copy array from start to end, and push Character Ids to introduceCharacters
+            const charactersToAdd = setCharacters.slice(start, end);
+            const characterIDsToAdd = charactersToAdd.map(el => {
+                return el.characterID;
+            })
+
+            this.introduceCharacters = [...this.introduceCharacters, ...characterIDsToAdd];
 
             return end - 1;
         }
     }
 
     //----------------------------------------------------------------
-    getNextCard(length, cardSet) {
+/*     getNextCharacter(length, characterIDs, setCharacters) {
         let returnValue;
 
-        if(this.indexLastCardShown + 1 < length){
-            this.indexLastCardShown++;
-            returnValue = cardSet[this.indexLastCardShown];
+        if(this.indexLastCharacterShown + 1 < length){
+            this.indexLastCharacterShown++;
+            returnValue = characterIDs[this.indexLastCharacterShown];
         } else {
             returnValue = 0;
         }
-        return returnValue;
-    }
 
+        return returnValue;
+    } */
 }

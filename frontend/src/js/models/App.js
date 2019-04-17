@@ -1,23 +1,30 @@
 export default class App {
-    constructor() {
-        //Property to save lastUnlockedDeck (current Deck)
-        //this.lastUnlockedDeck = 0;
+    constructor(userID) {
 
-        //Array for app's deck states
-        this.appDecksStates = [];
-
-        //Array for app's deck status (-1 locked, 0 ongoing, 1 mastered)
-        this.appDecksStatus = [];
-
-        //Array for character status (0 ongoing, 1 mastered)
-        this.appCharacterStatus = [];
+        //App's ID
+        this.id = userID;
         
-        //Array for favourite words
-        this.appFavoriteCharacters = [];
+        const result = 0;
+        //retrieve App object from DB associated with this.userID; if exists save object into result variable, if not exists result variable = 0
+ 
+        if(result){
+            //States of all Sets in app (App.setStates[0] is for Set.id=1)
+            this.setStates = result.setStates;
+
+            //States of all Characters in app (App.characterStates[0] is for Character.id=1)
+            this.characterStates = result.characterStates;
+
+        } else {
+            //States of all Sets in app (App.setStates[0] is for Set.id=1)
+            this.setStates = [];
+
+            //States of all Characters in app (App.characterStates[0] is for Character.id=1)
+            this.characterStates = [];
+        }
     }
 
     //----------------------------------------------------------------
-    saveDeckStatus(deck) {
-        
-    }
+    // saveSetStates(set) {
+    //     this.setStates[set.id - 1] = set;
+    // }
 }
