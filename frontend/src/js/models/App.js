@@ -1,23 +1,19 @@
 export default class App {
-    constructor(userID) {
 
+    constructor(userID) {
         //App's ID
         this.id = userID;
         
         const result = 0;
-        //retrieve App object from DB associated with this.userID; if exists save object into result variable, if not exists result variable = 0
- 
+
         if(result){
             //States of all Sets in app (App.setStates[0] is for Set.id=1)
             this.setStates = result.setStates;
-
             //States of all Characters in app (App.characterStates[0] is for Character.id=1)
             this.characterStates = result.characterStates;
-
         } else {
             //States of all Sets in app (App.setStates[0] is for Set.id=1)
             this.setStates = [];
-
             //States of all Characters in app (App.characterStates[0] is for Character.id=1)
             this.characterStates = [];
         }

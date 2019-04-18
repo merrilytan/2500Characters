@@ -1,70 +1,65 @@
 import { characterDataJSON } from '../data.js';
+import Character from './Character';
 import axios from 'axios';
 
 export default class Set {
-    constructor(setID, setState) {
-       
-        //Set's ID --------------------------------------------------------------------------------------------------- 
-        this.id = setID;
+    
+    constructor(setID, app) {
 
-        //Retrieve Set data if it was previously saved in app.setStates ---------------------------------------------- 
+        const setState = app.setStates[setID -1];
+
+        //Set's ID
+        this.id = setID;
+        //Set's Character Data (temporarily stored)
+        this.characters = this.getCharacters(app);
+        //Num of Characters in a Set
+        this.numOfCharacters = 100;
+
         if(setState){
             //Set's Status (-1 locked, 0 ongoing, 1 completed)
             this.status = setState.status;
-
             //Set's Character IDs (used to populate this.characters)
             this.characterIDs = setState.characterIDs;
-
-            //Set's Character Data (temporarily stored)
-            this.characters = setState.characters;
-
             //Index of most recent Character introduced from Set.characters 
             this.indexLastCharacterIntroduced = setState.indexLastCharacterIntroduced;
-
             //Array of Character IDs to be practiced in future Sessions (Set.sessionCharacters[0] is for Session.id=1)
             this.sessionCharacters = setState.sessionCharacters;
-
             //Index of last Session completed
             this.idLastSessionCompleted = setState.idLastSessionCompleted;
-
             //Index of last session practiced
             this.idLastSessionPracticed = setState.idLastSessionPracticed;
-
-        }
-        //Create new Set as Set data has not been previously saved in app.setStates ------------------------------------
-        else {
+        } else {
             //Set's Status (-1 locked, 0 ongoing, 1 completed)
             this.status = -1;
-
             //Set's Character IDs (used to populate this.characters)
-            this.characterIDs = [];
-
-            //Set's Character Data (temporarily stored)
-            this.characters = [];
-
+            this.characterIDs = Array.from({length: 100}, (v, i) => i + this.numOfCharacters * (setID-1));
             //Index of most recent Character introduced from Set.characters 
             this.indexLastCharacterIntroduced = -1;
-
             //Array of Character IDs to be practiced in future Sessions (Set.sessionCharacters[0] is for Session.id=1)
             this.sessionCharacters = [];
-
             //Index of last Session completed
             this.idLastSessionCompleted = 0;
-
             //Index of last session practiced
             this.idLastSessionPracticed = 0;
         }
     }
 
     //----------------------------------------------------------------
-    /* async getCharacters(setID) {
-
+    getCharacters(app) {
         const characterDataObj = JSON.parse(characterDataJSON).data;
-       
-        this.characters = characterDataObj.data.map((el) => {
-            return new Character(el.characterID, el.symbol, el.pinYin, el.meaning);
+
+        const characters = characterDataObj.map((el) => {
+            let level, favourite, nextSessionID;
+            if(app.characterStates[el.characterID - 1]){
+                ({level, favourite, nextSessionID} = app.characterStates[el.characterID - 1]);
+            } else {
+                ([level, favourite, nextSessionID] = [0, 0, 0]);
+            }
+            return new Character(el.characterID, el.symbol, el.pinYin, el.meaning, level, favourite, nextSessionID);
         }); 
- */
+
+        return characters;
+
         //this.characters = JSON.parse(characterDataJSON).data;
         
         // try {
@@ -80,7 +75,18 @@ export default class Set {
         //     console.log(error);
         //     alert('Something went wrong :(');
         // }
-  //  }
+
+        //        await this.getCharacters()
+        //     .then(val => {
+        //         this.characters = val 
+        //     })
+        //     .catch(err => {
+        //         alert('Error retrieving Character data from database!')
+        //         console.log(err);
+        //     });
+
+        // console.log(this.characters);
+    }
 
     //----------------------------------------------------------------
     updateSessionCharacters(sessionToAddCharacter, characterToAdd) {

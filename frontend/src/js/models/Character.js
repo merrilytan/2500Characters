@@ -1,12 +1,12 @@
 export default class Character {
-    constructor(characterID, symbol, pinYin, meaning) {
+    constructor(characterID, symbol, pinYin, meaning, level, favourite, nextSessionID) {
         this.id = characterID;
         this.symbol = symbol;
         this.pinYin = pinYin;
         this.meaning = meaning;
-        this.level = 0;
-        this.favourite = 0;
-        this.nextSessionID = 0;
+        this.level = level;
+        this.favourite = favourite;
+        this.nextSessionID = nextSessionID;
     }
 
     //----------------------------------------------------------------

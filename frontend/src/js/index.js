@@ -32,6 +32,8 @@ const controlApp = async (userID) => {
         state.app = new App(userID); 
     }
 
+    console.log('state.app', state.app);
+
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
 
@@ -83,18 +85,18 @@ const controlSet = async (setID) => {
 
         //Index of last session practiced
         idLastSessionPracticed: 0
-    } */
+    } 
+    */
+   
+    /*  TESTINGPURPOSES 
+        state.app.characterStates[0] = {
+        level: 100,
+        favourite: 100,
+        nextSessionID: 100
+        } */
 
-    state.set = new Set(setID, state.app.setStates[setID -1]); 
-    console.log(state.set);
-
-
-    //At beginning of Session, create new Set OR retrieve existing Set info
-/*     if(setStates[id - 1]) {
-        state.set = setStates[id - 1];
-    } else {
-        state.set = new Set(id);
-    } */
+    state.set = await new Set(setID, state.app); 
+    console.log('state.set', state.set);
 
 /*         try {
             //Retrieve data from API to create state.set.characters
@@ -105,240 +107,234 @@ const controlSet = async (setID) => {
         }
     } */
 
-    //controlSession('beginSession');
+    controlSession('beginSession');
 }
 
 /**
  * Character CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-// const controlCharacter = (() => 
+const controlCharacter = (() => 
     
-//   ({
-//     // updateCharacter: (result) => {
-//     //     console.log('shhh', state.character);
-//     //     //Update Characters level in state.app.characterStates
-//     //     state.app.characterStates[state.character.id-1].updateLevel(result);
-//     //     //Update Character's nextSessionID
-//     //     return state.app.characterStates[state.character.id-1].updateNextSessionID(state.session.id);
-//     // },
+  ({
+    // updateCharacter: (result) => {
+    //     console.log('shhh', state.character);
+    //     //Update Characters level in state.app.characterStates
+    //     state.app.characterStates[state.character.id-1].updateLevel(result);
+    //     //Update Character's nextSessionID
+    //     return state.app.characterStates[state.character.id-1].updateNextSessionID(state.session.id);
+    // },
 
-//     removeCharacter: () => {
-//         characterView.clearCharacter();
-//     },
+    removeCharacter: () => {
+        characterView.clearCharacter();
+    },
 
-//     renderNextCharacter: (index, length, task) => {
-//         sessionView.updateCardFlag(index, length, task);
-//         if (task === 'renderNextPracticeCharacter'){
-//             characterView.renderCharacter(state.character, 'practice');
-//         } else if (task === 'renderNextIntroduceCharacter'){
-//             characterView.renderCharacter(state.character, 'introduce');
-//         }
-//     }
-//   })
-// )();
+    renderNextCharacter: (index, length, task) => {
+        sessionView.updateCardFlag(index, length, task);
+        if (task === 'renderNextPracticeCharacter'){
+            characterView.renderCharacter(state.character, 'practice');
+        } else if (task === 'renderNextIntroduceCharacter'){
+            characterView.renderCharacter(state.character, 'introduce');
+        }
+    }
+  })
+)();
 
 /**
  * Session CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-// const controlSession = (task, nextStep) => {
+const controlSession = (task, nextStep) => {
 
-//     if (task === 'renderNextPracticeCharacter' || task === 'renderNextIntroduceCharacter') {
-//         let length, characterIDs, action;
+    if (task === 'renderNextPracticeCharacter' || task === 'renderNextIntroduceCharacter') {
+        let length, characterIDs, action;
 
-//         if (task === 'renderNextPracticeCharacter'){
-//             length =  state.session.practiceCharacters.length;
-//             characterIDs = state.session.practiceCharacters;
-//             action = 'introduceCharacters';
-//         } else if (task === 'renderNextIntroduceCharacter'){
-//             length =  state.session.introduceCharacters.length;
-//             characterIDs = state.session.introduceCharacters;
-//             action = 'renderSummary';
-//         }
+        if (task === 'renderNextPracticeCharacter'){
+            length =  state.session.practiceCharacters.length;
+            characterIDs = state.session.practiceCharacters;
+            action = 'introduceCharacters';
+        } else if (task === 'renderNextIntroduceCharacter'){
+            length =  state.session.introduceCharacters.length;
+            characterIDs = state.session.introduceCharacters;
+            action = 'renderSummary';
+        }
 
-//         state.character = state.session.getNextCharacter(length, characterIDs, state.app.);
+        state.character = state.session.getNextCharacter(length, characterIDs, state.set);
+        console.log('state.character', state.character);
 
-//         if (state.character) {
-//             //Render Next Session Character
-//             controlCharacter.renderNextCharacter(state.session.indexLastCharacterShown, length, task);
-//         } else {
-//             controlSession(action);
-//         }
-//     } 
+        if (state.character) {
+            //Render Next Session Character
+            controlCharacter.renderNextCharacter(state.session.indexLastCharacterShown, length, task);
+        } else {
+            controlSession(action);
+        }
+    } 
     
-//     //--------------------------------------------------------------------------------------------------------------------
-//     else if (task === 'cross' || task === 'line' || task === 'check' || task === 'gotIt') {
+    //--------------------------------------------------------------------------------------------------------------------
+    else if (task === 'cross' || task === 'line' || task === 'check' || task === 'gotIt') {
 
-//         //Clear Character from UI
-//         controlCharacter.removeCharacter();
+        //Clear Character from UI
+        controlCharacter.removeCharacter();
 
-//         //Save Character rating
-//         state.session.characterRatings.push([state.character.characterID, task]);
-//         console.log('state.session.characterRatings', state.session.characterRatings);
+        //Save Character rating
+        state.session.saveCharacterRating(state.character, task);
+        console.log('state.session.characterRatings', state.session.characterRatings);
 
 
 
-//         // Update Character's state in state.app.characterStates 
-//         //const nextSessionID = controlCharacter.updateCharacter(task);
-//         //console.log('nextSessionID', nextSessionID);
-//         //Update Set's sessionCharacters
-//         //state.set.updateSessionCharacters(nextSessionID, state.character.id);
+        // Update Character's state in state.app.characterStates 
+        //const nextSessionID = controlCharacter.updateCharacter(task);
+        //console.log('nextSessionID', nextSessionID);
+        //Update Set's sessionCharacters
+        //state.set.updateSessionCharacters(nextSessionID, state.character.id);
 
-//         if (task === 'cross' || task === 'line' || task === 'check') {
-//             controlSession('renderNextPracticeCharacter');
-//         } else if (task === 'gotIt') {
-//             controlSession('renderNextIntroduceCharacter');       
-//         }
-//     } 
+        if (task === 'cross' || task === 'line' || task === 'check') {
+            controlSession('renderNextPracticeCharacter');
+        } else if (task === 'gotIt') {
+            controlSession('renderNextIntroduceCharacter');       
+        }
+    } 
 
-//     //--------------------------------------------------------------------------------------------------------------------
-//     else if (task === 'beginSession'){
+    //--------------------------------------------------------------------------------------------------------------------
+    else if (task === 'beginSession'){
 
-//         //Create new Session 
-//         state.session = new Session(state.set.idLastSessionCompleted+1);
-//         state.set.IDLastSessionPracticed = state.session.id;
+        //Create new Session 
+        state.session = new Session(state.set.idLastSessionCompleted+1, state.set);
+        state.set.IDLastSessionPracticed = state.session.id;
+        console.log('state.session', state.session);
         
-//         //Add 'practice' Characters from state.set.practiceCharacters 
-//         // if (state.session.id != 1) {
-//         //     state.session.addPracticeCharacters(state.set.characters, state.set.sessionCharacters[state.session.id - 1]);
-//         // }
+        //Render Template with general elements (to setup event listeners)
+        sessionView.renderTemplate(state.session.id, 'setup');
 
-//         //Render Template with general elements (to setup event listeners)
-//         sessionView.renderTemplate(state.session.id, 'setup');
+        if (state.session.practiceCharacters.length !== 0){
+            //Render Template for 'practice' Characters
+            sessionView.renderTemplate(state.session.id, 'practice');
+            //Render first 'practice' Character
+            controlSession('renderNextPracticeCharacter');
+        } else {
+            controlSession('introduceCharacters');
+        }
 
-//         /* if (state.session.practiceCharacters.length !== 0){
-//             //Render Template for 'practice' Characters
-//             sessionView.renderTemplate(state.session.id, 'practice');
-//             //Render first 'practice' Character
-//             controlSession('renderNextPracticeCharacter');
-//         } else { */
-//             controlSession('introduceCharacters');
-//         //}
-
-//         //Event Listener
-//         document.querySelector('.card__ratingButtons').addEventListener('click', e => {
-//             event.preventDefault();
+        //Event Listener
+        document.querySelector('.card__ratingButtons').addEventListener('click', e => {
+            event.preventDefault();
         
-//             if (e.target.matches('.btn-rating--cross')) {
-//                 controlSession('cross');
-//             } else if (e.target.matches('.btn-rating--line')) {
-//                 controlSession('line');
-//             } else if (e.target.matches('.btn-rating--check')) {
-//                 controlSession('check');
-//             }
-//         });
+            if (e.target.matches('.btn-rating--cross')) {
+                controlSession('cross');
+            } else if (e.target.matches('.btn-rating--line')) {
+                controlSession('line');
+            } else if (e.target.matches('.btn-rating--check')) {
+                controlSession('check');
+            }
+        });
 
-//         document.querySelector('.card__face--front').addEventListener('click', e => {
-//             if (e.target.closest('.btn-showAnswer')) {
-//                 event.preventDefault();
-//                 document.querySelector('.btn-showAnswer').classList.add('disappear');
-//                 document.querySelector('.card__inner__answer__showAnswer').classList.add('appear');
-//             }
-//         });   
-//     } 
+        document.querySelector('.card__face--front').addEventListener('click', e => {
+            if (e.target.closest('.btn-showAnswer')) {
+                event.preventDefault();
+                document.querySelector('.btn-showAnswer').classList.add('disappear');
+                document.querySelector('.card__inner__answer__showAnswer').classList.add('appear');
+            }
+        });   
+    } 
 
-//     //--------------------------------------------------------------------------------------------------------------------
-//     else if (task === 'introduceCharacters'){ 
-//         state.session.indexLastCharacterShown = -1;
+    //--------------------------------------------------------------------------------------------------------------------
+    else if (task === 'introduceCharacters'){ 
+        state.session.indexLastCharacterShown = -1;
+
+        if (state.session.introduceCharacters.length != 0) {
+            //Render Template for 'introduce' Character
+            sessionView.renderTemplate(state.session.id, 'introduce');
+            //Render first 'introduce' Character
+            controlSession('renderNextIntroduceCharacter');
+        } else {
+            controlSession('renderSummary');
+        }
+
+        //Event Listeners
+        document.querySelector('.card__ratingButtons').addEventListener('click', e => {
+            event.preventDefault();
         
-//         //Add 'introduce' Characters from state.set.introduceCharacters
-//         state.set.indexLastCharacterIntroduced = state.session.addIntroduceCharacters(state.set.characters, state.set.indexLastCharacterIntroduced, state.set.numOfCharacters);
+            if (e.target.matches('.btn-gotIt')) {
+                controlSession('gotIt');
+            } 
+        });
 
-//         if (state.session.introduceCharacters.length != 0) {
-//             //Render Template for 'introduce' Character
-//             sessionView.renderTemplate(state.session.id, 'introduce');
-//             //Render first 'introduce' Character
-//             controlSession('renderNextIntroduceCharacter');
-//         } else {
-//             controlSession('renderSummary');
-//         }
-
-//         //Event Listeners
-//         document.querySelector('.card__ratingButtons').addEventListener('click', e => {
-//             event.preventDefault();
-        
-//             if (e.target.matches('.btn-gotIt')) {
-//                 controlSession('gotIt');
-//             } 
-//         });
-
-//         document.querySelector('.session-header').addEventListener('click', e => {
-//             if (e.target.matches('.btn-exitSession') && !state.session) {
-//                 controlSession('endSession', 'home');
-//             } else if (e.target.matches('.btn-exitSession')) {
-//                 event.preventDefault();
-//                 document.querySelector('.cd-popup').classList.add('is-visible');
-//             }
-//         });
+        document.querySelector('.session-header').addEventListener('click', e => {
+            if (e.target.matches('.btn-exitSession') && !state.session) {
+                controlSession('endSession', 'home');
+            } else if (e.target.matches('.btn-exitSession')) {
+                event.preventDefault();
+                document.querySelector('.cd-popup').classList.add('is-visible');
+            }
+        });
     
-//         document.querySelector('.cd-popup').addEventListener('click', e => {
-//             if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
-//                 event.preventDefault();
-//                 document.querySelector('.cd-popup').classList.remove('is-visible');
-//             } else if (e.target.matches('.btn-popupYes')){
-//                 event.preventDefault();
-//                 controlSession('cancelSession');
-//             } 
-//         });
+        document.querySelector('.cd-popup').addEventListener('click', e => {
+            if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
+                event.preventDefault();
+                document.querySelector('.cd-popup').classList.remove('is-visible');
+            } else if (e.target.matches('.btn-popupYes')){
+                event.preventDefault();
+                controlSession('cancelSession');
+            } 
+        });
     
-//         document.querySelector('.navbar').addEventListener('click', e => {
-//             if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
-//               event.preventDefault();
-//               document.querySelector('.cd-popup').classList.add('is-visible');
-//             }
-//         });
-//     }
+        document.querySelector('.navbar').addEventListener('click', e => {
+            if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
+              event.preventDefault();
+              document.querySelector('.cd-popup').classList.add('is-visible');
+            }
+        });
+    }
 
-//     //--------------------------------------------------------------------------------------------------------------------
-//     else if (task === 'renderSummary'){
+    //--------------------------------------------------------------------------------------------------------------------
+    else if (task === 'renderSummary'){
 
-//         //Render summary card
-//         sessionView.renderSummaryCard();
+        //Render summary card
+        sessionView.renderSummaryCard();
 
-//         //Add 'introduce' Characters to state.set.characterStates and next Session set.sessionCharacters
-//         //Added here to ensure Session completed before update.
-//         // state.session.introduceCharacters.forEach((el) => {
-//         //     state.app.characterStates[el.characterID-1] = new Character(el.characterID, state.session.id + 1);
-//         // });
+        //Add 'introduce' Characters to state.set.characterStates and next Session set.sessionCharacters
+        //Added here to ensure Session completed before update.
+        // state.session.introduceCharacters.forEach((el) => {
+        //     state.app.characterStates[el.characterID-1] = new Character(el.characterID, state.session.id + 1);
+        // SAVE ALL PROGRESS!! UPDATE LAST INDEXES
+        //PUSH TO NEXTSESSION */
+        /*SAVE APP STATES */
 
-//         //console.log('state.app.characterStates', state.app.characterStates);
+        state.set.idLastSessionCompleted++;
+        state.session = '';
+        state.character = '';
 
-//         state.set.idLastSessionCompleted++;
-//         state.session = '';
-//         state.character = '';
+        //save state.set into state.app's setStates
+        //state.app.saveSetStates(state.set);
 
-//         //save state.set into state.app's setStates
-//         //state.app.saveSetStates(state.set);
+        document.querySelector('.card__face--back').addEventListener('click', e => {
+            if (e.target.matches('.btn-nextSession')) {
+                controlSession('endSession', 'next');
+            } else if (e.target.matches('.btn-home')) {
+                controlSession('endSession', 'home');
+            }
+        }); 
+    } 
 
-//         document.querySelector('.card__face--back').addEventListener('click', e => {
-//             if (e.target.matches('.btn-nextSession')) {
-//                 controlSession('endSession', 'next');
-//             } else if (e.target.matches('.btn-home')) {
-//                 controlSession('endSession', 'home');
-//             }
-//         }); 
-//     } 
+    //--------------------------------------------------------------------------------------------------------------------
+    else if (task === 'cancelSession'){     
+        //Rollback state.set.indexLastCharacterIntroduced
+        state.set.indexLastCharacterIntroduced -= state.session.introduceCharacters.length;
+        state.session = '';
+        state.character = '';
+        controlSession('endSession', 'home');
+    }
 
-//     //--------------------------------------------------------------------------------------------------------------------
-//     else if (task === 'cancelSession'){     
-//         //Rollback state.set.indexLastCharacterIntroduced
-//         state.set.indexLastCharacterIntroduced -= state.session.introduceCharacters.length;
-//         state.session = '';
-//         state.character = '';
-//         controlSession('endSession', 'home');
-//     }
+    //--------------------------------------------------------------------------------------------------------------------
+    else if (task === 'endSession', nextStep){     
+        sessionView.clearAppInnerUI();
 
-//     //--------------------------------------------------------------------------------------------------------------------
-//     else if (task === 'endSession', nextStep){     
-//         sessionView.clearAppInnerUI();
-
-//         if (nextStep === 'next'){
-//             controlSession('beginSession');
-//         } else if (nextStep === 'home') {
-//             state.session = '';
-//             window.location.hash = '#practice';
-//         } 
-//     }
-// }
+        if (nextStep === 'next'){
+            controlSession('beginSession');
+        } else if (nextStep === 'home') {
+            state.session = '';
+            window.location.hash = '#practice';
+        } 
+    }
+}
 
 /**
  * Event Listeners //////////////////////////////////////////////////////////////////////////////////////////////////////
