@@ -62,13 +62,14 @@ export default class Session {
         } else {
             character = 0;
         }
-
+        console.log('character', character);
         return character;
     }
 
     //----------------------------------------------------------------
     saveCharacterRating(character, rating) {
-        
         this.characterRatings.push([character.id, rating]);
     }
+
+
 }

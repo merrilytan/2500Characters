@@ -10,20 +10,20 @@ export default class Character {
     }
 
     //----------------------------------------------------------------
-    updateLevel(result){
+    updateLevel(rating){
         //L1-8 
-
-        //Update Card level according to result
-        if(result === 'cross'){
+        
+        //Update Character level according to rating
+        if(rating === 'cross'){
             this.level = 1;
             //console.log('Level: ', this.level, 'Next Session: ', this.nextSessionID);
-        } else if(result === 'line'){
+        } else if(rating === 'line'){
             if(this.level >= 3) this.level = 3;
             //console.log('Level: ', this.level, 'Next Session: ', this.nextSessionID);
-        } else if(result === 'check'){
-            this.level = this.level++;
+        } else if(rating === 'check'){
+            this.level++;
             //console.log('Level: ', this.level, 'Next Session: ', this.nextSessionID);
-        } else if(result === 'gotIt'){
+        } else if(rating === 'gotIt'){
             this.level = 1;
         }
     }
@@ -37,7 +37,7 @@ export default class Character {
         //L7: every 20 sessions
         //L8: Mastered (random)
 
-        //if(this.nextSessionID === 0) this.nextSessionID = currentSessionID;
+        if(this.nextSessionID === 0) this.nextSessionID = currentSessionID;
 
         let numberSessionsToSkip;
 

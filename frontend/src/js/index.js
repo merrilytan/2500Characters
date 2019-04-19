@@ -32,7 +32,7 @@ const controlApp = async (userID) => {
         state.app = new App(userID); 
     }
 
-    console.log('state.app', state.app);
+    //console.log('state.app', state.app);
 
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
@@ -154,11 +154,10 @@ const controlSession = (task, nextStep) => {
         } else if (task === 'renderNextIntroduceCharacter'){
             length =  state.session.introduceCharacters.length;
             characterIDs = state.session.introduceCharacters;
-            action = 'renderSummary';
+            action = 'saveProgress';
         }
 
         state.character = state.session.getNextCharacter(length, characterIDs, state.set);
-        console.log('state.character', state.character);
 
         if (state.character) {
             //Render Next Session Character
@@ -176,15 +175,7 @@ const controlSession = (task, nextStep) => {
 
         //Save Character rating
         state.session.saveCharacterRating(state.character, task);
-        console.log('state.session.characterRatings', state.session.characterRatings);
-
-
-
-        // Update Character's state in state.app.characterStates 
-        //const nextSessionID = controlCharacter.updateCharacter(task);
-        //console.log('nextSessionID', nextSessionID);
-        //Update Set's sessionCharacters
-        //state.set.updateSessionCharacters(nextSessionID, state.character.id);
+        console.log('kjkjkjkjstate.session', state.session);
 
         if (task === 'cross' || task === 'line' || task === 'check') {
             controlSession('renderNextPracticeCharacter');
@@ -198,8 +189,8 @@ const controlSession = (task, nextStep) => {
 
         //Create new Session 
         state.session = new Session(state.set.idLastSessionCompleted+1, state.set);
-        state.set.IDLastSessionPracticed = state.session.id;
-        console.log('state.session', state.session);
+        state.set.updateIdLastSessionPracticed(state.session);
+        //console.log('state.session', state.session);
         
         //Render Template with general elements (to setup event listeners)
         sessionView.renderTemplate(state.session.id, 'setup');
@@ -245,7 +236,7 @@ const controlSession = (task, nextStep) => {
             //Render first 'introduce' Character
             controlSession('renderNextIntroduceCharacter');
         } else {
-            controlSession('renderSummary');
+            controlSession('saveProgress');
         }
 
         //Event Listeners
@@ -285,25 +276,28 @@ const controlSession = (task, nextStep) => {
     }
 
     //--------------------------------------------------------------------------------------------------------------------
-    else if (task === 'renderSummary'){
+    else if (task === 'saveProgress'){
+
+        //Update state.set.characters
+        state.set.updateCharacters(state.session);
+
+        //Update state.session.sessionCharacters
+        state.set.updateSessionCharacters(state.session);
+
+        //Update state.set.indexLastCharacterIntroduced
+        state.set.updateIndexLastCharacterIntroduced(state.session);
+
 
         //Render summary card
         sessionView.renderSummaryCard();
 
-        //Add 'introduce' Characters to state.set.characterStates and next Session set.sessionCharacters
-        //Added here to ensure Session completed before update.
-        // state.session.introduceCharacters.forEach((el) => {
-        //     state.app.characterStates[el.characterID-1] = new Character(el.characterID, state.session.id + 1);
-        // SAVE ALL PROGRESS!! UPDATE LAST INDEXES
-        //PUSH TO NEXTSESSION */
-        /*SAVE APP STATES */
+        console.log('progress state.set', state.set);
 
-        state.set.idLastSessionCompleted++;
+
+        /*SAVE APP STATES */
+        state.set.updateIdLastSessionCompleted(state.session);
         state.session = '';
         state.character = '';
-
-        //save state.set into state.app's setStates
-        //state.app.saveSetStates(state.set);
 
         document.querySelector('.card__face--back').addEventListener('click', e => {
             if (e.target.matches('.btn-nextSession')) {

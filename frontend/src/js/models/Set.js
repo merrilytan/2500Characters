@@ -89,8 +89,48 @@ export default class Set {
     }
 
     //----------------------------------------------------------------
-    updateSessionCharacters(sessionToAddCharacter, characterToAdd) {
+    updateCharacters(session) {
+        session.characterRatings.forEach(el => {
+            const characterID = el[0]; 
+            const rating = el[1];
+            this.characters[characterID -1].updateLevel(rating);
+            this.characters[characterID -1].updateNextSessionID(session.id);
+            console.log(characterID, ':', rating, ':', this.characters[characterID -1].level, ':', this.characters[characterID -1].nextSessionID);
+        });
+    }
+
+    //----------------------------------------------------------------
+/*     updateSessionCharacters(sessionToAddCharacter, characterToAdd) {
         //Add Card's index in deckCards to deckSessions
         this.sessionCharacters[sessionToAddCharacter] ? this.sessionCharacters[sessionToAddCharacter].push(characterToAdd) : this.sessionCharacters[sessionToAddCharacter]=[characterToAdd];
+    } */
+
+    //----------------------------------------------------------------
+    updateSessionCharacters(session) {
+        console.log('session.characterRatings', session.characterRatings);
+        session.characterRatings.forEach(el => {
+            const characterID = el[0];
+            const nextSessionID = this.characters[characterID -1].nextSessionID;
+            if (!this.sessionCharacters[nextSessionID-1]){
+                this.sessionCharacters[nextSessionID-1] = [characterID];
+            } else {
+                this.sessionCharacters[nextSessionID-1].push(characterID);
+            }
+        });
+    }
+
+    //----------------------------------------------------------------
+    updateIndexLastCharacterIntroduced(session){
+        this.indexLastCharacterIntroduced += session.introduceCharacters.length;
+    }
+
+    //----------------------------------------------------------------
+    updateIdLastSessionPracticed(session){
+        this.idLastSessionPracticed = session.id;
+    }
+
+    //----------------------------------------------------------------
+    updateIdLastSessionCompleted(session){
+        this.idLastSessionCompleted = session.id;
     }
 }
