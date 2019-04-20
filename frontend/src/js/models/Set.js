@@ -20,6 +20,8 @@ export default class Set {
             this.status = setState.status;
             //Set's Character IDs (used to populate this.characters)
             this.characterIDs = setState.characterIDs;
+            //Set's mastered Character IDs 
+            this.masteredCharacterIDs = setState.masteredCharacterIDs;
             //Index of most recent Character introduced from Set.characters 
             this.indexLastCharacterIntroduced = setState.indexLastCharacterIntroduced;
             //Array of Character IDs to be practiced in future Sessions (Set.sessionCharacters[0] is for Session.id=1)
@@ -28,11 +30,15 @@ export default class Set {
             this.idLastSessionCompleted = setState.idLastSessionCompleted;
             //Index of last session practiced
             this.idLastSessionPracticed = setState.idLastSessionPracticed;
+            //Index of furthest nextSessionID
+            this.furthestNextSessionID = setState.furthestNextSessionID;
         } else {
             //Set's Status (-1 locked, 0 ongoing, 1 completed)
             this.status = -1;
             //Set's Character IDs (used to populate this.characters)
             this.characterIDs = Array.from({length: 100}, (v, i) => i + this.numOfCharacters * (setID-1));
+            //Set's mastered Character IDs 
+            this.masteredCharacterIDs = [];
             //Index of most recent Character introduced from Set.characters 
             this.indexLastCharacterIntroduced = -1;
             //Array of Character IDs to be practiced in future Sessions (Set.sessionCharacters[0] is for Session.id=1)
@@ -41,9 +47,21 @@ export default class Set {
             this.idLastSessionCompleted = 0;
             //Index of last session practiced
             this.idLastSessionPracticed = 0;
+            //Index of furthest nextSessionID
+            this.furthestNextSessionID = 0;
         }
     }
 
+    //----------------------------------------------------------------
+    updateStatus(status) {
+        if (status === 'locked'){
+            this.status = -1;
+        } else if (status === 'ongoing'){
+            this.status = 0;
+        } else {
+            this.status = 1;
+        }
+    }
     //----------------------------------------------------------------
     getCharacters(app) {
         const characterDataObj = JSON.parse(characterDataJSON).data;
@@ -90,24 +108,32 @@ export default class Set {
 
     //----------------------------------------------------------------
     updateCharacters(session) {
+        let numMasteredSession = 0;
         session.characterRatings.forEach(el => {
             const characterID = el[0]; 
             const rating = el[1];
-            this.characters[characterID -1].updateLevel(rating);
-            this.characters[characterID -1].updateNextSessionID(session.id);
+
+            //Update Character level
+            if(this.characters[characterID -1].updateLevel(rating)){
+                this.removeFromMasteredCharacterIDs(characterID);
+            }
+
+            //Update Character nextSessionID
+            const nextSessionID = this.characters[characterID -1].updateNextSessionID(session.id);
+            if (nextSessionID == 'random'){
+                this.addToMasteredCharacterIDs(characterID);
+                numMasteredSession++;
+            };
+            if ((nextSessionID !== 'random') && (nextSessionID > this.furthestNextSessionID)){
+                this.furthestNextSessionID = nextSessionID;
+            }
             console.log(characterID, ':', rating, ':', this.characters[characterID -1].level, ':', this.characters[characterID -1].nextSessionID);
         });
+        return numMasteredSession;
     }
 
     //----------------------------------------------------------------
-/*     updateSessionCharacters(sessionToAddCharacter, characterToAdd) {
-        //Add Card's index in deckCards to deckSessions
-        this.sessionCharacters[sessionToAddCharacter] ? this.sessionCharacters[sessionToAddCharacter].push(characterToAdd) : this.sessionCharacters[sessionToAddCharacter]=[characterToAdd];
-    } */
-
-    //----------------------------------------------------------------
     updateSessionCharacters(session) {
-        console.log('session.characterRatings', session.characterRatings);
         session.characterRatings.forEach(el => {
             const characterID = el[0];
             const nextSessionID = this.characters[characterID -1].nextSessionID;
@@ -132,5 +158,23 @@ export default class Set {
     //----------------------------------------------------------------
     updateIdLastSessionCompleted(session){
         this.idLastSessionCompleted = session.id;
+    }
+
+    //----------------------------------------------------------------
+    addToMasteredCharacterIDs(characterID){
+        this.masteredCharacterIDs.push(characterID);
+    }
+
+    //----------------------------------------------------------------
+    removeFromMasteredCharacterIDs(characterID){
+        const index = this.masteredCharacterIDs.indexOf(characterID);
+        this.masteredCharacterIDs.splice(index, 1);
+    }
+
+    //----------------------------------------------------------------
+    checkSetCompleted(){
+        let returnValue;
+        this.idLastSessionCompleted === this.furthestNextSessionID ? returnValue = 1 : returnValue = 0;
+        return returnValue;
     }
 }

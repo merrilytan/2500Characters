@@ -21,6 +21,7 @@ export default class Session {
     addPracticeCharacters(setSessionCharacters) {
         if(setSessionCharacters[this.id -1]){
             const practiceCharacters = [...setSessionCharacters[this.id -1]];
+            this.shuffleArray(practiceCharacters);
             return practiceCharacters;
         } else {
             return -1;
@@ -46,6 +47,7 @@ export default class Session {
                 return el.id;
             })
 
+            this.shuffleArray(introduceCharacters);
             return introduceCharacters;
         } else {
             return -1;
@@ -62,7 +64,6 @@ export default class Session {
         } else {
             character = 0;
         }
-        console.log('character', character);
         return character;
     }
 
@@ -70,6 +71,24 @@ export default class Session {
     saveCharacterRating(character, rating) {
         this.characterRatings.push([character.id, rating]);
     }
+    
+    //----------------------------------------------------------------
+    shuffleArray(array){
+        var currentIndex = array.length;
+        var temporaryValue, randomIndex;
 
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
 
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
 }

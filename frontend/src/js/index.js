@@ -32,7 +32,11 @@ const controlApp = async (userID) => {
         state.app = new App(userID); 
     }
 
-    //console.log('state.app', state.app);
+    if(state.app.setStatus[0]===-1){
+        state.app.setStatus[0] = 0;
+    }  
+
+    console.log('state.app', state.app);
 
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
@@ -47,7 +51,11 @@ const controlApp = async (userID) => {
 
     } else if (view.startsWith('set')){
         const res = view.split('-');
-        controlSet(res[1]);
+        //Check that Set is unlocked
+        if(state.app.setStatus[res[1]-1]!==-1){
+            controlSet(res[1]);
+        }
+        //***need page that says set isa locked */
     }
 
     elements.appInner.addEventListener('click', e => {
@@ -175,7 +183,6 @@ const controlSession = (task, nextStep) => {
 
         //Save Character rating
         state.session.saveCharacterRating(state.character, task);
-        console.log('kjkjkjkjstate.session', state.session);
 
         if (task === 'cross' || task === 'line' || task === 'check') {
             controlSession('renderNextPracticeCharacter');
@@ -198,32 +205,34 @@ const controlSession = (task, nextStep) => {
         if (state.session.practiceCharacters.length !== 0){
             //Render Template for 'practice' Characters
             sessionView.renderTemplate(state.session.id, 'practice');
+
+            //Event Listener
+            document.querySelector('.card__ratingButtons').addEventListener('click', e => {
+                event.preventDefault();
+            
+                if (e.target.matches('.btn-rating--cross')) {
+                    controlSession('cross');
+                } else if (e.target.matches('.btn-rating--line')) {
+                    controlSession('line');
+                } else if (e.target.matches('.btn-rating--check')) {
+                    controlSession('check');
+                }
+            });
+
+            document.querySelector('.card__face--front').addEventListener('click', e => {
+                if (e.target.closest('.btn-showAnswer')) {
+                    event.preventDefault();
+                    document.querySelector('.btn-showAnswer').classList.add('disappear');
+                    document.querySelector('.card__inner__answer__showAnswer').classList.add('appear');
+                }
+            });   
+
             //Render first 'practice' Character
             controlSession('renderNextPracticeCharacter');
+
         } else {
             controlSession('introduceCharacters');
         }
-
-        //Event Listener
-        document.querySelector('.card__ratingButtons').addEventListener('click', e => {
-            event.preventDefault();
-        
-            if (e.target.matches('.btn-rating--cross')) {
-                controlSession('cross');
-            } else if (e.target.matches('.btn-rating--line')) {
-                controlSession('line');
-            } else if (e.target.matches('.btn-rating--check')) {
-                controlSession('check');
-            }
-        });
-
-        document.querySelector('.card__face--front').addEventListener('click', e => {
-            if (e.target.closest('.btn-showAnswer')) {
-                event.preventDefault();
-                document.querySelector('.btn-showAnswer').classList.add('disappear');
-                document.querySelector('.card__inner__answer__showAnswer').classList.add('appear');
-            }
-        });   
     } 
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -233,53 +242,55 @@ const controlSession = (task, nextStep) => {
         if (state.session.introduceCharacters.length != 0) {
             //Render Template for 'introduce' Character
             sessionView.renderTemplate(state.session.id, 'introduce');
+
+            //Event Listeners
+            document.querySelector('.card__ratingButtons').addEventListener('click', e => {
+                event.preventDefault();
+            
+                if (e.target.matches('.btn-gotIt')) {
+                    controlSession('gotIt');
+                } 
+            });
+
+            document.querySelector('.session-header').addEventListener('click', e => {
+                if (e.target.matches('.btn-exitSession') && !state.session) {
+                    controlSession('endSession', 'home');
+                } else if (e.target.matches('.btn-exitSession')) {
+                    event.preventDefault();
+                    document.querySelector('.cd-popup').classList.add('is-visible');
+                }
+            });
+        
+            document.querySelector('.cd-popup').addEventListener('click', e => {
+                if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
+                    event.preventDefault();
+                    document.querySelector('.cd-popup').classList.remove('is-visible');
+                } else if (e.target.matches('.btn-popupYes')){
+                    event.preventDefault();
+                    controlSession('cancelSession');
+                } 
+            });
+        
+            document.querySelector('.navbar').addEventListener('click', e => {
+                if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
+                event.preventDefault();
+                document.querySelector('.cd-popup').classList.add('is-visible');
+                }
+            });
+
             //Render first 'introduce' Character
             controlSession('renderNextIntroduceCharacter');
+
         } else {
             controlSession('saveProgress');
         }
-
-        //Event Listeners
-        document.querySelector('.card__ratingButtons').addEventListener('click', e => {
-            event.preventDefault();
-        
-            if (e.target.matches('.btn-gotIt')) {
-                controlSession('gotIt');
-            } 
-        });
-
-        document.querySelector('.session-header').addEventListener('click', e => {
-            if (e.target.matches('.btn-exitSession') && !state.session) {
-                controlSession('endSession', 'home');
-            } else if (e.target.matches('.btn-exitSession')) {
-                event.preventDefault();
-                document.querySelector('.cd-popup').classList.add('is-visible');
-            }
-        });
-    
-        document.querySelector('.cd-popup').addEventListener('click', e => {
-            if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
-                event.preventDefault();
-                document.querySelector('.cd-popup').classList.remove('is-visible');
-            } else if (e.target.matches('.btn-popupYes')){
-                event.preventDefault();
-                controlSession('cancelSession');
-            } 
-        });
-    
-        document.querySelector('.navbar').addEventListener('click', e => {
-            if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
-              event.preventDefault();
-              document.querySelector('.cd-popup').classList.add('is-visible');
-            }
-        });
     }
 
     //--------------------------------------------------------------------------------------------------------------------
     else if (task === 'saveProgress'){
 
         //Update state.set.characters
-        state.set.updateCharacters(state.session);
+        const numMasteredSession = state.set.updateCharacters(state.session);
 
         //Update state.session.sessionCharacters
         state.set.updateSessionCharacters(state.session);
@@ -287,15 +298,32 @@ const controlSession = (task, nextStep) => {
         //Update state.set.indexLastCharacterIntroduced
         state.set.updateIndexLastCharacterIntroduced(state.session);
 
+        //Update last session completed
+        state.set.updateIdLastSessionCompleted(state.session);
 
-        //Render summary card
-        sessionView.renderSummaryCard();
+        //Check if end of set and render appropriate summary card
+        let completed;
+        if(!state.set.checkSetCompleted()){
+            completed = 0;
 
+        } else {
+            completed = 1;
+            state.set.updateStatus('complete');
+            state.app.setStatus[state.set.id - 1] = 1;
+            //Unlock next set
+            state.app.setStatus[state.set.id] = 0;
+        }
+
+        sessionView.renderSummaryCard(completed, numMasteredSession, state.set);
         console.log('progress state.set', state.set);
 
+        
+        //Save Set and Character states to App
+        state.app.saveSetStates(state.set);
+        state.app.saveCharacterStates(state.set);
 
-        /*SAVE APP STATES */
-        state.set.updateIdLastSessionCompleted(state.session);
+        console.log('progress state.app', state.app);
+        
         state.session = '';
         state.character = '';
 
@@ -320,7 +348,7 @@ const controlSession = (task, nextStep) => {
     //--------------------------------------------------------------------------------------------------------------------
     else if (task === 'endSession', nextStep){     
         sessionView.clearAppInnerUI();
-
+        console.log('end state.app', state.app);
         if (nextStep === 'next'){
             controlSession('beginSession');
         } else if (nextStep === 'home') {
