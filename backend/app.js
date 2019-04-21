@@ -1,26 +1,20 @@
 const express = require('express');
-//const expressLayouts = require('express-ejs-layouts');
+const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 //const flash = require('connect-flash');
-//const session = require('express-session');
-//const passport = require('passport');
+const session = require('express-session');
+const passport = require('passport');
+
+const {ensureAuthenticated} = require('./config/auth');
 
 
-// Creates express server------------------------------------------------------------------------
+
+// Load our app server using Express-------------------------------------------------------------
 const app = express();
 
 
-
-// Routing---------------------------------------------------------------------------------------
-
-//1. entry (static file)
-app.use('/', express.static('../frontend/dist'));
-//2. API requests
-app.use('/characters', require('./routes/characters'));
-
-
 // Passport config-------------------------------------------------------------------------------
-//require('./config/passport')(passport);
+require('./config/passport')(passport);
 
 // DB Config-------------------------------------------------------------------------------------
 const db = require('./config/keys').MongoURI;
@@ -28,10 +22,12 @@ const db = require('./config/keys').MongoURI;
 // Connect to Mongo------------------------------------------------------------------------------
 mongoose.connect(db, { useNewUrlParser: true })
      .then(() => console.log('MongoDB Connected...'))
-     .catch(err => console.log(err));
+     .catch(err => console.log(err)); 
 
 // View engine setup-----------------------------------------------------------------------------
 //app.set('views', path.join(__dirname, 'views'));
+
+
 // EJS -- app.use is to bind middleware to your application
 //app.use(expressLayouts);
 //app.set('view engine', 'ejs');
@@ -39,18 +35,18 @@ mongoose.connect(db, { useNewUrlParser: true })
 
 // Bodyparser (included with Express)------------------------------------------------------------- 
 // extracts the entire body portion of an incoming request stream and exposes it on req.body
-//app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 // Express Session--------------------------------------------------------------------------------
-/* app.use(session({
+app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
-})); */
+}));
 
 // Passport middleware----------------------------------------------------------------------------
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Connect flash----------------------------------------------------------------------------------
 //use flash message which stores in a session and displays it after redirect
@@ -64,11 +60,31 @@ mongoose.connect(db, { useNewUrlParser: true })
     next();
 }); */
 
-// Routes------------------------------------------------------------------------------------------
-/* app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
-app.use('/characters', require('./routes/characters')); */
 
-// Listen for HTTP requests on port 27017----------------------------------------------------------
+
+
+// Routes---------------------------------------------------------------------------------------
+app.use('/login', express.static('public'));
+app.use('/auth', require('./routes/auth'));
+//app.use('/users', require('./routes/users'));
+
+//1. entry (static file)
+app.use('/',ensureAuthenticated, express.static('../frontend/dist'));
+//2. API requests
+app.use('/characters', ensureAuthenticated, require('./routes/characters'));
+//app.use('/users', require('./routes/users'));
+
+//practice
+// app.get('/', (req, res) => {
+//     console.log('Respomding to root route');
+//     res.send('hello from root"');
+// })
+
+// app.get('/users', (req, res) => {
+//     console.log('Respomding to users route');
+//     res.send('hello from users"');
+// })
+
+// Listen for HTTP requests on localhost:27017----------------------------------------------------------
 const PORT = process.env.PORT || 27017;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

@@ -11,7 +11,7 @@ export default class Set {
         //Set's ID
         this.id = setID;
         //Set's Character Data (temporarily stored)
-        this.characters = this.getCharacters(app);
+        this.characters = [];
         //Num of Characters in a Set
         this.numOfCharacters = 100;
 
@@ -63,10 +63,10 @@ export default class Set {
         }
     }
     //----------------------------------------------------------------
-    getCharacters(app) {
-        const characterDataObj = JSON.parse(characterDataJSON).data;
+    async getCharacters(app) {
+        //const characterDataObj = JSON.parse(characterDataJSON).data;
 
-        const characters = characterDataObj.map((el) => {
+        /* const characters = characterDataObj.map((el) => {
             let level, favourite, nextSessionID;
             if(app.characterStates[el.characterID - 1]){
                 ({level, favourite, nextSessionID} = app.characterStates[el.characterID - 1]);
@@ -76,34 +76,23 @@ export default class Set {
             return new Character(el.characterID, el.symbol, el.pinYin, el.meaning, level, favourite, nextSessionID);
         }); 
 
-        return characters;
+        return characters; */
+        try {
+            const characterDataObj = await axios(`http://localhost:27017/characters/get-set/${this.id}`);
+        } catch (error) {
+            console.log(error);
+            alert('Something went wrong :(');
+        }
 
-        //this.characters = JSON.parse(characterDataJSON).data;
-        
-        // try {
-        //     this.characters = await axios(`http://localhost:27017/characters/get-set/${setID}`);
-
-        //     //const characterDataObj = await axios(`http://localhost:27017/characters/get-deck/${deckID}`);
-        //     /* console.log('characterDataObj', characterDataObj.data);
-        //     this.deckCards = characterDataObj.data.map((el, index) => {
-        //         return new Card(el, index+1);
-        //     }); */
-
-        // } catch (error) {
-        //     console.log(error);
-        //     alert('Something went wrong :(');
-        // }
-
-        //        await this.getCharacters()
-        //     .then(val => {
-        //         this.characters = val 
-        //     })
-        //     .catch(err => {
-        //         alert('Error retrieving Character data from database!')
-        //         console.log(err);
-        //     });
-
-        // console.log(this.characters);
+        this.characters = characterDataObj.data.map((el) => {
+            let level, favourite, nextSessionID;
+            if(app.characterStates[el.characterID - 1]){
+                ({level, favourite, nextSessionID} = app.characterStates[el.characterID - 1]);
+            } else {
+                ([level, favourite, nextSessionID] = [0, 0, 0]);
+            }
+            return new Character(el.characterID, el.symbol, el.pinYin, el.meaning, level, favourite, nextSessionID);
+        }); 
     }
 
     //----------------------------------------------------------------

@@ -13,8 +13,6 @@ export default class Session {
         this.numOfCharactersIntroduce = 5;
         //Character ratings in Session
         this.characterRatings = [];
-        //Session shown previously (0 False, 1 True)
-        //this.shownAlready = 0;
     }
 
     //----------------------------------------------------------------

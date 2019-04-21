@@ -34,6 +34,7 @@ const controlApp = async (userID) => {
 
     if(state.app.setStatus[0]===-1){
         state.app.setStatus[0] = 0;
+
     }  
 
     console.log('state.app', state.app);
@@ -103,7 +104,8 @@ const controlSet = async (setID) => {
         nextSessionID: 100
         } */
 
-    state.set = await new Set(setID, state.app); 
+    state.set = new Set(setID, state.app); 
+    await state.set.getCharacters(state.app);
     console.log('state.set', state.set);
 
 /*         try {
