@@ -64,35 +64,21 @@ export default class Set {
     }
     //----------------------------------------------------------------
     async getCharacters(app) {
-        //const characterDataObj = JSON.parse(characterDataJSON).data;
-
-        /* const characters = characterDataObj.map((el) => {
-            let level, favourite, nextSessionID;
-            if(app.characterStates[el.characterID - 1]){
-                ({level, favourite, nextSessionID} = app.characterStates[el.characterID - 1]);
-            } else {
-                ([level, favourite, nextSessionID] = [0, 0, 0]);
-            }
-            return new Character(el.characterID, el.symbol, el.pinYin, el.meaning, level, favourite, nextSessionID);
-        }); 
-
-        return characters; */
         try {
-            const characterDataObj = await axios(`http://localhost:27017/characters/get-set/${this.id}`);
+            const characterDataObj = await axios(`http://localhost:27017/characters/${this.id}`);
+            this.characters = characterDataObj.data.map((el) => {
+                let level, favourite, nextSessionID;
+                if(app.characterStates[el.characterID - 1]){
+                    ({level, favourite, nextSessionID} = app.characterStates[el.characterID - 1]);
+                } else {
+                    ([level, favourite, nextSessionID] = [0, 0, 0]);
+                }
+                return new Character(el.characterID, el.symbol, el.pinYin, el.meaning, level, favourite, nextSessionID);
+            }); 
         } catch (error) {
             console.log(error);
             alert('Something went wrong :(');
         }
-
-        this.characters = characterDataObj.data.map((el) => {
-            let level, favourite, nextSessionID;
-            if(app.characterStates[el.characterID - 1]){
-                ({level, favourite, nextSessionID} = app.characterStates[el.characterID - 1]);
-            } else {
-                ([level, favourite, nextSessionID] = [0, 0, 0]);
-            }
-            return new Character(el.characterID, el.symbol, el.pinYin, el.meaning, level, favourite, nextSessionID);
-        }); 
     }
 
     //----------------------------------------------------------------

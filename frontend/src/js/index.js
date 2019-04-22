@@ -1,7 +1,6 @@
 import App from './models/App';
 import Set from './models/Set';
 import Session from './models/Session';
-import Character from './models/Character';
 import * as appView from './views/appView';
 import * as sessionView from './views/sessionView';
 import * as characterView from './views/characterView';
@@ -26,7 +25,7 @@ const state = {};
  * App CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
 const controlApp = async (userID) => {
-  
+
     if(!state.app) {
         userID = 1;
         state.app = new App(userID); 
@@ -34,10 +33,7 @@ const controlApp = async (userID) => {
 
     if(state.app.setStatus[0]===-1){
         state.app.setStatus[0] = 0;
-
     }  
-
-    console.log('state.app', state.app);
 
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
@@ -55,7 +51,7 @@ const controlApp = async (userID) => {
         //Check that Set is unlocked
         if(state.app.setStatus[res[1]-1]!==-1){
             controlSet(res[1]);
-        }
+        } 
         //***need page that says set isa locked */
     }
 
@@ -71,6 +67,8 @@ const controlApp = async (userID) => {
  * Set CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
 const controlSet = async (setID) => {
+
+    console.log('begin state.app', state.app);
 
     /* //TESTING PURPOSES
         state.app.setStates[setID -1] = {
@@ -104,18 +102,11 @@ const controlSet = async (setID) => {
         nextSessionID: 100
         } */
 
-    state.set = new Set(setID, state.app); 
-    await state.set.getCharacters(state.app);
-    console.log('state.set', state.set);
-
-/*         try {
-            //Retrieve data from API to create state.set.characters
-            await state.set.getCharacters(id);
-        } catch (err) {
-            console.log(err);
-            alert('Error creating set!');
-        }
-    } */
+    if(!state.set || (state.set.id !== setID)){
+        state.set = new Set(setID, state.app); 
+        await state.set.getCharacters(state.app);
+        console.log('state.set', state.set);
+    }
 
     controlSession('beginSession');
 }
@@ -126,14 +117,6 @@ const controlSet = async (setID) => {
 const controlCharacter = (() => 
     
   ({
-    // updateCharacter: (result) => {
-    //     console.log('shhh', state.character);
-    //     //Update Characters level in state.app.characterStates
-    //     state.app.characterStates[state.character.id-1].updateLevel(result);
-    //     //Update Character's nextSessionID
-    //     return state.app.characterStates[state.character.id-1].updateNextSessionID(state.session.id);
-    // },
-
     removeCharacter: () => {
         characterView.clearCharacter();
     },
@@ -199,7 +182,6 @@ const controlSession = (task, nextStep) => {
         //Create new Session 
         state.session = new Session(state.set.idLastSessionCompleted+1, state.set);
         state.set.updateIdLastSessionPracticed(state.session);
-        //console.log('state.session', state.session);
         
         //Render Template with general elements (to setup event listeners)
         sessionView.renderTemplate(state.session.id, 'setup');
@@ -235,6 +217,33 @@ const controlSession = (task, nextStep) => {
         } else {
             controlSession('introduceCharacters');
         }
+
+        //Event Listeners
+        document.querySelector('.session-header').addEventListener('click', e => {
+            if (e.target.matches('.btn-exitSession') && !state.session) {
+                controlSession('endSession', 'home');
+            } else if (e.target.matches('.btn-exitSession')) {
+                event.preventDefault();
+                document.querySelector('.cd-popup').classList.add('is-visible');
+            }
+        });
+    
+        document.querySelector('.cd-popup').addEventListener('click', e => {
+            if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
+                event.preventDefault();
+                document.querySelector('.cd-popup').classList.remove('is-visible');
+            } else if (e.target.matches('.btn-popupYes')){
+                event.preventDefault();
+                controlSession('cancelSession');
+            } 
+        });
+    
+        document.querySelector('.navbar').addEventListener('click', e => {
+            if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
+            event.preventDefault();
+            document.querySelector('.cd-popup').classList.add('is-visible');
+            }
+        });
     } 
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -252,32 +261,6 @@ const controlSession = (task, nextStep) => {
                 if (e.target.matches('.btn-gotIt')) {
                     controlSession('gotIt');
                 } 
-            });
-
-            document.querySelector('.session-header').addEventListener('click', e => {
-                if (e.target.matches('.btn-exitSession') && !state.session) {
-                    controlSession('endSession', 'home');
-                } else if (e.target.matches('.btn-exitSession')) {
-                    event.preventDefault();
-                    document.querySelector('.cd-popup').classList.add('is-visible');
-                }
-            });
-        
-            document.querySelector('.cd-popup').addEventListener('click', e => {
-                if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
-                    event.preventDefault();
-                    document.querySelector('.cd-popup').classList.remove('is-visible');
-                } else if (e.target.matches('.btn-popupYes')){
-                    event.preventDefault();
-                    controlSession('cancelSession');
-                } 
-            });
-        
-            document.querySelector('.navbar').addEventListener('click', e => {
-                if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
-                event.preventDefault();
-                document.querySelector('.cd-popup').classList.add('is-visible');
-                }
             });
 
             //Render first 'introduce' Character
@@ -317,15 +300,15 @@ const controlSession = (task, nextStep) => {
         }
 
         sessionView.renderSummaryCard(completed, numMasteredSession, state.set);
-        console.log('progress state.set', state.set);
-
-        
+     
         //Save Set and Character states to App
         state.app.saveSetStates(state.set);
         state.app.saveCharacterStates(state.set);
 
-        console.log('progress state.app', state.app);
+        //Save App state to DB
+        state.app.saveAppState();
         
+        //Clear Session and Character states
         state.session = '';
         state.character = '';
 
@@ -339,11 +322,8 @@ const controlSession = (task, nextStep) => {
     } 
 
     //--------------------------------------------------------------------------------------------------------------------
-    else if (task === 'cancelSession'){     
-        //Rollback state.set.indexLastCharacterIntroduced
-        state.set.indexLastCharacterIntroduced -= state.session.introduceCharacters.length;
-        state.session = '';
-        state.character = '';
+    else if (task === 'cancelSession'){     //IS THIS NEEDED??????????????
+
         controlSession('endSession', 'home');
     }
 
@@ -354,7 +334,6 @@ const controlSession = (task, nextStep) => {
         if (nextStep === 'next'){
             controlSession('beginSession');
         } else if (nextStep === 'home') {
-            state.session = '';
             window.location.hash = '#practice';
         } 
     }

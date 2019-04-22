@@ -1,7 +1,7 @@
 /**
- * Auth CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
+ * Users CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-const controlAuth = () => {
+const controlUsers = () => {
 
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
@@ -114,7 +114,7 @@ const controlAuth = () => {
 /**
  * Event Listeners //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-['hashchange', 'load'].forEach((event) => window.addEventListener(event, controlAuth));
+['hashchange', 'load'].forEach((event) => window.addEventListener(event, controlUsers));
 
 document.querySelector('.container').addEventListener('click', e => {
 
@@ -186,7 +186,7 @@ document.querySelector('.container').addEventListener('click', e => {
             // Send a POST request
             axios({
                 method: 'post',
-                url: `${window.location.origin}/auth/register`,
+                url: `${window.location.origin}/users/register`,
                 data: data,
                 headers: { "Content-Type": "application/json" }
             }).then(function (response) {
@@ -240,11 +240,11 @@ document.querySelector('.container').addEventListener('click', e => {
         // Send a POST request
         axios({
             method: 'post',
-            url: `${window.location.origin}/auth/`,
+            url: `${window.location.origin}/users/`,
             data: data,
             headers: { "Content-Type": "application/json" }
-        }).then(function () {
-            window.location.assign(window.location.origin)
+        }).then(function (response) {
+            window.location = `${window.location.origin}`;
         }).catch( (error) => {
            if(error.response) {
                 const markup = `
@@ -255,7 +255,6 @@ document.querySelector('.container').addEventListener('click', e => {
                         </button>
                     </div>
                 `;
-
                 document.querySelector('.message').insertAdjacentHTML('afterbegin', markup); 
            }else{
                alert(error)

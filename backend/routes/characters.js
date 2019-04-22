@@ -5,7 +5,7 @@ const router = express.Router();
 const Character = require('../models/Character');
 
 // Get character data--------------------------------------------------------------------------
-router.get('/get-set/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
 /*     const lessThan = (id * 100) + 1;
     const greaterThan = (id * 100) - 100; */

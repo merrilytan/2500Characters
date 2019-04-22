@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
-const {ensureAuthenticated} = require('./config/auth');
+const {ensureAuthenticatedWithRedirect, ensureAuthenticatedRest} = require('./config/auth');
 const MongoStore = require('connect-mongo')(session);
 
 // Load our app server using Express-------------------------------------------------------------
@@ -26,6 +26,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
+    // cookie: {secure: true,
+    //     httpOnly: true,
+    //     maxAge: 1000 * 60 * 60 * 24
+    // }
 }));
 
 // Passport middleware----------------------------------------------------------------------------
@@ -39,12 +43,18 @@ require('./config/passport')(passport);
 
 //1. Authentication
 app.use('/login', express.static('public'));
-app.use('/auth', require('./routes/auth'));
-
+app.use('/users', require('./routes/users'));
 
 //2. Application
-app.use('/characters', ensureAuthenticated, require('./routes/characters'));
-app.use('/', ensureAuthenticated, express.static('../frontend/dist'));
+app.get('/profile/me', ensureAuthenticatedRest, (req,res,next)=> {
+    const userData = {
+        name: req.user.name
+    }
+   res.send(userData)
+});
+
+app.use('/characters', ensureAuthenticatedRest, require('./routes/characters'));
+app.use('/', ensureAuthenticatedWithRedirect, express.static('../frontend/dist'));
 
 // Listen for HTTP requests on localhost:27017----------------------------------------------------------
 const PORT = process.env.PORT || 27017;

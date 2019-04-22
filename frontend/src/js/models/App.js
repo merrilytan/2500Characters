@@ -38,7 +38,6 @@ export default class App {
         }
     }
 
-
     //----------------------------------------------------------------
     saveCharacterStates(set){
         set.characters.forEach(el => {
@@ -49,5 +48,34 @@ export default class App {
                 nextSessionID: set.characters[el.id - 1].nextSessionID
             }
         });
+    }
+
+    //----------------------------------------------------------------
+    saveAppState(){
+        //const characterDataObj = await axios(`http://localhost:27017/characters/${this.id}`);
+
+        /* axios({
+            method: 'post',
+            url: `${window.location.origin}/users/`,
+            data: data,
+            headers: { "Content-Type": "application/json" }
+        }).then(function () {
+            window.location.assign(window.location.origin)
+        }).catch( (error) => {
+            if(error.response) {
+                const markup = `
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        ${error.response.data.message}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `;
+
+                document.querySelector('.message').insertAdjacentHTML('afterbegin', markup); 
+            } else{
+                alert(error)
+            }
+        }); */
     }
 }

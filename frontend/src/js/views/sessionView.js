@@ -85,6 +85,9 @@ export const renderSummaryCard = (completed, numMasteredSession, set) => {
     } else {
         addContent = `Set Completed! 100 characters mastered! Set 3 unlocked!`;
     }
+    
+    console.log('set.indexLastCharacterIntroduced', set.indexLastCharacterIntroduced);
+    console.log('set.masteredCharacterIDs.length', set.masteredCharacterIDs.length);
 
     document.querySelector('.card__face--back').innerHTML = `
         <div class="summaryHeader">Session Completed!</div>
@@ -102,10 +105,6 @@ export const renderSummaryCard = (completed, numMasteredSession, set) => {
             ${addElement}
         </div>
     `;
-
-
-
-    
 };
 
 //-------------------------------------------------------------
