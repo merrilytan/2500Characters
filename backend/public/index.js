@@ -1,15 +1,15 @@
 /**
- * Users CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
+ * User CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-const controlUsers = () => {
+const controlUser = () => {
 
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
 
-    if(view !== 'login' && view !== 'register'){
-        window.location.hash = '#login';
+    if(view !== '' && view !== 'register'){
+        window.location.hash = '#';
 
-    } else if (view === 'login'){
+    } else if (view === ''){
         document.querySelector('.container').innerHTML = `
             <div class="row mt-5">
                 <div class="col-md-6 m-auto">
@@ -114,7 +114,7 @@ const controlUsers = () => {
 /**
  * Event Listeners //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-['hashchange', 'load'].forEach((event) => window.addEventListener(event, controlUsers));
+['hashchange', 'load'].forEach((event) => window.addEventListener(event, controlUser));
 
 document.querySelector('.container').addEventListener('click', e => {
 
@@ -186,7 +186,7 @@ document.querySelector('.container').addEventListener('click', e => {
             // Send a POST request
             axios({
                 method: 'post',
-                url: `${window.location.origin}/users/register`,
+                url: `${window.location.origin}/user/register`,
                 data: data,
                 headers: { "Content-Type": "application/json" }
             }).then(function (response) {
@@ -240,7 +240,7 @@ document.querySelector('.container').addEventListener('click', e => {
         // Send a POST request
         axios({
             method: 'post',
-            url: `${window.location.origin}/users/`,
+            url: `${window.location.origin}/user/`,
             data: data,
             headers: { "Content-Type": "application/json" }
         }).then(function (response) {
@@ -259,7 +259,6 @@ document.querySelector('.container').addEventListener('click', e => {
            }else{
                alert(error)
            }
-
         });  
     } 
 }); 

@@ -29,6 +29,9 @@
                     <li class="nav-item">
                         <a href="#about" class="nav-link">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#logout" class="nav-link logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </nav> 
@@ -36,8 +39,20 @@
         <!-- Inner Content Root-->
         <div class="app__inner">
         </div>
+        
 
     </div><!--.app-->
+    <div class="cd-popup" role="alert">
+        <div class="cd-popup-container">
+            <div class="cd-message">
+                Are you sure you want to quit?
+            </div>
+            <div class="cd-buttons">
+                <button class="btn btn-popupQuit">Yes, quit</button>
+                <button class="btn btn-popupRemain">No</button>
+            </div>
+        </div> <!-- cd-popup-container -->
+    </div> <!-- cd-popup -->
     
     <!-- JS Library Dependencies -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

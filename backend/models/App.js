@@ -2,20 +2,16 @@ const mongoose = require('mongoose');
 
 const AppDataSchema = new mongoose.Schema({
     
-    userID: {
-        type: Number,
+    setStates: {
+        type: [],
         required: true
     },
-    symbol: {
-        type: String,
+    setStatus: {
+        type: [],
         required: true
     },
-    pinYin: {
-        type: String,
-        required: true
-    },
-    meaning: {
-        type: String,
+    characterStates: {
+        type: [],
         required: true
     }
 }, {collection: 'appdata'});

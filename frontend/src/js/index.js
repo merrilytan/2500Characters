@@ -5,6 +5,7 @@ import * as appView from './views/appView';
 import * as sessionView from './views/sessionView';
 import * as characterView from './views/characterView';
 import { elements } from './views/base';
+import axios from 'axios';
 
 /** App Notes
  *  - Each Set contains 100 Characters
@@ -24,11 +25,17 @@ const state = {};
 /**
  * App CONTROLLER //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
-const controlApp = async (userID) => {
+const controlApp = async () => {
 
     if(!state.app) {
-        userID = 1;
-        state.app = new App(userID); 
+        try{
+            const userName = await axios(`http://localhost:27017/profile`);
+            console.log('userName', userName.data.name);
+        } catch (error) {
+            console.log(error);
+            alert('Something went wrong :(');
+        }
+        state.app = new App(); 
     }
 
     if(state.app.setStatus[0]===-1){
@@ -53,7 +60,7 @@ const controlApp = async (userID) => {
             controlSet(res[1]);
         } 
         //***need page that says set isa locked */
-    }
+    } 
 
     elements.appInner.addEventListener('click', e => {
         if (e.target.closest('.btn-startSession')) {
@@ -61,6 +68,37 @@ const controlApp = async (userID) => {
           window.location.hash = `#set-${id}`;
         }
     });   
+
+    document.querySelector('.navbar').addEventListener('click', e => {
+        if (e.target.matches('.logout')) {
+            document.querySelector('.cd-popup').classList.add('is-visible');
+        } 
+    });
+
+    document.querySelector('.cd-popup').addEventListener('click', e => {
+        if (e.target.closest('.btn-popupQuit')) {
+            event.preventDefault();
+            console.log('quit');
+
+            const data = {
+                action: 'logout'
+            }
+            axios({
+                method: 'post',
+                url: `${window.location.origin}/users/logout`,
+                data: data,
+                headers: { "Content-Type": "application/json" }
+            }).then(function (response) {
+                window.location = `${window.location.origin}/login`;
+            }).catch( (error) => {
+               alert('Something went wrong :(');
+               console.log(error);
+            }); 
+        } else if (e.target.closest('.btn-popupRemain')){
+            event.preventDefault();
+            document.querySelector('.cd-popup').classList.remove('is-visible');
+        } 
+    });
 }
 
 /**
@@ -69,38 +107,6 @@ const controlApp = async (userID) => {
 const controlSet = async (setID) => {
 
     console.log('begin state.app', state.app);
-
-    /* //TESTING PURPOSES
-        state.app.setStates[setID -1] = {
-        //Set's Status (-1 locked, 0 ongoing, 1 completed)
-        status: 5,
-
-        //Set's Character IDs (used to populate this.characters)
-        characterIDs: [0,3],
-
-        //Set's Character Data (temporarily stored)
-        characters: [],
-
-        //Index of most recent Character introduced from Set.characters 
-        indexLastCharacterIntroduced: -1,
-
-        //Array of Character IDs to be practiced in future Sessions (Set.sessionCharacters[0] is for Session.id=1)
-        sessionCharacters: [],
-
-        //Index of last Session completed
-        idLastSessionCompleted: 100,
-
-        //Index of last session practiced
-        idLastSessionPracticed: 0
-    } 
-    */
-   
-    /*  TESTINGPURPOSES 
-        state.app.characterStates[0] = {
-        level: 100,
-        favourite: 100,
-        nextSessionID: 100
-        } */
 
     if(!state.set || (state.set.id !== setID)){
         state.set = new Set(setID, state.app); 
@@ -237,13 +243,15 @@ const controlSession = (task, nextStep) => {
                 controlSession('cancelSession');
             } 
         });
-    
-        document.querySelector('.navbar').addEventListener('click', e => {
-            if ((e.target.matches('.nav-link') || e.target.matches('.navbar-brand')) && state.session) {
-            event.preventDefault();
-            document.querySelector('.cd-popup').classList.add('is-visible');
+
+        var clickNav = (event) => {
+            if ((event.target.matches('.nav-link') || event.target.matches('.navbar-brand')) && state.session) {
+                event.preventDefault();
+                document.querySelector('.cd-popup').classList.add('is-visible');
             }
-        });
+        }
+    
+        document.querySelector('.navbar').addEventListener('click', clickNav);
     } 
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -334,6 +342,7 @@ const controlSession = (task, nextStep) => {
         if (nextStep === 'next'){
             controlSession('beginSession');
         } else if (nextStep === 'home') {
+            document.querySelector('.navbar').removeEventListener('click', clickNav);
             window.location.hash = '#practice';
         } 
     }

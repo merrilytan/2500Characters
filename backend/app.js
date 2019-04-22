@@ -26,10 +26,6 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
-    // cookie: {secure: true,
-    //     httpOnly: true,
-    //     maxAge: 1000 * 60 * 60 * 24
-    // }
 }));
 
 // Passport middleware----------------------------------------------------------------------------
@@ -43,16 +39,10 @@ require('./config/passport')(passport);
 
 //1. Authentication
 app.use('/login', express.static('public'));
-app.use('/users', require('./routes/users'));
+app.use('/user', require('./routes/user'));
 
 //2. Application
-app.get('/profile/me', ensureAuthenticatedRest, (req,res,next)=> {
-    const userData = {
-        name: req.user.name
-    }
-   res.send(userData)
-});
-
+app.use('/profile', ensureAuthenticatedRest, require('./routes/profile'));
 app.use('/characters', ensureAuthenticatedRest, require('./routes/characters'));
 app.use('/', ensureAuthenticatedWithRedirect, express.static('../frontend/dist'));
 

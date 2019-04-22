@@ -1,9 +1,6 @@
 export default class App {
 
     constructor(userID) {
-        //App's ID
-        this.id = userID;
-        
         const result = 0;
 
         if(result){
@@ -54,16 +51,25 @@ export default class App {
     saveAppState(){
         //const characterDataObj = await axios(`http://localhost:27017/characters/${this.id}`);
 
-        /* axios({
+        // Send a POST request
+        axios({
             method: 'post',
-            url: `${window.location.origin}/users/`,
+            url: `${window.location.origin}/`,
             data: data,
             headers: { "Content-Type": "application/json" }
-        }).then(function () {
-            window.location.assign(window.location.origin)
-        }).catch( (error) => {
-            if(error.response) {
-                const markup = `
+        }).then(function (response) {
+            document.querySelector('.message').innerHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    You are registered and can now log in!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `;
+            
+        }) .catch(function (error) {
+            if(error.response){
+                document.querySelector('.message').innerHTML = `
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         ${error.response.data.message}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -71,11 +77,18 @@ export default class App {
                         </button>
                     </div>
                 `;
-
-                document.querySelector('.message').insertAdjacentHTML('afterbegin', markup); 
-            } else{
-                alert(error)
+            } else {
+                document.querySelector('.message').innerHTML = `
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        Something went wrong :(
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `;
             }
-        }); */
+
+
+        }); 
     }
 }

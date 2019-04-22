@@ -7,8 +7,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 // Login Handle -- implements our Login strategy
-router.post('/',
-function(req, res, next) {
+router.post('/', (req, res, next) => {
     passport.authenticate('local', function(err, user, info) {
         if (err) { return next(err); }
         if (!user) {
@@ -23,7 +22,7 @@ function(req, res, next) {
             return res.send(user);
         });
     })(req, res, next);
-  });
+});
 
 // Register Handle
 router.post('/register', (req, res) => {
@@ -58,6 +57,17 @@ router.post('/register', (req, res) => {
                 })});
             }
         });
+});
+
+// Logout Handle
+router.post('/logout', (req, res) => {
+    const { action } = req.body;
+    if(action == 'logout'){
+        req.session.destroy();
+        res.status(200);
+        res.send();
+    }
+
 });
 
 module.exports = router;
