@@ -7,7 +7,7 @@ export const renderCharacter = (character, type) => {
     if(type === 'practice'){
         addElement = `
             <button class="btn btn-showAnswer">
-                Show Answer
+                Pin Yin
             </button>
         `;
 

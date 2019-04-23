@@ -22,7 +22,7 @@ export default class Session {
             this.shuffleArray(practiceCharacters);
             return practiceCharacters;
         } else {
-            return -1;
+            return [];
         }
     }
 
@@ -48,7 +48,7 @@ export default class Session {
             this.shuffleArray(introduceCharacters);
             return introduceCharacters;
         } else {
-            return -1;
+            return [];
         }
     }
 

@@ -29,8 +29,7 @@ const controlApp = async () => {
 
     if(!state.app) {
         try{
-            const userName = await axios(`http://localhost:27017/profile/info`);
-            console.log('userName', userName.data.name);
+            const userName = await axios(`${window.location.origin}/profile/info`);
         } catch (error) {
             console.log(error);
             alert('Something went wrong :(');
@@ -38,8 +37,6 @@ const controlApp = async () => {
         state.app = new App(); 
         await state.app.getAppState();
     }
-
-    console.log('state.app', state.app);
 
     if(state.app.setStatus[0]===-1){
         state.app.setStatus[0] = 0;
@@ -81,7 +78,6 @@ const controlApp = async () => {
     document.querySelector('.cd-popup').addEventListener('click', e => {
         if (e.target.closest('.btn-popupQuit')) {
             event.preventDefault();
-            console.log('quit');
 
             const data = {
                 action: 'logout'
@@ -109,13 +105,11 @@ const controlApp = async () => {
  */
 const controlSet = async (setID) => {
 
-    console.log('begin state.app', state.app);
-
     if(!state.set || (state.set.id !== setID)){
         state.set = new Set(setID, state.app); 
         await state.set.getCharacters(state.app);
-        console.log('state.set', state.set);
     }
+    console.log('state.set', state.set);
 
     controlSession('beginSession');
 }
@@ -131,7 +125,7 @@ const controlCharacter = (() =>
     },
 
     renderNextCharacter: (index, length, task) => {
-        sessionView.updateCardFlag(index, length, task);
+        //sessionView.updateCardFlag(index, length, task);
         if (task === 'renderNextPracticeCharacter'){
             characterView.renderCharacter(state.character, 'practice');
         } else if (task === 'renderNextIntroduceCharacter'){
@@ -191,13 +185,15 @@ const controlSession = (task, nextStep) => {
         //Create new Session 
         state.session = new Session(state.set.idLastSessionCompleted+1, state.set);
         state.set.updateIdLastSessionPracticed(state.session);
+
+        console.log('state.session', state.session);
         
         //Render Template with general elements (to setup event listeners)
-        sessionView.renderTemplate(state.session.id, 'setup');
+        sessionView.renderTemplate(state.set.id, state.session.id, 'setup');
 
         if (state.session.practiceCharacters.length !== 0){
             //Render Template for 'practice' Characters
-            sessionView.renderTemplate(state.session.id, 'practice');
+            sessionView.renderTemplate(state.set.id, state.session.id, 'practice');
 
             //Event Listener
             document.querySelector('.card__ratingButtons').addEventListener('click', e => {
@@ -263,7 +259,7 @@ const controlSession = (task, nextStep) => {
 
         if (state.session.introduceCharacters.length != 0) {
             //Render Template for 'introduce' Character
-            sessionView.renderTemplate(state.session.id, 'introduce');
+            sessionView.renderTemplate(state.set.id, state.session.id, 'introduce');
 
             //Event Listeners
             document.querySelector('.card__ratingButtons').addEventListener('click', e => {
@@ -341,7 +337,6 @@ const controlSession = (task, nextStep) => {
     //--------------------------------------------------------------------------------------------------------------------
     else if (task === 'endSession', nextStep){     
         sessionView.clearAppInnerUI();
-        console.log('end state.app', state.app);
         if (nextStep === 'next'){
             controlSession('beginSession');
         } else if (nextStep === 'home') {

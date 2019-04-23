@@ -35,17 +35,14 @@ $new-color: #82c7bf;
   align-self: center;
 }
 
-
-
 //GLOBAL LAYOUT------------------------------------ //
 
 .navbar {
   font-size: 1.5rem;
-  background-color: #fff;
 }
 
 .app {
-  background-color: #F3F3F3;
+  background-color: $theme-color1;
   /* background: linear-gradient(to bottom, #8c7a7a 0%, #af877c 65%, #af877c 100%) fixed; */
   font: 1.2rem/1.5rem "Lato", Arial, sans-serif;
   display: flex;
@@ -67,18 +64,13 @@ $new-color: #82c7bf;
 //SESSION LAYOUT------------------------------------ //
 .session-header {
   display: block;
-  //width: 70%;
-  //text-align: center;
-  margin-bottom: -25px;
-  padding-bottom: 8px;
-  //margin-bottom: 2.5vh;
-  //@include header-font(#fff);
-  @include header-font(#bbb);
-  width: 25vh;
-  text-align: left;
-  //min-width: 230px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2.5vh;
+  @include header-font(#fff);
+  width: 35vh;
+  min-width: 230px;
   position: relative;
-  border-bottom: 2.4px #bbb solid;
 }
 
 .session-header__title{
@@ -96,8 +88,7 @@ $new-color: #82c7bf;
   //text-align: center;
   background-color: transparent;
   border: none;
-  //color: #fff;
-  color: #bbb;
+  color: #fff;
   font-size: 1.5rem;
   line-height: 1.5rem;
   border-radius: 50%;
@@ -124,16 +115,14 @@ $new-color: #82c7bf;
 }
 
 .card {
-  //background: white;
+  background: white;
   height: 100%;
   width: 100%;
-  border: none;
   position: relative;
   transition: transform 0.7s;
   transform-style: preserve-3d;
-  background-color: transparent;
-  //border-radius: 19px;
-  //box-shadow: -1px 15px 30px -12px black;
+  border-radius: 19px;
+  box-shadow: -1px 15px 30px -12px black;
 
   .card__face {
     position: absolute;
@@ -165,7 +154,6 @@ $new-color: #82c7bf;
   font-size: 1.2rem;
   top: 6%;
   text-align: center;
-  display: none;
 }
 
 .card__flag--numberInSet {
@@ -193,10 +181,9 @@ $new-color: #82c7bf;
 }
 
 .btn-rating {
-  //background-color: $theme-color1;
+  background-color: $theme-color1;
   border: none;
-  //color: white;
-  color: #bbb;
+  color: white;
   padding: 10px;
   text-align: center;
   text-decoration: none;

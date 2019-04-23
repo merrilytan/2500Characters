@@ -68,7 +68,7 @@ export default class App {
     //----------------------------------------------------------------
     async getAppState(){
         try {
-            const appDataObj = await axios.get(`http://localhost:27017/profile/app`);
+            const appDataObj = await axios.get(`${window.location.origin}/profile/app`);
             
             if(appDataObj.data[0]){
                 const appData = appDataObj.data[0];

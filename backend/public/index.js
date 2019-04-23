@@ -10,15 +10,17 @@ const controlUser = () => {
         window.location.hash = '#';
 
     } else if (view === ''){
+        document.querySelector('.form-container').classList.add
+
         document.querySelector('.container').innerHTML = `
-            <div class="row mt-5">
-                <div class="col-md-6 m-auto">
-                <div class="card card-body">
-                    <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>
+            <div class="form-container appear">
+                <div class="form-inner">
+                    <!-- <div class="form-title"> 
+                        LOGIN
+                    </div> -->
                     <div class="message">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
                         <input
                         type="email"
                         id="email"
@@ -28,7 +30,6 @@ const controlUser = () => {
                         />
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
                         <input
                         type="password"
                         id="password"
@@ -36,76 +37,65 @@ const controlUser = () => {
                         class="form-control"
                         placeholder="Enter Password"
                         />
-                    </div>
-                    <button class="btn btn-primary btn-block btn-login">Login</button>
-                    </form>
-                    <p class="lead mt-4">
-                    No Account? <a href="#register">Register</a>
-                    </p>
+                    </div
                 </div>
+                <button class="btn btn-login">Login</button>
+                <div class="comment">
+                    No Account? &nbsp&nbsp<a href="#register">Register</a>
                 </div>
             </div>
         `;
 
     } else if (view === 'register') {
         document.querySelector('.container').innerHTML = `
-            <div class="row mt-5">
-                <div class="col-md-6 m-auto">
-                <div class="card card-body">
-                    <div class="message">
-                    </div>
-                    <h1 class="text-center mb-3">
-                    <i class="fas fa-user-plus"></i> Register
-                    </h1>
-                    <div class="message">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input
-                        type="name"
-                        id="name"
-                        name="name"
-                        class="form-control"
-                        placeholder="Enter Name"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        class="form-control"
-                        placeholder="Enter Email"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="Create Password"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="password2">Confirm Password</label>
-                        <input
-                        type="password"
-                        id="password2"
-                        name="password2"
-                        class="form-control"
-                        placeholder="Confirm Password"
-                        />
-                    </div>
-                    <button class="btn btn-primary btn-block btn-register">
-                        Register
-                    </button>
-                    </form>
-                    <p class="lead mt-4">Have An Account? <a href="#login">Login</a></p>
+            <div class="form-container appear">
+            <div class="form-inner">
+                <!-- <div class="form-title"> 
+                    REGISTER
+                </div> -->
+                <div class="message">
                 </div>
+                <div class="form-group">
+                    <input
+                    type="name"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter Name"
+                    />
                 </div>
+                <div class="form-group">
+                    <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Enter Email"
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Create Password"
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                    type="password"
+                    id="password2"
+                    name="password2"
+                    class="form-control"
+                    placeholder="Confirm Password"
+                    />
+                </div>
+                <button class="btn btn-register">Register</button>
+                <div class="comment">
+                    Have an account? &nbsp&nbsp<a href="#login">Login</a>
+                </div>
+            </div>
             </div>
         `;
     } 
@@ -170,9 +160,7 @@ document.querySelector('.container').addEventListener('click', e => {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            `;
-
-            document.querySelector('.message').insertAdjacentHTML('afterbegin', markup); 
+            `; 
         }
 
         if(errors === 0){

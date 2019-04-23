@@ -6,14 +6,14 @@ export const clearAppInnerUI = () => {
 };
 
 //-------------------------------------------------------------
-export const renderTemplate = (sessionID, type) => {
+export const renderTemplate = (setID, sessionID, type) => {
 
     let markup = '';
 
     if(type === 'setup'){
         markup = `
             <div class="session-header">
-                SESSION ${sessionID}
+                ${setID}.${sessionID}
                 <button class="btn-exitSession">&#10006;</button>
             </div>
             <div class="scene">

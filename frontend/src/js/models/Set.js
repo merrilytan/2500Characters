@@ -17,7 +17,7 @@ export default class Set {
 
         if(setState){
             //Set's Status (-1 locked, 0 ongoing, 1 completed)
-            this.status = setState.status;
+            //this.status = setState.status;
             //Set's Character IDs (used to populate this.characters)
             this.characterIDs = setState.characterIDs;
             //Set's mastered Character IDs 
@@ -34,7 +34,7 @@ export default class Set {
             this.furthestNextSessionID = setState.furthestNextSessionID;
         } else {
             //Set's Status (-1 locked, 0 ongoing, 1 completed)
-            this.status = -1;
+            //this.status = -1;
             //Set's Character IDs (used to populate this.characters)
             this.characterIDs = Array.from({length: 100}, (v, i) => i + this.numOfCharacters * (setID-1));
             //Set's mastered Character IDs 
@@ -65,7 +65,7 @@ export default class Set {
     //----------------------------------------------------------------
     async getCharacters(app) {
         try {
-            const characterDataObj = await axios(`http://localhost:27017/characters/${this.id}`);
+            const characterDataObj = await axios(`${window.location.origin}/characters/${this.id}`);
             this.characters = characterDataObj.data.map((el) => {
                 let level, favourite, nextSessionID;
                 if(app.characterStates[el.characterID - 1]){
@@ -102,7 +102,6 @@ export default class Set {
             if ((nextSessionID !== 'random') && (nextSessionID > this.furthestNextSessionID)){
                 this.furthestNextSessionID = nextSessionID;
             }
-            console.log(characterID, ':', rating, ':', this.characters[characterID -1].level, ':', this.characters[characterID -1].nextSessionID);
         });
         return numMasteredSession;
     }

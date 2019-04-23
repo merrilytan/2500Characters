@@ -1,0 +1,94 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900);
+
+body {
+    font: .8rem/1rem "Lato", Arial, sans-serif;
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* .container{
+    color: #fff;
+    transition: #232526 2s ease 0s;
+} */
+
+.form-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+    
+.form-container.appear {
+    animation-name: appear;
+    animation-duration: 0.5s;
+    animation-timing-function: ease; 
+    animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+    0% {
+      opacity: 0; }
+    100% {
+      opacity: 1;  } 
+}
+
+.form-container.disappear{
+    animation-name: disappear;
+    animation-duration: 0.5s;
+    animation-timing-function: ease; 
+    animation-fill-mode: forwards;
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 1; }
+    100% {
+        opacity: 0;
+    }
+}
+
+.form-inner {
+    text-align: center;
+}
+
+input {
+    border: none;
+    height: 30px;
+    border-radius: 2.5px;
+    margin-bottom: 8px;
+    width: 220px;
+    padding: 0 7px;
+}
+
+.btn-login, .btn-register {
+    text-transform: uppercase;
+    /* color: #87c6bd; */
+    color: #999;
+    border: 1px solid #999;
+    font-size: 0.8rem;
+    background-color: transparent;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-top: 7px;
+    cursor: pointer;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.comment{
+    color: #999;
+    margin-top: 45px;
+}
+
+.comment a{
+    color: #999;
+}
+
