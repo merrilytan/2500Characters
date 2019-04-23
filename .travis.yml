@@ -7,19 +7,19 @@ services:
   - docker
 
 script:
-  - cd frontend
-  - npm install
-  - npm run build:sass
-  - npm run build
-  - cd ../backend
-  - npm install
-  - cd ../
-  - docker build -t app .
-  - pip install --user awscli
-  - export PATH=$PATH:$HOME/.local/bin
-  - eval $(aws ecr get-login --region us-east-2)
-  - docker tag app:latest $AWS_ECR_PATH
-  - docker push $AWS_ECR_PATH
+  - cd frontend || travis_terminate 1
+  - npm install || travis_terminate 1
+  - npm run build:sass || travis_terminate 1
+  - npm run build || travis_terminate 1
+  - cd ../backend || travis_terminate 1
+  - npm install || travis_terminate 1
+  - cd ../ || travis_terminate 1
+  - docker build -t app . || travis_terminate 1
+  - pip install --user awscli || travis_terminate 1
+  - export PATH=$PATH:$HOME/.local/bin || travis_terminate 1
+  - eval $(aws ecr get-login --region us-east-2 --no-include-email) || travis_terminate 1
+  - docker tag app:latest $AWS_ECR_PATH || travis_terminate 1
+  - docker push $AWS_ECR_PATH || travis_terminate 1
 
 branches:
   only:
