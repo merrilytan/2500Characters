@@ -2,7 +2,6 @@
 module ensures authenticated */
 module.exports = {
     ensureAuthenticatedWithRedirect: function(req, res, next) {
-        console.log(req.user)
         if(req.isAuthenticated()) {
             return next();
         }

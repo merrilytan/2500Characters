@@ -28,13 +28,10 @@ router.post('/app', (req, res) => {
      App.findOne({userID: userID})
           .then(app => {
                if(app){
-                    App.findOne({userID: userID}, function (err, doc){
-                         console.log('hereeeeeeeeeeeeeeeeeeeeeeeeeee');
-                         doc.setStates = setStates;
-                         doc.setStatus = setStatus; 
-                         doc.characterStates = characterStates;
-                         doc.save();
-                    });
+                    app.setStates = setStates;
+                    app.setStatus = setStatus; 
+                    app.characterStates = characterStates;
+                    app.save();
                } else {
                     const newApp = new App({
                          userID,
