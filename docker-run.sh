@@ -1,2 +1,2 @@
 #!/bin/sh
-cd backend && npm run start
+cd /app/backend && npm run start
