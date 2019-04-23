@@ -15,9 +15,7 @@ router.get('/:id', (req, res) => {
     Character.find({
         characterID: {$gt: greaterThan, $lt: lessThan}
         }).sort({characterID: 1})    //better to sort first and get greaterThan or sort after?
-            .then((doc) => {
-                res.send(doc);
-            });
+            .then((doc) => res.send(doc));
 });
 
 module.exports = router;

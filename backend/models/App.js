@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const AppDataSchema = new mongoose.Schema({
     
+    userID: {
+        type: String,
+        required: true
+    },
     setStates: {
         type: [],
         required: true

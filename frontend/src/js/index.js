@@ -29,14 +29,17 @@ const controlApp = async () => {
 
     if(!state.app) {
         try{
-            const userName = await axios(`http://localhost:27017/profile`);
+            const userName = await axios(`http://localhost:27017/profile/info`);
             console.log('userName', userName.data.name);
         } catch (error) {
             console.log(error);
             alert('Something went wrong :(');
         }
         state.app = new App(); 
+        await state.app.getAppState();
     }
+
+    console.log('state.app', state.app);
 
     if(state.app.setStatus[0]===-1){
         state.app.setStatus[0] = 0;
@@ -85,7 +88,7 @@ const controlApp = async () => {
             }
             axios({
                 method: 'post',
-                url: `${window.location.origin}/users/logout`,
+                url: `${window.location.origin}/user/logout`,
                 data: data,
                 headers: { "Content-Type": "application/json" }
             }).then(function (response) {
