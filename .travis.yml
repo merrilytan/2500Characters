@@ -15,6 +15,11 @@ script:
   - npm install
   - cd ../
   - docker build -t app .
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+  - eval $(aws ecr get-login --region us-east-2)
+  - docker tag app:latest $AWS_ECR_PATH
+  - docker push $AWS_ECR_PATH
 
 branches:
   only:
