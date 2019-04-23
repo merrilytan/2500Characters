@@ -4,8 +4,13 @@ services:
   - docker
 
 script:
-  - cd frontend && npm install && npm run build:sass && npm run build
-  - cd backend && npm install
+  - cd frontend
+  - npm install
+  - npm run build:sass
+  - npm run build
+  - cd ../backend
+  - npm install
+  - cd ../
   - docker build -t app .
 
 branches:
