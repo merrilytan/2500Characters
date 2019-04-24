@@ -12,11 +12,15 @@ export const renderTemplate = (setID, sessionID, type) => {
 
     if(type === 'setup'){
         markup = `
-            <div class="session-header">
-                ${setID}.${sessionID}
-                <button class="btn-exitSession">&#10006;</button>
-            </div>
-            <div class="scene">
+
+            <div class="session">
+                <div class="session__header">
+                    <div class="session__header__title">${setID}.${sessionID}</div>
+                    <button class="btn-exitSession">&#10006;</button>
+                </div>
+                <div id="myProgress">
+                    <div id="myBar">10%</div>
+                </div>
                 <div class="card">
                     <div class="card__face card__face--front">
                     </div>
@@ -47,7 +51,7 @@ export const renderTemplate = (setID, sessionID, type) => {
     
     } else if (type === 'practice'){
         markup = `
-            <div class="card__ratingButtons__container">
+            <div class="ratingButtons">
                 <button class="btn btn-rating btn-rating--cross">&#10006;</a>
                 <button class="btn btn-rating btn-rating--line">&#9866</a>
                 <button class="btn btn-rating btn-rating--check">&#10004;</a>

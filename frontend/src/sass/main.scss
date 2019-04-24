@@ -1,4 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900);
+@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
 
 //GLOBAL STYLES & COLORS ------------------------------------ //
 *, *:before, *:after {
@@ -9,6 +11,13 @@ html, body {
   font-size: 10px;
 }
 
+$lightest: #fff;
+$light: #F3F3F3;
+$theme-color: #999;
+$theme-color-lighter: #ccc;
+$font-normal: 1.5rem;
+
+
 $theme-color1: #A5AAAE;
 $theme-color1-dark: #717578;
 $theme-color2: #542F13;
@@ -17,13 +26,14 @@ $theme-color4: #ED8D1F;
 $theme-color5: #C4C8CB;
 $new-color: #82c7bf;
 
+
 @mixin header-font($color) {
   font-weight: bold;
   font-size: 1.5rem;
   letter-spacing: 0.1rem;
   text-align: center;
   color: $color;
-}
+} 
 
 @mixin btn-solid {
   text-transform: uppercase;
@@ -35,96 +45,92 @@ $new-color: #82c7bf;
   align-self: center;
 }
 
+.btn:focus,.btn:active:focus,.btn.active:focus,
+.btn.focus,.btn:active.focus,.btn.active.focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 
 
 //GLOBAL LAYOUT------------------------------------ //
 
-.navbar {
-  font-size: 1.5rem;
-  background-color: #fff;
-}
-
 .app {
-  background-color: #F3F3F3;
-  /* background: linear-gradient(to bottom, #8c7a7a 0%, #af877c 65%, #af877c 100%) fixed; */
-  font: 1.2rem/1.5rem "Lato", Arial, sans-serif;
+  font: $font-normal "Roboto", Arial, sans-serif;
+  line-height: 1.5rem;
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
+
+.navbar {
+  font-size: $font-normal;
+  background-color: $lightest;
+}
   
 .app__inner {
-  display: flex;
+  background-color: $light;
+  //as flex item
   flex-grow: 1;
+  //as flex container
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  -webkit-justify-content: ce
-  +nter;
+  -webkit-justify-content: center;
   -ms-flex-pack: center;
   align-items: center;
 }
 
-//SESSION LAYOUT------------------------------------ //
-.session-header {
-  display: block;
-  //width: 70%;
-  //text-align: center;
-  margin-bottom: -25px;
-  padding-bottom: 8px;
-  //margin-bottom: 2.5vh;
-  //@include header-font(#fff);
-  @include header-font(#bbb);
-  width: 25vh;
-  text-align: left;
-  //min-width: 230px;
-  position: relative;
-  border-bottom: 2.4px #bbb solid;
-}
+//SESSION TEMPLATE LAYOUT------------------------------------ //
 
-.session-header__title{
-  display: inline-block;
-}
-
-.btn-exitSession, .btn-exitSessionExitAlert {
-  display: inline-block; 
-  position: absolute;
-  top: -2%;
-  right: 2%;
-  //border-radius: 50%; 
-  //border: 1.5px solid #fff;
-  //background-color: $theme-color1;
-  //text-align: center;
-  background-color: transparent;
-  border: none;
-  //color: #fff;
-  color: #bbb;
-  font-size: 1.5rem;
-  line-height: 1.5rem;
-  border-radius: 50%;
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.btn-exitSessionExitAlert {
-  top: 5%;
-  color: $theme-color1;
-}
-
-.btn-exitSession:hover, .btn-exitSessionExitAlert:hover {
-  color: $theme-color1-dark;
-}
-
-.scene {
+.session {
   width: 35vh;
   height: 58vh;
   min-width: 230px;
   min-height: 365px;
   perspective: 1000px;
+  //as flex container
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  align-items: center;
+
+  &__header {
+    padding-bottom: 6px;
+    width: 65%;
+    letter-spacing: 0.1rem;
+    color: $theme-color;
+    //as flex container
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+  }
 }
 
+.btn-exitSession {
+  background-color: transparent;
+  border: none;
+  color: $theme-color;
+  padding: 0;
+}
+
+.btn-exitSessionExitAlert {
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  color: $theme-color;
+  padding: 0;
+  border-radius: 50%;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  outline: none !important;
+}
+
+//CARD LAYOUT------------------------------------ //
+
 .card {
-  //background: white;
   height: 100%;
   width: 100%;
   border: none;
@@ -132,31 +138,74 @@ $new-color: #82c7bf;
   transition: transform 0.7s;
   transform-style: preserve-3d;
   background-color: transparent;
-  //border-radius: 19px;
-  //box-shadow: -1px 15px 30px -12px black;
 
-  .card__face {
+  &__face {
     position: absolute;
     width: 100%;
     height: 100%; 
     backface-visibility: hidden;
-  }
 
-  .card__face--front {
-    display: block;
-    position: relative;
-    height: 75%;
-  }
-  .card__face--back {
-    transform: rotateY(180deg);
+    &--front {
+      display: block;
+      position: relative;
+      height: 85%;
+    }
+
+    &--back {
+      transform: rotateY(180deg);
+    }
   }
 
   &.flipped {
     transform: rotateY(180deg);
   }
+
+  &__ratingButtons {
+    position: relative;
+    //as flex container
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
+    width: 100%;
+  }
 }
 
-.card__flag {
+.ratingButtons {
+    //as flex container
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    width: 65%;
+}
+  
+.btn-rating {
+  border: none;
+  color: $theme-color;
+  font-size: $font-normal;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 50%; 
+  width: 3rem;
+  height: 3rem;
+  //margin: 4px 4px;
+  //width: 45px;
+  //height: 45px;
+}
+
+.btn-gotIt {
+  @include btn-solid;
+  background-color: $theme-color1;
+}
+
+.btn:hover {
+  background-color: $theme-color1-dark;
+  color: white;
+}
+
+/* .card__flag {
   color: white;
   padding: 1.8% 0;
   position: absolute;
@@ -177,47 +226,11 @@ $new-color: #82c7bf;
   width: 50%;
   background-color: $new-color;
   text-transform: uppercase;
-}
+} */
 
-.card__ratingButtons__container {
-  padding-top: 3%;
-}
 
-.card__ratingButtons {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 25%;
-  text-align: center;
-}
 
-.btn-rating {
-  //background-color: $theme-color1;
-  border: none;
-  //color: white;
-  color: #bbb;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 4px;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%; }
-
-.btn-gotIt {
-  @include btn-solid;
-  background-color: $theme-color1;
-}
-
-.btn:hover {
-  background-color: $theme-color1-dark;
-  color: white;
-}
-
-//CARD LAYOUT------------------------------------ //
+//CHARACTER LAYOUT------------------------------------ //
 .card__inner {
   display: block;
   position: relative;
@@ -240,7 +253,7 @@ $new-color: #82c7bf;
 
 .card__inner__character {
   display: flex;
-  height: 68%;
+  height: 60%;
   justify-content: flex-end;
   flex-direction: column;
 }
@@ -250,7 +263,7 @@ $new-color: #82c7bf;
 }
 
 .pinYin {
-  color: $theme-color1;
+  color: $theme-color;
   font-size: 3rem;
   font-weight: bold; }
 
@@ -259,11 +272,12 @@ $new-color: #82c7bf;
 }
 
 .card__inner__answer {
+  font-family: "Lato", Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 32%;
+  height: 30%;
   padding-bottom: 12%;
   position: relative;
 }
@@ -296,8 +310,8 @@ $new-color: #82c7bf;
   justify-content: center;
   z-index: 999999;
   font-size: 1.5rem;
-  border-color: $theme-color1;
-  color: $theme-color1;
+  border-color: $theme-color;
+  color: $theme-color;
 
   &.disappear{
     animation-name: disappear;
@@ -314,12 +328,9 @@ $new-color: #82c7bf;
    } }
 }
 
-.btn:focus,.btn:active:focus,.btn.active:focus,
-.btn.focus,.btn:active.focus,.btn.active.focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
 
+
+//SUMMARY CARD LAYOUT------------------------------------ //
 .card__face--back {
   padding: 13%;
   font-size: 1.4rem;
@@ -333,7 +344,6 @@ $new-color: #82c7bf;
 .summary__inner {
   height: 50%;
 }
-
 
 .summaryLine {
   display: flex;
@@ -363,6 +373,19 @@ $new-color: #82c7bf;
   color: $theme-color1;
   width: auto;
   height: 35px;
+}
+
+
+
+
+//-------------------------------------------------------------------------------------------------
+.btn-exitSessionExitAlert {
+  top: 5%;
+  color: $theme-color1;
+}
+
+.btn-exitSession:hover, .btn-exitSessionExitAlert:hover {
+  color: $theme-color1-dark;
 }
 
 //DECKS LAYOUT------------------------------------ //
@@ -505,4 +528,20 @@ $new-color: #82c7bf;
   background-color: $new-color;
   text-transform: lowercase;
   text-transform: capitalize;
+}
+
+
+//PROGRESS -----------------------------------------------
+#myProgress {
+  width: 65%;
+  background-color: $theme-color-lighter;
+}
+
+#myBar {
+  width: 0%;
+  height: 2px;
+  background-color: $theme-color;
+  text-align: center;
+  line-height: 30px;
+  color: white;
 }

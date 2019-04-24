@@ -23,7 +23,7 @@ body {
     transition: opacity 0.3s 0s, visibility 0s 0.3s;
 }
     
-.form-container.appear {
+.form-container.appear, .alert.appear {
     animation-name: appear;
     animation-duration: 0.5s;
     animation-timing-function: ease; 
@@ -39,7 +39,7 @@ body {
 
 .form-container.disappear{
     animation-name: disappear;
-    animation-duration: 0.5s;
+    animation-duration: 0.4s;
     animation-timing-function: ease; 
     animation-fill-mode: forwards;
 }
@@ -92,3 +92,34 @@ input {
     color: #999;
 }
 
+.message {
+    width: 100%;
+
+}
+
+.alert {
+    border: none;
+    height: 30px;
+    border-radius: 2.5px;
+    margin-bottom: 8px;
+    padding: 0 7px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+
+.alert-warning{
+    background: rgba(255, 0, 0, 0.3);
+}
+
+.alert-success{
+    background: rgba(0, 128, 0, 0.3);
+}
+
+.close {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

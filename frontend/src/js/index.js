@@ -196,9 +196,34 @@ const controlSession = (task, nextStep) => {
             sessionView.renderTemplate(state.set.id, state.session.id, 'practice');
 
             //Event Listener
+
+            document.getElementById("myBar").style.width = '0%';
+
+
             document.querySelector('.card__ratingButtons').addEventListener('click', e => {
                 event.preventDefault();
-            
+
+                if (e.target.matches('.btn-rating--cross') || e.target.matches('.btn-rating--line') || e.target.matches('.btn-rating--check')){
+                    let elem = document.getElementById("myBar");   
+                    let myString = elem.style.width;
+                    let width = myString.slice(0, -1);
+                    let newWidth = parseInt(width);
+                    let interval = 100 / (state.session.practiceCharacters.length + state.session.introduceCharacters.length);
+                    let reachWidth = newWidth + interval;
+                    console.log('reachWidth', reachWidth);
+                    var id = setInterval(frame, 10);
+                
+                    function frame() {
+                    if (newWidth >= reachWidth) {
+                        clearInterval(id);
+                    } else {
+                        newWidth++; 
+                        elem.style.width = newWidth + '%'; 
+                        elem.innerHTML = newWidth * 1  + '%';
+                    }
+                    }
+                }
+                
                 if (e.target.matches('.btn-rating--cross')) {
                     controlSession('cross');
                 } else if (e.target.matches('.btn-rating--line')) {
@@ -206,6 +231,7 @@ const controlSession = (task, nextStep) => {
                 } else if (e.target.matches('.btn-rating--check')) {
                     controlSession('check');
                 }
+                
             });
 
             document.querySelector('.card__face--front').addEventListener('click', e => {
@@ -216,6 +242,27 @@ const controlSession = (task, nextStep) => {
                 }
             });   
 
+/*             document.getElementById("myBar").style.width = '0%';
+            document.querySelector('.testing').addEventListener('click', () => {
+                let elem = document.getElementById("myBar");   
+                let myString = elem.style.width;
+                let width = myString.slice(0, -1);
+                let newWidth = parseInt(width);
+                let interval =14;
+                
+                var id = setInterval(frame, 10);
+              
+                function frame() {
+                  if (newWidth >= interval) {
+                    clearInterval(id);
+                  } else {
+                    newWidth++; 
+                    elem.style.width = newWidth + '%'; 
+                    elem.innerHTML = newWidth * 1  + '%';
+                  }
+                }
+            }); */
+      
             //Render first 'practice' Character
             controlSession('renderNextPracticeCharacter');
 
@@ -224,7 +271,7 @@ const controlSession = (task, nextStep) => {
         }
 
         //Event Listeners
-        document.querySelector('.session-header').addEventListener('click', e => {
+        document.querySelector('.session__header').addEventListener('click', e => {
             if (e.target.matches('.btn-exitSession') && !state.session) {
                 controlSession('endSession', 'home');
             } else if (e.target.matches('.btn-exitSession')) {

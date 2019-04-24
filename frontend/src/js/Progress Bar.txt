@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html>
+<style>
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#myBar {
+  width: 10%;
+  height: 30px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+</style>
+<body>
+
+<h1>JavaScript Progress Bar</h1>
+
+<div id="myProgress">
+  <div id="myBar">10%</div>
+</div>
+
+<button onclick="move()">Click Me</button> 
+
+<script>
+function move() {
+    var elem = document.getElementById("myBar");  
+    var widthChange = 100/12;
+    var width = 0;
+
+    function frame() {
+        if(width >= 100) {
+            clearInterval(id);
+        } else {
+            width++;
+            elem.style.width = width + '%';
+            elem.innerHTML = width * 1 + '%';
+        }
+    }
+
+    while(width < (widthChange * 2)) {
+        setTimeout(frame, 10);
+    }
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<style>
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#myBar {
+  width: 10%;
+  height: 30px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+</style>
+<body>
+
+<h1>JavaScript Progress Bar</h1>
+
+<div id="myProgress">
+  <div id="myBar">10%</div>
+</div>
+<div id ="string">hello</div>
+<div id ="width">?</div>
+<br>
+
+
+<script>
+document.getElementById("myBar").style.width = '0%'; 
+function move() {
+
+  let elem = document.getElementById("myBar");   
+  let myString = elem.style.width;
+  let width = myString.slice(0, -1);
+  let newWidth = parseInt(width);
+  let interval =14;
+  
+  document.getElementById("string").innerHTML = myString;
+  document.getElementById("width").innerHTML = newWidth;
+  
+  var id = setInterval(frame, 10);
+
+  function frame() {
+    if (newWidth >= interval) {
+      clearInterval(id);
+    } else {
+      newWidth++; 
+      elem.style.width = newWidth + '%'; 
+      elem.innerHTML = newWidth * 1  + '%';
+      counter++;
+    }
+  }
+}
+</script>
+
+</body>
+</html>
+
+

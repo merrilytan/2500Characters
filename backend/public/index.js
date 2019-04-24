@@ -6,19 +6,73 @@ const controlUser = () => {
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
 
-    if(view !== '' && view !== 'register'){
+    if(view !== '' && view !== 'signup'){
         window.location.hash = '#';
 
     } else if (view === ''){
-        document.querySelector('.form-container').classList.add
 
-        document.querySelector('.container').innerHTML = `
-            <div class="form-container appear">
+        const change = () => {
+            document.querySelector('.container').innerHTML = `
+                <div class="form-container appear">
+                    <div class="form-inner">
+                        <!-- <div class="form-title"> 
+                            LOGIN
+                        </div> -->
+                        <div class="message">
+                        </div>
+                        <div class="form-group">
+                            <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter Email"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter Password"
+                            />
+                        </div
+                    </div>
+                    <button class="btn btn-login">Login</button>
+                    <div class="comment">
+                        No Account? &nbsp&nbsp<a href="#signup">Sign Up</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        if(document.querySelector('.form-container')){
+            document.querySelector('.form-container').classList.add('disappear');
+            setTimeout(change, 400);
+        } else {
+            change();
+        }
+
+    } else if (view === 'signup') {
+
+        const change = () => {
+            document.querySelector('.container').innerHTML = `
+                <div class="form-container appear">
                 <div class="form-inner">
                     <!-- <div class="form-title"> 
-                        LOGIN
+                        REGISTER
                     </div> -->
                     <div class="message">
+                    </div>
+                    <div class="form-group">
+                        <input
+                        type="name"
+                        id="name"
+                        name="name"
+                        class="form-control"
+                        placeholder="Enter Name"
+                        />
                     </div>
                     <div class="form-group">
                         <input
@@ -35,69 +89,33 @@ const controlUser = () => {
                         id="password"
                         name="password"
                         class="form-control"
-                        placeholder="Enter Password"
+                        placeholder="Create Password"
                         />
-                    </div
+                    </div>
+                    <div class="form-group">
+                        <input
+                        type="password"
+                        id="password2"
+                        name="password2"
+                        class="form-control"
+                        placeholder="Confirm Password"
+                        />
+                    </div>
+                    <button class="btn btn-register">Sign Up</button>
+                    <div class="comment">
+                        Have an account? &nbsp&nbsp<a href="#login">Login</a>
+                    </div>
                 </div>
-                <button class="btn btn-login">Login</button>
-                <div class="comment">
-                    No Account? &nbsp&nbsp<a href="#register">Register</a>
                 </div>
-            </div>
-        `;
+            `;
+        }
 
-    } else if (view === 'register') {
-        document.querySelector('.container').innerHTML = `
-            <div class="form-container appear">
-            <div class="form-inner">
-                <!-- <div class="form-title"> 
-                    REGISTER
-                </div> -->
-                <div class="message">
-                </div>
-                <div class="form-group">
-                    <input
-                    type="name"
-                    id="name"
-                    name="name"
-                    class="form-control"
-                    placeholder="Enter Name"
-                    />
-                </div>
-                <div class="form-group">
-                    <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    class="form-control"
-                    placeholder="Enter Email"
-                    />
-                </div>
-                <div class="form-group">
-                    <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    class="form-control"
-                    placeholder="Create Password"
-                    />
-                </div>
-                <div class="form-group">
-                    <input
-                    type="password"
-                    id="password2"
-                    name="password2"
-                    class="form-control"
-                    placeholder="Confirm Password"
-                    />
-                </div>
-                <button class="btn btn-register">Register</button>
-                <div class="comment">
-                    Have an account? &nbsp&nbsp<a href="#login">Login</a>
-                </div>
-            </div>
-            </div>
-        `;
+        if(document.querySelector('.form-container')){
+            document.querySelector('.form-container').classList.add('disappear');
+            setTimeout(change, 400);
+        } else {
+            change();
+        }
     } 
 }
 
@@ -124,11 +142,16 @@ document.querySelector('.container').addEventListener('click', e => {
         if(!name || !email || !password || !password2) {
             errors++;
             const markup = `
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Please fill in all fields
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <div class="alert alert-warning appear">
+                    <div class ="alert-content">
+                        Please fill in all fields
+                    </div>
+                    <!-- <button class="close"">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
                 </div>
             `;
 
@@ -139,11 +162,10 @@ document.querySelector('.container').addEventListener('click', e => {
         if(password != password2){
             errors++;
             const markup = `
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Passwords do not match
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="alert alert-warning appear">
+                    <div class ="alert-content">
+                        Passwords do not match
+                    </div>
                 </div>
             `;
 
@@ -154,11 +176,10 @@ document.querySelector('.container').addEventListener('click', e => {
         if(password.length < 6 ){
             errors++;
             const markup = `
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Password should be at least 6 characters
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="alert alert-warning appear">
+                    <div class ="alert-content">
+                        Password should be at least 6 characters
+                    </div>
                 </div>
             `; 
         }
@@ -179,31 +200,28 @@ document.querySelector('.container').addEventListener('click', e => {
                 headers: { "Content-Type": "application/json" }
             }).then(function (response) {
                 document.querySelector('.message').innerHTML = `
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        You are registered and can now log in!
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div class="alert alert-success appear">
+                        <div class ="alert-content">
+                            You are registered and can now log in!
+                        </div>
                     </div>
                 `;
                 
             }) .catch(function (error) {
                 if(error.response){
                     document.querySelector('.message').innerHTML = `
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            ${error.response.data.message}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="alert alert-warning appear">
+                            <div class ="alert-content">
+                                ${error.response.data.message}
+                            </div>
                         </div>
                     `;
                 } else {
                     document.querySelector('.message').innerHTML = `
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            Something went wrong :(
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="alert alert-warning appear">
+                            <div class ="alert-content">
+                                Something went wrong :(
+                            </div>
                         </div>
                     `;
                 }
@@ -236,11 +254,10 @@ document.querySelector('.container').addEventListener('click', e => {
         }).catch( (error) => {
            if(error.response) {
                 const markup = `
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        ${error.response.data.message}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div class="alert alert-warning appear">
+                        <div class ="alert-content">
+                            ${error.response.data.message}
+                        </div>
                     </div>
                 `;
                 document.querySelector('.message').insertAdjacentHTML('afterbegin', markup); 
