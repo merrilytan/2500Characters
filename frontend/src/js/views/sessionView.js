@@ -19,7 +19,7 @@ export const renderTemplate = (setID, sessionID, type) => {
                     <button class="btn-exitSession">&#10006;</button>
                 </div>
                 <div id="myProgress">
-                    <div id="myBar">10%</div>
+                    <div id="myBar"></div>
                 </div>
                 <div class="card">
                     <div class="card__face card__face--front">

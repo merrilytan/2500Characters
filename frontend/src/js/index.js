@@ -219,7 +219,7 @@ const controlSession = (task, nextStep) => {
                     } else {
                         newWidth++; 
                         elem.style.width = newWidth + '%'; 
-                        elem.innerHTML = newWidth * 1  + '%';
+                        //elem.innerHTML = newWidth * 1  + '%';
                     }
                     }
                 }
