@@ -60,7 +60,24 @@ const controlApp = async () => {
             controlSet(res[1]);
         } 
         //***need page that says set isa locked */
-    } 
+    } else if (view === 'quit') {
+        const data = {
+            action: 'logout'
+        }
+        axios({
+            method: 'post',
+            url: `${window.location.origin}/user/logout`,
+            data: data,
+            headers: { "Content-Type": "application/json" }
+        }).then(function (response) {
+            window.location = `${window.location.origin}/login`;
+        }).catch( (error) => {
+            alert('Something went wrong :(');
+            console.log(error);
+        });
+    }
+
+    //Event Listeners
 
     elements.appInner.addEventListener('click', e => {
         if (e.target.closest('.btn-startSession')) {
@@ -70,32 +87,18 @@ const controlApp = async () => {
     });   
 
     document.querySelector('.navbar').addEventListener('click', e => {
-        if (e.target.matches('.logout')) {
-            document.querySelector('.cd-popup').classList.add('is-visible');
+        if (e.target.matches('.logout') && !state.session) {
+            document.querySelector('.popupMain').classList.add('is-visible');
         } 
     });
 
-    document.querySelector('.cd-popup').addEventListener('click', e => {
+    document.querySelector('.popupMain').addEventListener('click', e => {
         if (e.target.closest('.btn-popupQuit')) {
             event.preventDefault();
-
-            const data = {
-                action: 'logout'
-            }
-            axios({
-                method: 'post',
-                url: `${window.location.origin}/user/logout`,
-                data: data,
-                headers: { "Content-Type": "application/json" }
-            }).then(function (response) {
-                window.location = `${window.location.origin}/login`;
-            }).catch( (error) => {
-               alert('Something went wrong :(');
-               console.log(error);
-            }); 
+            window.location.hash = '#quit';
         } else if (e.target.closest('.btn-popupRemain')){
             event.preventDefault();
-            document.querySelector('.cd-popup').classList.remove('is-visible');
+            document.querySelector('.popupMain').classList.remove('is-visible');
         } 
     });
 }
@@ -196,10 +199,6 @@ const controlSession = (task, nextStep) => {
             sessionView.renderTemplate(state.set.id, state.session.id, 'practice');
 
             //Event Listener
-
-            document.getElementById("myBar").style.width = '0%';
-
-
             document.querySelector('.card__ratingButtons').addEventListener('click', e => {
                 event.preventDefault();
 
@@ -210,17 +209,17 @@ const controlSession = (task, nextStep) => {
                     let newWidth = parseInt(width);
                     let interval = 100 / (state.session.practiceCharacters.length + state.session.introduceCharacters.length);
                     let reachWidth = newWidth + interval;
-                    console.log('reachWidth', reachWidth);
+                    
                     var id = setInterval(frame, 10);
                 
                     function frame() {
-                    if (newWidth >= reachWidth) {
-                        clearInterval(id);
-                    } else {
-                        newWidth++; 
-                        elem.style.width = newWidth + '%'; 
-                        //elem.innerHTML = newWidth * 1  + '%';
-                    }
+                        if (newWidth >= reachWidth) {
+                            clearInterval(id);
+                        } else {
+                            newWidth++; 
+                            elem.style.width = newWidth + '%'; 
+                            //elem.innerHTML = newWidth * 1  + '%';
+                        }
                     }
                 }
                 
@@ -241,27 +240,6 @@ const controlSession = (task, nextStep) => {
                     document.querySelector('.card__inner__answer__showAnswer').classList.add('appear');
                 }
             });   
-
-/*             document.getElementById("myBar").style.width = '0%';
-            document.querySelector('.testing').addEventListener('click', () => {
-                let elem = document.getElementById("myBar");   
-                let myString = elem.style.width;
-                let width = myString.slice(0, -1);
-                let newWidth = parseInt(width);
-                let interval =14;
-                
-                var id = setInterval(frame, 10);
-              
-                function frame() {
-                  if (newWidth >= interval) {
-                    clearInterval(id);
-                  } else {
-                    newWidth++; 
-                    elem.style.width = newWidth + '%'; 
-                    elem.innerHTML = newWidth * 1  + '%';
-                  }
-                }
-            }); */
       
             //Render first 'practice' Character
             controlSession('renderNextPracticeCharacter');
@@ -276,24 +254,31 @@ const controlSession = (task, nextStep) => {
                 controlSession('endSession', 'home');
             } else if (e.target.matches('.btn-exitSession')) {
                 event.preventDefault();
-                document.querySelector('.cd-popup').classList.add('is-visible');
+                document.querySelector('.popupSession').classList.add('is-visible');
+                document.querySelector('.popupSession').setAttribute('data-linkid', 'practice');
             }
         });
     
-        document.querySelector('.cd-popup').addEventListener('click', e => {
-            if (e.target.matches('.btn-exitSessionExitAlert') || e.target.matches('.btn-popupNo')){
-                event.preventDefault();
-                document.querySelector('.cd-popup').classList.remove('is-visible');
+        document.querySelector('.popupSession').addEventListener('click', e => {
+            if (e.target.matches('.btn-popupNo')){
+                e.preventDefault();
+                document.querySelector('.popupSession').classList.remove('is-visible');
             } else if (e.target.matches('.btn-popupYes')){
-                event.preventDefault();
-                controlSession('cancelSession');
+                e.preventDefault();
+                const link = document.querySelector('.popupSession').getAttribute('data-linkid');
+                controlSession('endSession', link);
             } 
         });
 
         var clickNav = (event) => {
             if ((event.target.matches('.nav-link') || event.target.matches('.navbar-brand')) && state.session) {
+                
+                const link = event.target.getAttribute('data-linkid');
+                console.log('event', link);
+                console.log(typeof(link));
                 event.preventDefault();
-                document.querySelector('.cd-popup').classList.add('is-visible');
+                document.querySelector('.popupSession').classList.add('is-visible');
+                document.querySelector('.popupSession').setAttribute('data-linkid', link);
             }
         }
     
@@ -309,10 +294,29 @@ const controlSession = (task, nextStep) => {
             sessionView.renderTemplate(state.set.id, state.session.id, 'introduce');
 
             //Event Listeners
+
             document.querySelector('.card__ratingButtons').addEventListener('click', e => {
                 event.preventDefault();
             
                 if (e.target.matches('.btn-gotIt')) {
+                    let elem = document.getElementById("myBar");   
+                    let myString = elem.style.width;
+                    let width = myString.slice(0, -1);
+                    let newWidth = parseInt(width);
+                    let interval = 100 / (state.session.practiceCharacters.length + state.session.introduceCharacters.length);
+                    let reachWidth = newWidth + interval;
+                    
+                    var id = setInterval(frame, 10);
+                
+                    function frame() {
+                        if (newWidth >= reachWidth) {
+                            clearInterval(id);
+                        } else {
+                            newWidth++; 
+                            elem.style.width = newWidth + '%'; 
+                            //elem.innerHTML = newWidth * 1  + '%';
+                        }
+                    }
                     controlSession('gotIt');
                 } 
             });
@@ -376,20 +380,26 @@ const controlSession = (task, nextStep) => {
     } 
 
     //--------------------------------------------------------------------------------------------------------------------
-    else if (task === 'cancelSession'){     //IS THIS NEEDED??????????????
-
-        controlSession('endSession', 'home');
-    }
-
-    //--------------------------------------------------------------------------------------------------------------------
-    else if (task === 'endSession', nextStep){     
+    else if (task === 'endSession', nextStep){
+        state.session = '';
+        state.character = '';     
         sessionView.clearAppInnerUI();
         if (nextStep === 'next'){
             controlSession('beginSession');
-        } else if (nextStep === 'home') {
+        } else {
             document.querySelector('.navbar').removeEventListener('click', clickNav);
-            window.location.hash = '#practice';
-        } 
+            if (nextStep === 'home') {
+                window.location.hash = '#practice';
+            } else if (nextStep === 'home' || nextStep === 'practice') {
+                window.location.hash = '#practice';
+            } else if (nextStep === 'characters') {
+                window.location.hash = '#characters';
+            } else if (nextStep === 'about') {
+                window.location.hash = '#about';
+            } else if (nextStep === 'logout') {
+                window.location.hash = '#quit';
+            }
+        }
     }
 }
 

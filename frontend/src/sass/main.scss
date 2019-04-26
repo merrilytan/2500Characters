@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Lato:400, 700');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
 
@@ -15,8 +15,11 @@ $lightest: #fff;
 $light: #F3F3F3;
 $theme-color: #999;
 $theme-color-lighter: #ccc;
+$theme-color-lightest: #dcd;
+$theme-color-darkest: #333;
 $font-normal: 1.5rem;
-
+$font-small: 1.2rem;
+$highlight-color: #87c6bd;
 
 $theme-color1: #A5AAAE;
 $theme-color1-dark: #717578;
@@ -24,7 +27,7 @@ $theme-color2: #542F13;
 $theme-color3: #A5AAAE;
 $theme-color4: #ED8D1F;
 $theme-color5: #C4C8CB;
-$new-color: #82c7bf;
+
 
 
 @mixin header-font($color) {
@@ -35,14 +38,27 @@ $new-color: #82c7bf;
   color: $color;
 } 
 
-@mixin btn-solid {
-  text-transform: uppercase;
-  border: none;
+@mixin btn-solid($color) {
+  border-color: $color;
   color: white;
-  font-size: 1.4rem;
-  height: 35px;
+  background-color: $color;
+  font-size: $font-small;
   letter-spacing: 1px;
   align-self: center;
+}
+
+@mixin btn-outline($color) {
+  border-color: $color;
+  color: $color;
+  font-size: $font-small;
+  letter-spacing: 1px;
+  align-self: center; 
+}
+
+.btn:hover {
+  border-color: $theme-color;
+  background-color: $theme-color;
+  color: white;
 }
 
 .btn:focus,.btn:active:focus,.btn.active:focus,
@@ -114,9 +130,10 @@ $new-color: #82c7bf;
   border: none;
   color: $theme-color;
   padding: 0;
+  font-size: $font-small;
 }
 
-.btn-exitSessionExitAlert {
+/* .btn-exitSessionExitAlert {
   position: absolute;
   background-color: transparent;
   border: none;
@@ -125,7 +142,7 @@ $new-color: #82c7bf;
   border-radius: 50%;
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   outline: none !important;
-}
+} */
 
 //CARD LAYOUT------------------------------------ //
 
@@ -182,27 +199,18 @@ $new-color: #82c7bf;
   
 .btn-rating {
   border: none;
-  color: $theme-color;
-  font-size: $font-normal;
+  font-size: $font-small;
   text-decoration: none;
   display: inline-block;
   border-radius: 50%; 
   width: 3rem;
   height: 3rem;
-  //margin: 4px 4px;
-  //width: 45px;
-  //height: 45px;
 }
 
 .btn-gotIt {
-  @include btn-solid;
-  background-color: $theme-color1;
+  @include btn-solid($theme-color-darkest);
 }
 
-.btn:hover {
-  background-color: $theme-color1-dark;
-  color: white;
-}
 
 /* .card__flag {
   color: white;
@@ -263,8 +271,10 @@ $new-color: #82c7bf;
 
 .pinYin {
   color: $theme-color;
-  font-size: 3rem;
-  font-weight: bold; }
+  font-size: 2.5rem;
+  font-weight: 700; 
+  margin-bottom: 5%;
+}
 
 .meaning {
   font-size: 1.6rem;
@@ -277,7 +287,7 @@ $new-color: #82c7bf;
   align-items: center;
   justify-content: center;
   height: 30%;
-  padding-bottom: 12%;
+  padding-bottom: 8%;
   position: relative;
 }
 
@@ -307,10 +317,9 @@ $new-color: #82c7bf;
   position: absolute;
   top: 20%;
   justify-content: center;
-  z-index: 999999;
-  font-size: 1.5rem;
-  border-color: $theme-color;
-  color: $theme-color;
+  z-index: 91;
+  @include btn-outline($theme-color);
+  font-size: $font-normal;
 
   &.disappear{
     animation-name: disappear;
@@ -336,7 +345,7 @@ $new-color: #82c7bf;
 }
 
 .summaryHeader {
-  @include header-font($new-color);
+  @include header-font($highlight-color);
   height: 20%;
 }
 
@@ -360,8 +369,7 @@ $new-color: #82c7bf;
 }
 
 .btn-home {
-  @include btn-solid;
-  background-color: $new-color;
+  @include btn-solid($highlight-color);
   width: 100%;
   margin-bottom: 5%;
 }
@@ -377,7 +385,7 @@ $new-color: #82c7bf;
 
 
 
-//-------------------------------------------------------------------------------------------------
+/* //-------------------------------------------------------------------------------------------------
 .btn-exitSessionExitAlert {
   top: 5%;
   color: $theme-color1;
@@ -385,9 +393,9 @@ $new-color: #82c7bf;
 
 .btn-exitSession:hover, .btn-exitSessionExitAlert:hover {
   color: $theme-color1-dark;
-}
+} */
 
-//DECKS LAYOUT------------------------------------ //
+//SET LAYOUT------------------------------------ //
 
 .setContainer {
   display: block;
@@ -396,7 +404,7 @@ $new-color: #82c7bf;
 }
 
 .sets {
-  //flex: 1 1 auto;
+  //as flex container
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -424,14 +432,14 @@ $new-color: #82c7bf;
   margin-bottom: 8%;
 
   &--active{
-    color: $new-color;
+    color: $highlight-color;
   }
 }
 
 .btn-startSession {
   font-size: 1.3rem;
-  border-color: $new-color;
-  color: $new-color;
+  border-color: $highlight-color;
+  color: $highlight-color;
 }
 
 .btn-locked {
@@ -442,103 +450,106 @@ $new-color: #82c7bf;
 }
 
 
-
-.cd-message {
-  font-size: 1.4rem;
-  text-align: left;
-  margin: 4% 2.5% 6% 2.5%;
-  line-height: 2.3rem;
-  //font-weight: bold;
-}
-
-.cd-popup {
+.popupMain, .popupSession {
   position: fixed;
   left: 0;
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(94, 110, 141, 0.9);
+  background-color: rgba(20, 20, 20, 0.9);
   opacity: 0;
   visibility: hidden;
   -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
   -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
   transition: opacity 0.3s 0s, visibility 0s 0.3s;
-}
-.cd-popup.is-visible {
-  opacity: 1;
-  visibility: visible;
-  -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
-  -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
-  transition: opacity 0.3s 0s, visibility 0s 0s;
+  //as flex container
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__container {
+    position: relative;
+    padding: 20px;
+    width: 80%;
+    max-width: 300px;
+    background: #FFF;
+    border-radius: .25rem;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translateY(-40px);
+    -moz-transform: translateY(-40px);
+    -ms-transform: translateY(-40px);
+    -o-transform: translateY(-40px);
+    transform: translateY(-40px);
+    /* Force Hardware Acceleration in WebKit */
+    -webkit-backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    
+    &.is-visible {
+      -webkit-transform: translateY(0);
+      -moz-transform: translateY(0);
+      -ms-transform: translateY(0);
+      -o-transform: translateY(0);
+      transform: translateY(0);
+    }
+  }
+
+  &__buttons {
+    text-transform: capitalize;
+  }
+
+  &__message {
+    font-size: 1.4rem;
+    text-align: left;
+    margin: 4% 2.5% 6% 2.5%;
+    line-height: 2.3rem;
+  }
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
+  }
 }
 
-.cd-popup-container {
-  position: relative;
-  padding: 2%;
-  width: 80%;
-  max-width: 300px;
-  margin: 23% auto 0% auto;
-  background: #FFF;
-  border-radius: .25rem;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  -webkit-transform: translateY(-40px);
-  -moz-transform: translateY(-40px);
-  -ms-transform: translateY(-40px);
-  -o-transform: translateY(-40px);
-  transform: translateY(-40px);
-  /* Force Hardware Acceleration in WebKit */
-  -webkit-backface-visibility: hidden;
-  -webkit-transition-property: -webkit-transform;
-  -moz-transition-property: -moz-transform;
-  transition-property: transform;
-  -webkit-transition-duration: 0.3s;
-  -moz-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-}
-
-.cd-buttons {
-  text-transform: capitalize;
-}
-
-.is-visible .cd-popup-container {
-  -webkit-transform: translateY(0);
-  -moz-transform: translateY(0);
-  -ms-transform: translateY(0);
-  -o-transform: translateY(0);
-  transform: translateY(0);
-}
 @media only screen and (min-width: 1170px) {
-  .cd-popup-container {
+  .popup__container {
     margin: 8em auto;
   }
 }
 
+
+
+
+
+
 .btn-popupYes {
-  @include btn-solid;
-  background-color: $theme-color1;
+  @include btn-solid($theme-color-darkest);
   margin-right: 2%;
-  text-transform: lowercase;
-  text-transform: capitalize;
 }
 
 .btn-popupNo {
-  @include btn-solid;
-  background-color: $new-color;
-  text-transform: lowercase;
-  text-transform: capitalize;
+  @include btn-outline($theme-color-darkest);
 }
 
 
 //PROGRESS -----------------------------------------------
 #myProgress {
   width: 65%;
-  background-color: $theme-color-lighter;
+  background-color: $theme-color-lightest;
 }
 
 #myBar {
   width: 0%;
-  height: 2px;
+  height: 1px;
   background-color: $theme-color;
   text-align: center;
   line-height: 30px;

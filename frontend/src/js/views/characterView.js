@@ -22,8 +22,8 @@ export const renderCharacter = (character, type) => {
             <div class="card__inner__answer">
                 ${addElement}
                 <div class="card__inner__answer__showAnswer ${addClass}">
-                    <h5 class="pinYin">${character.pinYin}</h6>
-                    <h5 class="meaning">(${character.meaning})</h6>
+                    <div class="pinYin">${character.pinYin}</div>
+                    <div class="meaning">(${character.meaning})</div>
                 </div>
             </div>
         </div>

@@ -13,24 +13,24 @@
     <div class="app">
 
         <!-- Navigation Menu -->
-        <nav class="navbar navbar-expand-sm navbar-light">
-            <a href="#practice" class="navbar-brand">2KCHARACTERS</a>
+        <nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center" data-linkid="practice">
+            <!-- <a href="#practice" class="navbar-brand">2KCHARACTERS</a> -->
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarMenu">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav w-100 justify-content-center">
                     <li class="nav-item">
-                        <a href="#practice" class="nav-link">Practice</a>
+                        <a href="#practice" class="nav-link" data-linkid="practice">Practice</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#characters" class="nav-link">Characters</a>
+                        <a href="#characters" class="nav-link" data-linkid="characters">Characters</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#about" class="nav-link">About</a>
+                        <a href="#about" class="nav-link" data-linkid="about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#logout" class="nav-link logout">Logout</a>
+                        <a href="#logout" class="nav-link logout" data-linkid="logout">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -42,12 +42,12 @@
         
 
     </div><!--.app-->
-    <div class="cd-popup" role="alert">
-        <div class="cd-popup-container">
-            <div class="cd-message">
+    <div class="popupMain" role="alert">
+        <div class="popupMain__container">
+            <div class="popupMain__message">
                 Are you sure you want to quit?
             </div>
-            <div class="cd-buttons">
+            <div class="popupMain__buttons">
                 <button class="btn btn-popupQuit">Yes, quit</button>
                 <button class="btn btn-popupRemain">No</button>
             </div>

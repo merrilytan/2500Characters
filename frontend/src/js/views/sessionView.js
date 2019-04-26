@@ -32,22 +32,21 @@ export const renderTemplate = (setID, sessionID, type) => {
                     </div>
                 </div>
             </div>
-            <div class="cd-popup" role="alert">
-                <div class="cd-popup-container">
-                    <div class="cd-message">
+            <div class="popupSession" role="alert" data-linkid="none">
+                <div class="popupSession__container">
+                    <div class="popupSession__message">
                         This session's progress won't be saved at exit. &nbspAre you sure you want to exit this session?
                     </div>
-                    <div class="cd-buttons">
+                    <div class="popupSession__buttons">
                         <button class="btn btn-popupYes">Yes, Exit</button>
                         <button class="btn btn-popupNo">No, Return to Session</button>
                     </div>
-                    <button class="btn-exitSessionExitAlert">&#10006;</button>
-                    <!--<a href="#0" class="cd-popup-close img-replace">Close</a>-->
-                </div> <!-- cd-popup-container -->
-            </div> <!-- cd-popup -->
+                </div>
+            </div>
         `;
 
         elements.appInner.innerHTML = markup;
+        document.getElementById("myBar").style.width = '0%';
     
     } else if (type === 'practice'){
         markup = `
