@@ -48,7 +48,12 @@ const controlApp = async () => {
     if(view === ''){
         window.location.hash = '#practice';
     } else if (view === 'practice'){
-        appView.renderPractice();
+        appView.renderPractice(state.app);
+        document.querySelector('.popupSets').addEventListener('click', e => {
+            if (e.target.closest('.btn-exitSetAlert')) {
+                document.querySelector('.popupSets').classList.remove('is-visible');
+            }
+        });
     } else if (view === 'characters') {
 
     } else if (view === 'about') {
@@ -80,9 +85,16 @@ const controlApp = async () => {
     //Event Listeners
 
     elements.appInner.addEventListener('click', e => {
-        if (e.target.closest('.btn-startSession')) {
-          const id = e.target.getAttribute('data-itemid');
-          window.location.hash = `#set-${id}`;
+        e.preventDefault();
+        if (e.target.closest('.set__icon')) {
+            const id = e.target.closest('.set__icon').getAttribute('data-setid');
+            console.log('id', id);
+            if(state.app.setStatus[id-1] === 0){
+                window.location.hash = `#set-${id}`;
+                console.log('herrrrre');
+            } else { 
+                document.querySelector('.popupSets').classList.add('is-visible');
+            }
         }
     });   
 
@@ -94,13 +106,15 @@ const controlApp = async () => {
 
     document.querySelector('.popupMain').addEventListener('click', e => {
         if (e.target.closest('.btn-popupQuit')) {
-            event.preventDefault();
+            e.preventDefault();
             window.location.hash = '#quit';
         } else if (e.target.closest('.btn-popupRemain')){
-            event.preventDefault();
+            e.preventDefault();
             document.querySelector('.popupMain').classList.remove('is-visible');
-        } 
+        }  
     });
+
+
 }
 
 /**

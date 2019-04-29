@@ -1,78 +1,50 @@
 import { elements } from "./base";
 
-export const renderPractice = () => {
-    const markup = `
+export const renderPractice = (app) => {
+
+    let markup = `
         <div class="setContainer">
             <div class="sets">
-                <div class="set">
-                    <div class="setHeader setHeader--active">
-                        SET 1
-                    </div>
-                    <button class="btn btn-startSession" data-itemid="1">
-                        Start Session 5   
-                    </button>
-                </div>
-                <div class="set">
-                    <div class="setHeader">
-                        SET 2
-                    </div>
-                    <button class="btn btn-locked">
-                        Locked  
-                    </button>
-                </div>
-                <div class="set">
-                    <div class="setHeader">
-                        SET 3
-                    </div>
-                    <button class="btn btn-locked">
-                        Locked 
-                    </button>
-                </div>
-                <div class="set">
-                    <div class="setHeader">
-                        SET 4
-                    </div>
-                    <button class="btn btn-locked">
-                        Locked  
-                    </button>
-                </div>
-                <div class="set">
-                    <div class="setHeader">
-                        SET 5
-                    </div>
-                    <button class="btn btn-locked">
-                        Locked   
-                    </button>
-                </div>
-                <div class="set">
-                    <div class="setHeader">
-                        SET 6
-                    </div>
-                    <button class="btn btn-locked">
-                        Locked  
-                    </button>
-                </div>
-                <div class="set">
-                    <div class="setHeader">
-                        SET 7
-                    </div>
-                    <button class="btn btn-locked">
-                        Locked   
-                    </button>
-                </div>
-                <div class="set">
-                    <div class="setHeader">
-                        SET 8
-                    </div>
-                    <button class="btn btn-locked">
-                        Locked   
-                    </button>
-                </div>
             </div>
         </div>
-    `;
+        <div class="popupSets" role="alert">
+            <div class="popupSets__container">
+                <button class="btn btn-exitSetAlert">&#10006;</button>
+                <div class="popupSets__message"> 
+                    Master the previous set to unlock this set!
+                </div>
+            </div> 
+        </div>
+        `;
 
-    elements.appInner.innerHTML = markup;  
+    elements.appInner.innerHTML = markup; 
+
+    console.log('app.setStatus', app.setStatus);
+    app.setStatus.forEach((val, index) => {
+
+        let icon, iconColor;
+
+        if(val === -1){
+            icon = 'fa-lock';
+            iconColor = 'set__icon--grey';
+        } else if(val === 0){
+            icon = 'fa-play';
+            iconColor = 'set__icon--dark';
+        } else if(val === 1){
+            icon = 'fa-check';
+            iconColor = 'set__icon--green';
+        }
+
+        markup = `
+        <div class="set">
+            <button class="btn set__icon ${iconColor}" data-setid="${index + 1}"><i class="fas ${icon} fa-xs"></i></button>
+            <div class="set__id">${index + 1}</div>
+        </div>    
+        `;
+
+        
+        document.querySelector('.sets').insertAdjacentHTML('beforeend', markup); 
+    });
 }
 
 

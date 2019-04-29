@@ -16,7 +16,7 @@ export const renderTemplate = (setID, sessionID, type) => {
             <div class="session">
                 <div class="session__header">
                     <div class="session__header__title">${setID}.${sessionID}</div>
-                    <button class="btn-exitSession">&#10006;</button>
+                    <button class="btn btn-exitSession">&#10006;</button>
                 </div>
                 <div id="myProgress">
                     <div id="myBar"></div>
