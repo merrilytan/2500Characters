@@ -4,6 +4,7 @@
 <head>
     <title>ReadChinese</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -13,24 +14,24 @@
     <div class="app">
 
         <!-- Navigation Menu -->
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-            <a href="#practice" class="navbar-brand">2KCHARACTERS</a>
+        <nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center" data-linkid="practice">
+            <!-- <a href="#practice" class="navbar-brand">2KCHARACTERS</a> -->
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarMenu">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav w-100 justify-content-center">
                     <li class="nav-item">
-                        <a href="#practice" class="nav-link">Practice</a>
+                        <a href="#practice" class="nav-link" data-linkid="practice">Practice</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#characters" class="nav-link">Characters</a>
+                        <a href="#characters" class="nav-link" data-linkid="characters">Characters</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#about" class="nav-link">About</a>
+                        <a href="#about" class="nav-link" data-linkid="about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#logout" class="nav-link logout">Logout</a>
+                        <a href="#logout" class="nav-link logout" data-linkid="logout">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -42,17 +43,17 @@
         
 
     </div><!--.app-->
-    <div class="cd-popup" role="alert">
-        <div class="cd-popup-container">
-            <div class="cd-message">
+    <div class="popupMain" role="alert">
+        <div class="popupMain__container">
+            <div class="popupMain__message">
                 Are you sure you want to quit?
             </div>
-            <div class="cd-buttons">
+            <div class="popupMain__buttons">
                 <button class="btn btn-popupQuit">Yes, quit</button>
                 <button class="btn btn-popupRemain">No</button>
             </div>
-        </div> <!-- cd-popup-container -->
-    </div> <!-- cd-popup -->
+        </div> 
+    </div>
     
     <!-- JS Library Dependencies -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

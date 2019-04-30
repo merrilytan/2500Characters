@@ -14,28 +14,47 @@
     <div class="app">
 
         <!-- Navigation Menu -->
-        <nav class="navbar navbar-light navbar-expand-md bg-faded justify-content-center" data-linkid="practice">
-            <!-- <a href="#practice" class="navbar-brand">2KCHARACTERS</a> -->
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarMenu">
-                <ul class="navbar-nav w-100 justify-content-center">
-                    <li class="nav-item">
-                        <a href="#practice" class="nav-link" data-linkid="practice">Practice</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#characters" class="nav-link" data-linkid="characters">Characters</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link" data-linkid="about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#logout" class="nav-link logout" data-linkid="logout">Logout</a>
-                    </li>
-                </ul>
+        <div class="burgerMenu">
+            <div class="burgerMenu__clickRegion">
+                <span class="burgerMenu__piece"></span>
+                <span class="burgerMenu__piece"></span>
+                <span class="burgerMenu__piece"></span>
             </div>
-        </nav> 
+        </div>
+
+        <div class="navBar">
+            <ul class="navBar__items">
+                <li class="navBar__item">
+                    <a href="#practice" class="nav__link" data-linkid="practice">Practice</a>
+                </li>
+                <li class="navBar__item">
+                    <a href="#characters" class="nav__link" data-linkid="characters">Characters</a>
+                </li>
+                <li class="navBar__item">
+                    <a href="#about" class="nav__link" data-linkid="about">About</a>
+                </li>
+                <li class="navBar__item">
+                    <div class="nav__link logout" data-linkid="logout">Logout</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="navPage hidden">
+            <ul class="navPage__items">
+                <li class="navPage__item">
+                    <a href="#practice" class="nav__link" data-linkid="practice">Practice</a>
+                </li>
+                <li class="navPage__item">
+                    <a href="#characters" class="nav__link" data-linkid="characters">Characters</a>
+                </li>
+                <li class="navPage__item">
+                    <a href="#about" class="nav__link" data-linkid="about">About</a>
+                </li>
+                <li class="navPage__item">
+                    <div class="nav__link logout" data-linkid="logout">Logout</div>
+                </li>
+            </ul>
+        </div>
 
         <!-- Inner Content Root-->
         <div class="app__inner">
@@ -49,7 +68,7 @@
                 Are you sure you want to quit?
             </div>
             <div class="popupMain__buttons">
-                <button class="btn btn-popupQuit">Yes, quit</button>
+                <button class="btn btn-popupQuit">Yes, Quit</button>
                 <button class="btn btn-popupRemain">No</button>
             </div>
         </div> 

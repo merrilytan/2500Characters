@@ -45,6 +45,20 @@ const controlApp = async () => {
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
 
+
+    //Loop through nav items to highlight active page
+    let navLink = document.querySelectorAll('.nav__link');
+
+    navLink.forEach(el => {
+        if(el.classList.contains('highlight')) {
+            el.classList.remove('highlight');
+        }
+        if(el.getAttribute('href') == window.location.hash){
+            el.classList.add('highlight');
+        }
+    });
+
+    //Change views based on url
     if(view === ''){
         window.location.hash = '#practice';
     } else if (view === 'practice'){
@@ -82,7 +96,9 @@ const controlApp = async () => {
         });
     }
 
-    //Event Listeners
+    //Event Listeners -------------------------------------------
+
+
 
     elements.appInner.addEventListener('click', e => {
         e.preventDefault();
@@ -91,18 +107,19 @@ const controlApp = async () => {
             console.log('id', id);
             if(state.app.setStatus[id-1] === 0){
                 window.location.hash = `#set-${id}`;
-                console.log('herrrrre');
             } else { 
                 document.querySelector('.popupSets').classList.add('is-visible');
             }
         }
     });   
 
-    document.querySelector('.navbar').addEventListener('click', e => {
-        if (e.target.matches('.logout') && !state.session) {
+    document.querySelector('.navBar').addEventListener('click', e => {
+        if (e.target.closest('.logout') && !state.session) {
             document.querySelector('.popupMain').classList.add('is-visible');
         } 
     });
+
+
 
     document.querySelector('.popupMain').addEventListener('click', e => {
         if (e.target.closest('.btn-popupQuit')) {
@@ -113,6 +130,9 @@ const controlApp = async () => {
             document.querySelector('.popupMain').classList.remove('is-visible');
         }  
     });
+
+
+
 
 
 }
@@ -128,7 +148,7 @@ const controlSet = async (setID) => {
     }
     console.log('state.set', state.set);
 
-    controlSession('beginSession');
+    controlSession('beginSession')
 }
 
 /**
@@ -285,18 +305,19 @@ const controlSession = (task, nextStep) => {
         });
 
         var clickNav = (event) => {
-            if ((event.target.matches('.nav-link') || event.target.matches('.navbar-brand')) && state.session) {
+            if ((event.target.closest('.nav__link') || event.target.closest('.navBar__brand')) && state.session) {
                 
-                const link = event.target.getAttribute('data-linkid');
-                console.log('event', link);
-                console.log(typeof(link));
+                const link = event.target.closest('.nav__link').getAttribute('data-linkid');
+                // console.log('event', link);
+                // console.log(typeof(link));
                 event.preventDefault();
                 document.querySelector('.popupSession').classList.add('is-visible');
                 document.querySelector('.popupSession').setAttribute('data-linkid', link);
             }
         }
     
-        document.querySelector('.navbar').addEventListener('click', clickNav);
+        document.querySelector('.navBar').addEventListener('click', clickNav);
+        document.querySelector('.navPage').addEventListener('click', clickNav);
     } 
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -401,7 +422,7 @@ const controlSession = (task, nextStep) => {
         if (nextStep === 'next'){
             controlSession('beginSession');
         } else {
-            document.querySelector('.navbar').removeEventListener('click', clickNav);
+            document.querySelector('.navBar').removeEventListener('click', clickNav);
             if (nextStep === 'home') {
                 window.location.hash = '#practice';
             } else if (nextStep === 'home' || nextStep === 'practice') {
@@ -421,3 +442,47 @@ const controlSession = (task, nextStep) => {
  * Event Listeners //////////////////////////////////////////////////////////////////////////////////////////////////////
  */
 ['hashchange', 'load'].forEach((event) => window.addEventListener(event, controlApp));
+
+
+let clickDelayTimer;
+const handleNavPage = () => {
+    //console.log('clickDelayTimer', clickDelayTimer);
+    //if(clickDelayTimer === null) {
+        //console.log('clickDelayTimer', clickDelayTimer);
+        let burger = document.querySelector('.burgerMenu__clickRegion');
+        let navPage = document.querySelector('.navPage');
+        burger.classList.toggle('active');
+        navPage.classList.toggle('appear');
+
+        if(!burger.classList.contains('active')) {
+            burger.classList.add('closing');
+        }
+
+/*             if(!navPage.classList.contains('appear')) {
+            navPage.classList.remove('appear');
+        } */
+
+        clickDelayTimer = setTimeout(function () {
+            burger.classList.remove('closing');
+            clearTimeout(clickDelayTimer);
+            clickDelayTimer = null;
+        }, 500);
+   // }
+}
+
+document.querySelector('.burgerMenu__clickRegion').addEventListener('click', function () {
+    if((elements.appInner.offsetWidth < 700)  || document.querySelector('.burgerMenu__clickRegion').classList.contains('active')) {
+        handleNavPage();
+    }
+});
+
+document.querySelector('.navPage').addEventListener('click', e => {
+    if (e.target.closest('.logout') && !state.session) {
+        //handleNavPage();
+        document.querySelector('.popupMain').classList.add('is-visible');
+    } else if (e.target.closest('.nav__link') && !state.session) {
+        handleNavPage();
+    }
+});
+
+
