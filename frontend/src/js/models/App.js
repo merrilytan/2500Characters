@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default class App {
 
-    constructor(userID) {
+    constructor() {
         //States of all Sets in app (App.setStates[0] is for Set.id=1)
         this.setStates = [];
         //Status of all Sets in app (-1 locked, 0 ongoing, 1 completed)

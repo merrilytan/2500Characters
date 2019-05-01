@@ -1,4 +1,3 @@
-import { characterDataJSON } from '../data.js';
 import Character from './Character';
 import axios from 'axios';
 

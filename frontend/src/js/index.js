@@ -71,7 +71,7 @@ const controlApp = async () => {
     } else if (view === 'characters') {
 
     } else if (view === 'about') {
-
+        appView.renderAbout();
     } else if (view.startsWith('set')){
         const res = view.split('-');
         //Check that Set is unlocked

@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:400, 700');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
+@import url('https://fonts.googleapis.com/css?family=Nanum+Brush+Script');
 
 //GLOBAL STYLES & COLORS ------------------------------------ //
 *, *:before, *:after {
@@ -80,6 +82,271 @@ $font-small: 1.2rem;
   -ms-flex-pack: center;
   align-items: center;
 }
+
+//LOGO ------------------------------------------------------//
+
+.logo {
+    position: absolute;
+    left: 40px;
+    height: 79px;
+    margin-top: 2px;
+    //as flex container
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    align-items: center; 
+    margin-top: 2px;
+    color: $theme-color-darkest;
+
+  &__top {
+    font-size: 4rem;
+    transform: scale(1, .75);
+    -webkit-transform: scale(1, .75);
+    -moz-transform: scale(1, .75);
+    -ms-transform: scale(1, .75);
+    -o-transform: scale(1, .75);
+    letter-spacing: -1.9px;
+    font-family: "Nanum Brush Script";
+    z-index: 5;
+  }
+
+  &__bottom {
+    font-size: 1rem;
+    margin-left: -2px;
+    border-top: .7px solid $theme-color-lighter;
+    line-height: 1.1rem;
+    margin-top: -1px;
+    letter-spacing: .3px;
+  }
+}
+
+//NAVIGATION -----------------------------------------------
+
+.navBar {
+  font-size: $font-normal;
+  background-color: $lightest;
+}
+
+.burgerMenu{
+  position: absolute;
+  height: 79px;
+  width: 30px;
+  right: 40px;
+  //as flex container
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.burgerMenu__clickRegion {
+  display: block;
+  position: absolute;
+  width: 30px;
+  cursor: pointer;
+  height: 27px;
+}
+
+/* .burgerMenu__txt {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 5px;
+  cursor: default;
+  transition: opacity 200ms ease-out, transform 200ms cubic-bezier(.34, .55, .25, .83);
+  
+  .isOpen & {
+    opacity: 0;
+    transform: translate3d(-50px, 0, 0);
+  }
+} */
+
+$menu-animation-duration: 400ms;
+$menu-animation-timing:   ease-out;
+
+.burgerMenu__piece {
+  //display: block;
+  position: absolute;
+  width: 30px;
+  border-top: 3px solid $theme-color-darkest;
+  transform-origin: 50% 50%;
+  transition: transform $menu-animation-duration $menu-animation-timing;
+  
+  &:nth-child(1) {
+    top: 4px;
+  }
+  
+  &:nth-child(2) {
+    top: 12px;
+    opacity: 1;
+    transition: transform $menu-animation-duration $menu-animation-timing, opacity 0ms linear $menu-animation-duration / 2;
+  }
+  
+  &:nth-child(3) {
+    top: 20px;
+  }
+  
+  .active & {
+      &:nth-child(1) {
+        animation: burger-open-top $menu-animation-duration $menu-animation-timing forwards;
+      }
+      &:nth-child(2) {
+        opacity: 0;
+        transition: transform $menu-animation-duration $menu-animation-timing, opacity 0ms linear $menu-animation-duration / 2;
+      }
+      &:nth-child(3) {
+        animation: burger-open-bot $menu-animation-duration $menu-animation-timing forwards;
+      }
+  }
+  
+  .closing & {
+    &:nth-child(1) {
+      animation: burger-close-top $menu-animation-duration $menu-animation-timing forwards;
+    }
+    &:nth-child(3) {
+      animation: burger-close-bot $menu-animation-duration $menu-animation-timing forwards;
+    }
+  }
+}
+
+@keyframes burger-open-top {
+  50% {
+    transform: translate3d(0, 8px, 0);
+  }
+  100% {
+    transform: translate3d(0, 8px, 0) rotate(45deg);
+  }
+}
+
+@keyframes burger-open-bot {
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+  100% {
+    transform: translate3d(0, -8px, 0) rotate(-45deg);
+  }
+}
+
+@keyframes burger-close-top {
+  0% {
+    transform: translate3d(0, 8px, 0) rotate(45deg);
+  }
+  50% {
+    transform: translate3d(0, 8px, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes burger-close-bot {
+  0% {
+    transform: translate3d(0, -8px, 0) rotate(-45deg);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+/* Dropdown Content (Hidden by Default) */
+.navBar {
+  position: absolute;
+  width: 100%;
+  height: 79px;
+  top: -79px;
+  background-color: $lightest;
+  z-index: 90;
+  //as flex container
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+
+@media only screen and (min-width: 700px) {
+  .burgerMenu:hover + .navBar {
+    transform: translate(0, 79px);
+  }
+  
+  .navBar:hover {
+    transform: translate(0, 79px);
+  }
+}
+
+.navBar__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  //as flex container
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  align-items: center;
+}
+
+.nav__link {
+  margin: 0 20px;
+  color: $theme-color-darkest;
+  font-weight: 500;
+
+  &:hover {
+    color: $highlight-color;
+    text-decoration: none;
+  }
+}
+
+.navPage {
+  background-color: $lightest;
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  z-index: 95;
+  //as flex container
+  flex-direction: column;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  align-items: center;
+
+  &.hidden{
+    opacity: 0;
+    display: none;
+
+    &.appear{
+      opacity: 100;
+      display: flex;
+    }
+  }
+}
+
+.navPage__items {
+  list-style: none;
+  text-align: center;
+}
+
+.navPage__item {
+  margin: 18px;
+}
+
+.logout {
+  cursor: pointer;
+}
+
 
 //SESSION TEMPLATE LAYOUT------------------------------------ //
 
@@ -357,14 +624,7 @@ $font-small: 1.2rem;
 
 .setContainer {
   display: block;
-  width: 350px;
-  border-color: yellow;
-}
-
-.setContainer {
-  display: block;
   width: 400px;
-  border-color: yellow;
 }
 
 @media only screen and (max-width: 380px) {
@@ -584,231 +844,6 @@ $font-small: 1.2rem;
 
 
 
-//NAVIGATION -----------------------------------------------
-
-
-.navBar {
-  font-size: $font-normal;
-  background-color: $lightest;
-}
-
-.burgerMenu{
-  position: absolute;
-  height: 79px;
-  width: 30px;
-  right: 40px;
-  //as flex container
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  align-items: center;
-  z-index: 99;
-}
-
-.burgerMenu__clickRegion {
-  display: block;
-  position: absolute;
-  width: 30px;
-  cursor: pointer;
-  height: 27px;
-}
-
-/* .burgerMenu__txt {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 5px;
-  cursor: default;
-  transition: opacity 200ms ease-out, transform 200ms cubic-bezier(.34, .55, .25, .83);
-  
-  .isOpen & {
-    opacity: 0;
-    transform: translate3d(-50px, 0, 0);
-  }
-} */
-
-$menu-animation-duration: 400ms;
-$menu-animation-timing:   ease-out;
-
-.burgerMenu__piece {
-  //display: block;
-  position: absolute;
-  width: 30px;
-  border-top: 3px solid $theme-color-darkest;
-  transform-origin: 50% 50%;
-  transition: transform $menu-animation-duration $menu-animation-timing;
-  
-  &:nth-child(1) {
-    top: 4px;
-  }
-  
-  &:nth-child(2) {
-    top: 12px;
-    opacity: 1;
-    transition: transform $menu-animation-duration $menu-animation-timing, opacity 0ms linear $menu-animation-duration / 2;
-  }
-  
-  &:nth-child(3) {
-    top: 20px;
-  }
-  
-  .active & {
-      &:nth-child(1) {
-        animation: burger-open-top $menu-animation-duration $menu-animation-timing forwards;
-      }
-      &:nth-child(2) {
-        opacity: 0;
-        transition: transform $menu-animation-duration $menu-animation-timing, opacity 0ms linear $menu-animation-duration / 2;
-      }
-      &:nth-child(3) {
-        animation: burger-open-bot $menu-animation-duration $menu-animation-timing forwards;
-      }
-  }
-  
-  .closing & {
-    &:nth-child(1) {
-      animation: burger-close-top $menu-animation-duration $menu-animation-timing forwards;
-    }
-    &:nth-child(3) {
-      animation: burger-close-bot $menu-animation-duration $menu-animation-timing forwards;
-    }
-  }
-}
-
-@keyframes burger-open-top {
-  50% {
-    transform: translate3d(0, 8px, 0);
-  }
-  100% {
-    transform: translate3d(0, 8px, 0) rotate(45deg);
-  }
-}
-
-@keyframes burger-open-bot {
-  50% {
-    transform: translate3d(0, -8px, 0);
-  }
-  100% {
-    transform: translate3d(0, -8px, 0) rotate(-45deg);
-  }
-}
-
-@keyframes burger-close-top {
-  0% {
-    transform: translate3d(0, 8px, 0) rotate(45deg);
-  }
-  50% {
-    transform: translate3d(0, 8px, 0) rotate(0deg);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes burger-close-bot {
-  0% {
-    transform: translate3d(0, -8px, 0) rotate(-45deg);
-  }
-  50% {
-    transform: translate3d(0, -8px, 0) rotate(0deg);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-
-/* Dropdown Content (Hidden by Default) */
-.navBar {
-  position: absolute;
-  width: 100%;
-  height: 79px;
-  top: -79px;
-  background-color: $lightest;
-  z-index: 90;
-  //as flex container
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  align-items: center;
-  transition: transform 0.3s ease;
-}
-
-
-@media only screen and (min-width: 700px) {
-  .burgerMenu:hover + .navBar {
-    transform: translate(0, 79px);
-  }
-  
-  .navBar:hover {
-    transform: translate(0, 79px);
-  }
-}
-
-.navBar__items {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  //as flex container
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  align-items: center;
-}
-
-.nav__link {
-  margin: 0 20px;
-  color: $theme-color-darkest;
-  font-weight: 500;
-
-  &:hover {
-    color: $highlight-color;
-    text-decoration: none;
-  }
-}
-
-.navPage {
-  background-color: $lightest;
-  position: absolute;
-  height: 100vh;
-  width: 100%;
-  z-index: 95;
-  //as flex container
-  flex-direction: column;
-  justify-content: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  align-items: center;
-
-  &.hidden{
-    opacity: 0;
-    display: none;
-
-    &.appear{
-      opacity: 100;
-      display: flex;
-    }
-  }
-}
-
-.navPage__items {
-  list-style: none;
-  text-align: center;
-}
-
-.navPage__item {
-  margin: 18px;
-}
-
-.logout {
-  cursor: pointer;
-}
 
 
 
