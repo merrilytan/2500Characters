@@ -42,6 +42,22 @@ const controlApp = async () => {
         state.app.setStatus[0] = 0;
     }  
 
+    //Add 
+    const addPopup = 
+        `<div class="popupMain" role="alert">
+            <div class="popupMain__container">
+                <div class="popupMain__message">
+                    Are you sure you want to quit?
+                </div>
+                <div class="popupMain__buttons">
+                    <button class="btn btn-popupQuit">Yes, Quit</button>
+                    <button class="btn btn-popupRemain">No</button>
+                </div>
+            </div> 
+        </div>`;
+
+    document.querySelector('.app').insertAdjacentHTML('afterend', addPopup);
+
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
 
@@ -236,7 +252,7 @@ const controlSession = (task, nextStep) => {
             document.querySelector('.card__ratingButtons').addEventListener('click', e => {
                 event.preventDefault();
 
-                if (e.target.matches('.btn-rating--cross') || e.target.matches('.btn-rating--line') || e.target.matches('.btn-rating--check')){
+                if (e.target.closest('.btn-rating--cross') || e.target.closest('.btn-rating--line') || e.target.closest('.btn-rating--check')){
                     let elem = document.getElementById("myBar");   
                     let myString = elem.style.width;
                     let width = myString.slice(0, -1);
@@ -257,11 +273,11 @@ const controlSession = (task, nextStep) => {
                     }
                 }
                 
-                if (e.target.matches('.btn-rating--cross')) {
+                if (e.target.closest('.btn-rating--cross')) {
                     controlSession('cross');
-                } else if (e.target.matches('.btn-rating--line')) {
+                } else if (e.target.closest('.btn-rating--line')) {
                     controlSession('line');
-                } else if (e.target.matches('.btn-rating--check')) {
+                } else if (e.target.closest('.btn-rating--check')) {
                     controlSession('check');
                 }
                 
@@ -284,9 +300,9 @@ const controlSession = (task, nextStep) => {
 
         //Event Listeners
         document.querySelector('.session__header').addEventListener('click', e => {
-            if (e.target.matches('.btn-exitSession') && !state.session) {
+            if (e.target.closest('.btn-exitSession') && !state.session) {
                 controlSession('endSession', 'home');
-            } else if (e.target.matches('.btn-exitSession')) {
+            } else if (e.target.closest('.btn-exitSession')) {
                 event.preventDefault();
                 document.querySelector('.popupSession').classList.add('is-visible');
                 document.querySelector('.popupSession').setAttribute('data-linkid', 'practice');
@@ -305,11 +321,8 @@ const controlSession = (task, nextStep) => {
         });
 
         var clickNav = (event) => {
-            if ((event.target.closest('.nav__link') || event.target.closest('.navBar__brand')) && state.session) {
-                
+            if (event.target.closest('.nav__link') && state.session) {
                 const link = event.target.closest('.nav__link').getAttribute('data-linkid');
-                // console.log('event', link);
-                // console.log(typeof(link));
                 event.preventDefault();
                 document.querySelector('.popupSession').classList.add('is-visible');
                 document.querySelector('.popupSession').setAttribute('data-linkid', link);
@@ -317,6 +330,7 @@ const controlSession = (task, nextStep) => {
         }
     
         document.querySelector('.navBar').addEventListener('click', clickNav);
+        document.querySelector('.navBrand').addEventListener('click', clickNav);
         document.querySelector('.navPage').addEventListener('click', clickNav);
     } 
 

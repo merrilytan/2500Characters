@@ -12,11 +12,10 @@ export const renderTemplate = (setID, sessionID, type) => {
 
     if(type === 'setup'){
         markup = `
-
             <div class="session">
                 <div class="session__header">
                     <div class="session__header__title">${setID}.${sessionID}</div>
-                    <button class="btn btn-exitSession">&#10006;</button>
+                    <button class="btn btn-exitSession"><i class="fas fa-times"></i></button>
                 </div>
                 <div id="myProgress">
                     <div id="myBar"></div>
@@ -51,9 +50,9 @@ export const renderTemplate = (setID, sessionID, type) => {
     } else if (type === 'practice'){
         markup = `
             <div class="ratingButtons">
-                <button class="btn btn-rating btn-rating--cross">&#10006;</a>
-                <button class="btn btn-rating btn-rating--line">&#9866</a>
-                <button class="btn btn-rating btn-rating--check">&#10004;</a>
+                <button class="btn btn-rating btn-rating--cross"><i class="fas fa-times"></i></a>
+                <button class="btn btn-rating btn-rating--line"><i class="fas fa-minus"></i></a>
+                <button class="btn btn-rating btn-rating--check"><i class="fas fa-check"></i></a>
             </div> 
         `;
 
@@ -98,7 +97,6 @@ export const renderSummaryCard = (completed, numMasteredSession, set) => {
             <div class="summaryLine"><div class="summaryDesc">Currently learning:</div><div class="summaryNum">${(set.indexLastCharacterIntroduced + 1) - set.masteredCharacterIDs.length}</div></div>
             <div class="summaryLine"><div class="summaryDesc">Mastered in session:</div><div class="summaryNum">${numMasteredSession}</div></div>
             <div class="summaryLine"><div class="summaryDesc">Mastered in set:</div><div class="summaryNum">${set.masteredCharacterIDs.length}/${set.numOfCharacters}</div></div>
-            <div class="summaryLine"><div class="summaryDesc">Mastered in total:</div><div class="summaryNum">???</div></div>
         </div>
         <div class="setComplete">
             ${addContent}

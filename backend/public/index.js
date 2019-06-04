@@ -14,6 +14,10 @@ const controlUser = () => {
         const change = () => {
             document.querySelector('.container').innerHTML = `
                 <div class="form-container appear">
+                    <div class="logo">
+                        <div class="logo__top">2500</div>
+                        <div class="logo__bottom">characters</div>
+                    </div>
                     <div class="form-inner">
                         <!-- <div class="form-title"> 
                             LOGIN
@@ -58,54 +62,58 @@ const controlUser = () => {
 
         const change = () => {
             document.querySelector('.container').innerHTML = `
-                <div class="form-container appear">
-                <div class="form-inner">
-                    <!-- <div class="form-title"> 
-                        REGISTER
-                    </div> -->
-                    <div class="message">
+                <div class="form-container appear">   
+                    <div class="logo">
+                        <div class="logo__top">2500</div>
+                        <div class="logo__bottom">characters</div>
                     </div>
-                    <div class="form-group">
-                        <input
-                        type="name"
-                        id="name"
-                        name="name"
-                        class="form-control"
-                        placeholder="Enter Name"
-                        />
+                    <div class="form-inner">
+                        <!-- <div class="form-title"> 
+                            REGISTER
+                        </div> -->
+                        <div class="message">
+                        </div>
+                        <div class="form-group">
+                            <input
+                            type="name"
+                            id="name"
+                            name="name"
+                            class="form-control"
+                            placeholder="Enter Name"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter Email"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Create Password"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input
+                            type="password"
+                            id="password2"
+                            name="password2"
+                            class="form-control"
+                            placeholder="Confirm Password"
+                            />
+                        </div>
+                        <button class="btn btn-register">Sign Up</button>
+                        <div class="comment">
+                            Have an account? &nbsp&nbsp<a href="#login">Login</a>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        class="form-control"
-                        placeholder="Enter Email"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="Create Password"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <input
-                        type="password"
-                        id="password2"
-                        name="password2"
-                        class="form-control"
-                        placeholder="Confirm Password"
-                        />
-                    </div>
-                    <button class="btn btn-register">Sign Up</button>
-                    <div class="comment">
-                        Have an account? &nbsp&nbsp<a href="#login">Login</a>
-                    </div>
-                </div>
                 </div>
             `;
         }
@@ -275,17 +283,27 @@ document.querySelector('.container').addEventListener('click', e => {
     } 
 }); 
 
-document.querySelector('.btn-register').addEventListener('keypress', function (e) {
-    var key = e.which || e.keyCode;
-    if (key === 13) { // 13 is enter
+// document.querySelector('.btn-register').addEventListener('keypress', function (e) {
+//     var key = e.which || e.keyCode;
+//     if (key === 13) { // 13 is enter
+//         register();
+//     }
+// });
+
+document.addEventListener('keypress', function(event) {
+    const view = window.location.hash.replace('#', '');
+
+    if ((event.keyCode === 13 || event.which === 13) && view === '') {
+        login();
+    } else if ((event.keyCode === 13 || event.which === 13) && view === 'signup') {
         register();
     }
 });
 
-document.querySelector('.btn-login').addEventListener('keypress', function (e) {
-    var key = e.which || e.keyCode;
-    if (key === 13) { // 13 is enter
-        login();
-    }
-});
+// document.querySelector('.btn-login').addEventListener('keypress', function (e) {
+//     var key = e.which || e.keyCode;
+//     if (key === 13) { // 13 is enter
+//         login();
+//     }
+// });
 
