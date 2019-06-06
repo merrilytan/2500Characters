@@ -188,6 +188,8 @@ const register = () => {
                 </div>
             </div>
         `; 
+
+        document.querySelector('.message').insertAdjacentHTML('afterbegin', markup); 
     }
 
     if(errors === 0){

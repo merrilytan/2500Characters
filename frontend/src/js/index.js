@@ -42,7 +42,7 @@ const controlApp = async () => {
         state.app.setStatus[0] = 0;
     }  
 
-    //Add 
+    //Add popup (added here instead of HTML file to prevent it appearing for a secomd on load)
     const addPopup = 
         `<div class="popupMain" role="alert">
             <div class="popupMain__container">
@@ -60,7 +60,6 @@ const controlApp = async () => {
 
     //Render appropriate views based on URL
     const view = window.location.hash.replace('#', '');
-
 
     //Loop through nav items to highlight active page
     let navLink = document.querySelectorAll('.nav__link');
@@ -92,7 +91,7 @@ const controlApp = async () => {
         const res = view.split('-');
         //Check that Set is unlocked
         if(state.app.setStatus[res[1]-1]!==-1){
-            controlSet(res[1]);
+            controlSet(parseInt(res[1]));
         } 
         //***need page that says set isa locked */
     } else if (view === 'quit') {
@@ -114,8 +113,6 @@ const controlApp = async () => {
 
     //Event Listeners -------------------------------------------
 
-
-
     elements.appInner.addEventListener('click', e => {
         e.preventDefault();
         if (e.target.closest('.set__icon')) {
@@ -135,8 +132,6 @@ const controlApp = async () => {
         } 
     });
 
-
-
     document.querySelector('.popupMain').addEventListener('click', e => {
         if (e.target.closest('.btn-popupQuit')) {
             e.preventDefault();
@@ -146,10 +141,6 @@ const controlApp = async () => {
             document.querySelector('.popupMain').classList.remove('is-visible');
         }  
     });
-
-
-
-
 
 }
 
@@ -162,7 +153,6 @@ const controlSet = async (setID) => {
         state.set = new Set(setID, state.app); 
         await state.set.getCharacters(state.app);
     }
-    console.log('state.set', state.set);
 
     controlSession('beginSession')
 }
@@ -238,8 +228,6 @@ const controlSession = (task, nextStep) => {
         //Create new Session 
         state.session = new Session(state.set.idLastSessionCompleted+1, state.set);
         state.set.updateIdLastSessionPracticed(state.session);
-
-        console.log('state.session', state.session);
         
         //Render Template with general elements (to setup event listeners)
         sessionView.renderTemplate(state.set.id, state.session.id, 'setup');
@@ -268,7 +256,6 @@ const controlSession = (task, nextStep) => {
                         } else {
                             newWidth++; 
                             elem.style.width = newWidth + '%'; 
-                            //elem.innerHTML = newWidth * 1  + '%';
                         }
                     }
                 }
@@ -310,6 +297,11 @@ const controlSession = (task, nextStep) => {
         });
     
         document.querySelector('.popupSession').addEventListener('click', e => {
+            let navPage = document.querySelector('.navPage');           
+            if (navPage.classList.contains('appear')) {
+                navPage.classList.remove('appear');
+            }
+
             if (e.target.matches('.btn-popupNo')){
                 e.preventDefault();
                 document.querySelector('.popupSession').classList.remove('is-visible');
@@ -343,7 +335,6 @@ const controlSession = (task, nextStep) => {
             sessionView.renderTemplate(state.set.id, state.session.id, 'introduce');
 
             //Event Listeners
-
             document.querySelector('.card__ratingButtons').addEventListener('click', e => {
                 event.preventDefault();
             
@@ -393,11 +384,14 @@ const controlSession = (task, nextStep) => {
         //Update last session completed
         state.set.updateIdLastSessionCompleted(state.session);
 
+
+
         //Check if end of set and render appropriate summary card
         let completed;
-        if(!state.set.checkSetCompleted()){
+        if((state.session.introduceCharacters.length === 0) && (state.session.practiceCharacters.length === 0)) {
+            completed = 2;
+        } else if(!state.set.checkSetCompleted()){
             completed = 0;
-
         } else {
             completed = 1;
             state.set.updateStatus('complete');
@@ -460,28 +454,20 @@ const controlSession = (task, nextStep) => {
 
 let clickDelayTimer;
 const handleNavPage = () => {
-    //console.log('clickDelayTimer', clickDelayTimer);
-    //if(clickDelayTimer === null) {
-        //console.log('clickDelayTimer', clickDelayTimer);
-        let burger = document.querySelector('.burgerMenu__clickRegion');
-        let navPage = document.querySelector('.navPage');
-        burger.classList.toggle('active');
-        navPage.classList.toggle('appear');
+    let burger = document.querySelector('.burgerMenu__clickRegion');
+    let navPage = document.querySelector('.navPage');
+    burger.classList.toggle('active');
+    navPage.classList.toggle('appear');
 
-        if(!burger.classList.contains('active')) {
-            burger.classList.add('closing');
-        }
+    if(!burger.classList.contains('active')) {
+        burger.classList.add('closing');
+    }
 
-/*             if(!navPage.classList.contains('appear')) {
-            navPage.classList.remove('appear');
-        } */
-
-        clickDelayTimer = setTimeout(function () {
-            burger.classList.remove('closing');
-            clearTimeout(clickDelayTimer);
-            clickDelayTimer = null;
-        }, 500);
-   // }
+    clickDelayTimer = setTimeout(function () {
+        burger.classList.remove('closing');
+        clearTimeout(clickDelayTimer);
+        clickDelayTimer = null;
+    }, 500);
 }
 
 document.querySelector('.burgerMenu__clickRegion').addEventListener('click', function () {
@@ -492,7 +478,6 @@ document.querySelector('.burgerMenu__clickRegion').addEventListener('click', fun
 
 document.querySelector('.navPage').addEventListener('click', e => {
     if (e.target.closest('.logout') && !state.session) {
-        //handleNavPage();
         document.querySelector('.popupMain').classList.add('is-visible');
     } else if (e.target.closest('.nav__link') && !state.session) {
         handleNavPage();

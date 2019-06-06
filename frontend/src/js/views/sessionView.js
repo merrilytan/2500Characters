@@ -79,27 +79,32 @@ export const renderSummaryCard = (completed, numMasteredSession, set) => {
     document.querySelector('.card__ratingButtons').parentElement.removeChild(document.querySelector('.card__ratingButtons'));
     document.querySelector('.card').classList.add('flipped');
     
-    let addContent = '';
+    let addContent1 = '';
+    let addContent2 = '';
     let addElement = '';
     
-    if(!completed) {
+    if(completed===0) {
+        addContent1 = `Session Completed!`;
         addElement = `<button class="btn btn-nextSession">Start Next Session</button>`;
-    } else {
-        addContent = `Set Completed! 100 characters mastered! Set 3 unlocked!`;
+    } else if(completed===1) {
+        addContent1 = `Session Completed!`;
+        addContent2 = `Set complete - 100 characters mastered!<br>Set ${set.id + 1} unlocked!`;
+    } else if(completed===2) {
+        addContent1 = `No characters to practice in this session!`;
+        addElement = `<button class="btn btn-nextSession">Start Next Session</button>`;
     }
-    
-    console.log('set.indexLastCharacterIntroduced', set.indexLastCharacterIntroduced);
-    console.log('set.masteredCharacterIDs.length', set.masteredCharacterIDs.length);
 
     document.querySelector('.card__face--back').innerHTML = `
-        <div class="summaryHeader">Session Completed!</div>
-        <div class="summary__inner">
-            <div class="summaryLine"><div class="summaryDesc">Currently learning:</div><div class="summaryNum">${(set.indexLastCharacterIntroduced + 1) - set.masteredCharacterIDs.length}</div></div>
-            <div class="summaryLine"><div class="summaryDesc">Mastered in session:</div><div class="summaryNum">${numMasteredSession}</div></div>
-            <div class="summaryLine"><div class="summaryDesc">Mastered in set:</div><div class="summaryNum">${set.masteredCharacterIDs.length}/${set.numOfCharacters}</div></div>
-        </div>
-        <div class="setComplete">
-            ${addContent}
+        <div class="summaryTop">
+            <div class="summaryHeader">${addContent1}</div>
+            <div class="summary__inner">
+                <div class="summaryLine"><div class="summaryDesc">Currently learning:</div><div class="summaryNum">${(set.indexLastCharacterIntroduced + 1) - set.masteredCharacterIDs.length}</div></div>
+                <div class="summaryLine"><div class="summaryDesc">Mastered in session:</div><div class="summaryNum">${numMasteredSession}</div></div>
+                <div class="summaryLine"><div class="summaryDesc">Mastered in set:</div><div class="summaryNum">${set.masteredCharacterIDs.length}/${set.numOfCharacters}</div></div>
+            </div>
+            <div class="setComplete">
+                ${addContent2}
+            </div>
         </div>
         <div class="summary__buttons">
             <button class="btn btn-home">Home</button> 

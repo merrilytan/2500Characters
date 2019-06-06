@@ -1,0 +1,544 @@
+ [
+    {
+        "characterID": 21,
+        "symbol": "国",
+        "pinYin": "guó",
+        "meaning": "country/state"
+    },
+    {
+        "characterID": 22,
+        "symbol": "地",
+        "pinYin": "de",
+        "meaning": "(-ly, particle used before verb/adjective)"
+    },
+    {
+        "characterID": 23,
+        "symbol": "到",
+        "pinYin": "dào",
+        "meaning": "to(a place)/until(a time)"
+    },
+    {
+        "characterID": 24,
+        "symbol": "说",
+        "pinYin": "shuō",
+        "meaning": "to speak"
+    },
+    {
+        "characterID": 25,
+        "symbol": "时",
+        "pinYin": "shí",
+        "meaning": "o'clock/time/when/period"
+    },
+    {
+        "characterID": 26,
+        "symbol": "要",
+        "pinYin": "yāo",
+        "meaning": "to demand"
+    },
+    {
+        "characterID": 27,
+        "symbol": "就",
+        "pinYin": "jiù",
+        "meaning": "at once/then/right away"
+    },
+    {
+        "characterID": 28,
+        "symbol": "出",
+        "pinYin": "chū",
+        "meaning": "to go out/to occur"
+    },
+    {
+        "characterID": 29,
+        "symbol": "会",
+        "pinYin": "huì",
+        "meaning": "can/be possible"
+    },
+    {
+        "characterID": 30,
+        "symbol": "可",
+        "pinYin": "kě",
+        "meaning": "can/may/able to"
+    },
+    {
+        "characterID": 31,
+        "symbol": "也",
+        "pinYin": "yě",
+        "meaning": "also/too"
+    },
+    {
+        "characterID": 32,
+        "symbol": "你",
+        "pinYin": "nǐ",
+        "meaning": "you"
+    },
+    {
+        "characterID": 33,
+        "symbol": "对",
+        "pinYin": "duì",
+        "meaning": "couple/pair/to be opposite"
+    },
+    {
+        "characterID": 34,
+        "symbol": "生",
+        "pinYin": "shēng",
+        "meaning": "to be born/to give life"
+    },
+    {
+        "characterID": 35,
+        "symbol": "能",
+        "pinYin": "néng",
+        "meaning": "can/be able to"
+    },
+    {
+        "characterID": 36,
+        "symbol": "而",
+        "pinYin": "ér",
+        "meaning": "and/as well as"
+    },
+    {
+        "characterID": 37,
+        "symbol": "子",
+        "pinYin": "zǐ",
+        "meaning": "son/child/seed"
+    },
+    {
+        "characterID": 38,
+        "symbol": "那",
+        "pinYin": "nǎ",
+        "meaning": "how/which, that/those"
+    },
+    {
+        "characterID": 39,
+        "symbol": "得",
+        "pinYin": "dé",
+        "meaning": "obtain/get/gain"
+    },
+    {
+        "characterID": 40,
+        "symbol": "于",
+        "pinYin": "yú",
+        "meaning": "in/at/to/from/by"
+    },
+    {
+        "characterID": 41,
+        "symbol": "着",
+        "pinYin": "zhāo",
+        "meaning": "catch/receive/suffer"
+    },
+    {
+        "characterID": 42,
+        "symbol": "下",
+        "pinYin": "xià",
+        "meaning": "down/below"
+    },
+    {
+        "characterID": 43,
+        "symbol": "自",
+        "pinYin": "zì",
+        "meaning": "from/self/oneself/since"
+    },
+    {
+        "characterID": 44,
+        "symbol": "之",
+        "pinYin": "zhī",
+        "meaning": "from/self/oneself/since"
+    },
+    {
+        "characterID": 45,
+        "symbol": "年",
+        "pinYin": "nián",
+        "meaning": "year"
+    },
+    {
+        "characterID": 46,
+        "symbol": "过",
+        "pinYin": "guò",
+        "meaning": "to cross/to pass(time)"
+    },
+    {
+        "characterID": 47,
+        "symbol": "发",
+        "pinYin": "fà",
+        "meaning": "hair"
+    },
+    {
+        "characterID": 48,
+        "symbol": "后",
+        "pinYin": "hòu",
+        "meaning": "back/behind/afterwards"
+    },
+    {
+        "characterID": 49,
+        "symbol": "作",
+        "pinYin": "zuò",
+        "meaning": "for/to do/to make"
+    },
+    {
+        "characterID": 50,
+        "symbol": "里",
+        "pinYin": "lǐ",
+        "meaning": "lining, interior"
+    },
+    {
+        "characterID": 51,
+        "symbol": "用",
+        "pinYin": "yòng",
+        "meaning": "to use"
+    },
+    {
+        "characterID": 52,
+        "symbol": "道",
+        "pinYin": "dào",
+        "meaning": "direction/way/method"
+    },
+    {
+        "characterID": 53,
+        "symbol": "行",
+        "pinYin": "háng",
+        "meaning": "a row/series"
+    },
+    {
+        "characterID": 54,
+        "symbol": "所",
+        "pinYin": "suǒ",
+        "meaning": "actually/place"
+    },
+    {
+        "characterID": 55,
+        "symbol": "然",
+        "pinYin": "rán",
+        "meaning": "correct/right/so"
+    },
+    {
+        "characterID": 56,
+        "symbol": "家",
+        "pinYin": "jiā",
+        "meaning": "home/family"
+    },
+    {
+        "characterID": 57,
+        "symbol": "种",
+        "pinYin": "zhǒng",
+        "meaning": "seed/species/kind"
+    },
+    {
+        "characterID": 58,
+        "symbol": "事",
+        "pinYin": "shì",
+        "meaning": "matter/thing/work"
+    },
+    {
+        "characterID": 59,
+        "symbol": "成",
+        "pinYin": "chéng",
+        "meaning": "finish/accomplish"
+    },
+    {
+        "characterID": 60,
+        "symbol": "方",
+        "pinYin": "fāng",
+        "meaning": "square/direction/just"
+    },
+    {
+        "characterID": 61,
+        "symbol": "多",
+        "pinYin": "duō",
+        "meaning": "many/much/a lot"
+    },
+    {
+        "characterID": 62,
+        "symbol": "经",
+        "pinYin": "jīng",
+        "meaning": "to undergo/to bear"
+    },
+    {
+        "characterID": 63,
+        "symbol": "么",
+        "pinYin": "ma",
+        "meaning": "(interrogative final particle)"
+    },
+    {
+        "characterID": 64,
+        "symbol": "去",
+        "pinYin": "qù",
+        "meaning": "to go/to leave/to remove"
+    },
+    {
+        "characterID": 65,
+        "symbol": "法",
+        "pinYin": "fǎ",
+        "meaning": "law/method/way"
+    },
+    {
+        "characterID": 66,
+        "symbol": "学",
+        "pinYin": "xué",
+        "meaning": "learn/study/science"
+    },
+    {
+        "characterID": 67,
+        "symbol": "如",
+        "pinYin": "rú",
+        "meaning": "as (if)/such as"
+    },
+    {
+        "characterID": 68,
+        "symbol": "都",
+        "pinYin": "dōu",
+        "meaning": "all/both"
+    },
+    {
+        "characterID": 69,
+        "symbol": "同",
+        "pinYin": "tóng",
+        "meaning": "like/similar/together/with"
+    },
+    {
+        "characterID": 70,
+        "symbol": "现",
+        "pinYin": "xiàn",
+        "meaning": "appear/current/existing"
+    },
+    {
+        "characterID": 71,
+        "symbol": "当",
+        "pinYin": "dāng",
+        "meaning": "to be/to act"
+    },
+    {
+        "characterID": 72,
+        "symbol": "没",
+        "pinYin": "méi",
+        "meaning": "(negative prefix for verbs)"
+    },
+    {
+        "characterID": 73,
+        "symbol": "动",
+        "pinYin": "dòng",
+        "meaning": "to use/to act/to move/to change"
+    },
+    {
+        "characterID": 74,
+        "symbol": "面",
+        "pinYin": "miàn",
+        "meaning": "fade/side/surface/aspect"
+    },
+    {
+        "characterID": 75,
+        "symbol": "起",
+        "pinYin": "qǐ",
+        "meaning": "to rise/to raise"
+    },
+    {
+        "characterID": 76,
+        "symbol": "看",
+        "pinYin": "kàn",
+        "meaning": "to look at/to consider"
+    },
+    {
+        "characterID": 77,
+        "symbol": "定",
+        "pinYin": "dìng",
+        "meaning": "to set/to fix/to determine/to decide"
+    },
+    {
+        "characterID": 78,
+        "symbol": "天",
+        "pinYin": "tiān",
+        "meaning": "day/sky/heaven"
+    },
+    {
+        "characterID": 79,
+        "symbol": "分",
+        "pinYin": "fēn",
+        "meaning": "to divide/minute/(a measure word)"
+    },
+    {
+        "characterID": 80,
+        "symbol": "还",
+        "pinYin": "hái",
+        "meaning": "also/more"
+    },
+    {
+        "characterID": 81,
+        "symbol": "进",
+        "pinYin": "jìn",
+        "meaning": "advance/enter/to come in"
+    },
+    {
+        "characterID": 82,
+        "symbol": "好",
+        "pinYin": "hǎo",
+        "meaning": "good/well"
+    },
+    {
+        "characterID": 83,
+        "symbol": "小",
+        "pinYin": "xiǎo",
+        "meaning": "small/few/young"
+    },
+    {
+        "characterID": 84,
+        "symbol": "部",
+        "pinYin": "bù",
+        "meaning": "ministry/department/part"
+    },
+    {
+        "characterID": 85,
+        "symbol": "其",
+        "pinYin": "qí",
+        "meaning": "his/her/its/theirs/that/such"
+    },
+    {
+        "characterID": 86,
+        "symbol": "些",
+        "pinYin": "xiē",
+        "meaning": "some/few/several/(a measure word)"
+    },
+    {
+        "characterID": 87,
+        "symbol": "主",
+        "pinYin": "zhǔ",
+        "meaning": "owner/master/host"
+    },
+    {
+        "characterID": 88,
+        "symbol": "样",
+        "pinYin": "yàng",
+        "meaning": "manner/pattern/way/appearance"
+    },
+    {
+        "characterID": 89,
+        "symbol": "理",
+        "pinYin": "lǐ",
+        "meaning": "reason/logic/science"
+    },
+    {
+        "characterID": 90,
+        "symbol": "心",
+        "pinYin": "xīn",
+        "meaning": "heart/mind"
+    },
+    {
+        "characterID": 91,
+        "symbol": "她",
+        "pinYin": "tā",
+        "meaning": "she"
+    },
+    {
+        "characterID": 92,
+        "symbol": "本",
+        "pinYin": "běn",
+        "meaning": "roots/origin/foundation"
+    },
+    {
+        "characterID": 93,
+        "symbol": "前",
+        "pinYin": "qián",
+        "meaning": "front/ahead/former"
+    },
+    {
+        "characterID": 94,
+        "symbol": "开",
+        "pinYin": "kāi",
+        "meaning": "open/turn on/operate"
+    },
+    {
+        "characterID": 95,
+        "symbol": "但",
+        "pinYin": "dàn",
+        "meaning": "but/yet/however"
+    },
+    {
+        "characterID": 96,
+        "symbol": "因",
+        "pinYin": "yīn",
+        "meaning": "cause/reason/because"
+    },
+    {
+        "characterID": 97,
+        "symbol": "只",
+        "pinYin": "zhǐ",
+        "meaning": "only/merely/just"
+    },
+    {
+        "characterID": 98,
+        "symbol": "从",
+        "pinYin": "cóng",
+        "meaning": "from/via/passing through"
+    },
+    {
+        "characterID": 99,
+        "symbol": "想",
+        "pinYin": "xiǎng",
+        "meaning": "to think/to believe/to"
+    },
+    {
+        "characterID": 100,
+        "symbol": "实",
+        "pinYin": "shí",
+        "meaning": "real/true/honest/really/solid"
+    },
+    {
+        "characterID": 101,
+        "symbol": "日",
+        "pinYin": "rì",
+        "meaning": "Japan/day/sun/date"
+    },
+        {
+        "characterID": 102,
+        "symbol": "军",
+        "pinYin": "jūn",
+        "meaning": "army/military/arms"
+    },
+    {
+        "characterID": 103,
+        "symbol": "者",
+        "pinYin": "zhě",
+        "meaning": "person who (is) ..."
+    },
+    {
+        "characterID": 104,
+        "symbol": "意",
+        "pinYin": "yì",
+        "meaning": "idea/meaning/wish"
+    },
+    {
+        "characterID": 105,
+        "symbol": "无",
+        "pinYin": "wú",
+        "meaning": "not to have/none"
+    },
+    {
+        "characterID": 106,
+        "symbol": "力",
+        "pinYin": "lì",
+        "meaning": "power/force/strength"
+    },
+    {
+        "characterID": 107,
+        "symbol": "它",
+        "pinYin": "tā",
+        "meaning": "it"
+    },
+    {
+        "characterID": 108,
+        "symbol": "与",
+        "pinYin": "yǔ",
+        "meaning": "and/to give/together with"
+    },
+    {
+        "characterID": 109,
+        "symbol": "长",
+        "pinYin": "cháng",
+        "meaning": "length/long/forever/constantly"
+    },
+    {
+        "characterID": 110,
+        "symbol": "把",
+        "pinYin": "bǎ",
+        "meaning": "to hold/to contain"
+    },
+]
+
+
