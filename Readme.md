@@ -28,28 +28,28 @@ More features are currently in development including (1) a page summary of Chara
 
 ## Getting Started
 
-#### Install Dependencies:
+#### To Install Dependencies:
 
-```
+```sh
 cd frontend
 npm install
 ```
 
-```
+```sh
 cd backend
 npm install
 ```
 
 #### To Build Frontend:
 
-```
+```sh
 cd frontend
 npm run build
 ```
 
 #### To Start server:
 
-```
+```sh
 cd backend
 npm run start
 ```
