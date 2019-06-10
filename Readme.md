@@ -2,42 +2,64 @@
 
 [![Build Status](https://travis-ci.com/merrilytan/2500Characters.svg?token=zqPispBPepwLZoyueNtn&branch=master)](https://travis-ci.com/merrilytan/2500Characters)
 
-2500Characters is a web app that teaches Mandarin speakers to read 2500 of the most common Chinese characters using the [Leitner system](https://en.wikipedia.org/wiki/Leitner_system) learning method. It was built using Vanilla JS, NodeJS, Express, PassportJS and MongoDB.
+2500Characters is a web application that teaches Mandarin speakers to read 2500 of the most common Chinese characters using the [Leitner system](https://en.wikipedia.org/wiki/Leitner_system) learning method. 
 
-## Live
-[Live version](http://ec2-18-216-160-159.us-east-2.compute.amazonaws.com)
+## Project Status
 
-## Deployment
+This project is deployed to production which can be seen [here](http://ec2-18-216-160-159.us-east-2.compute.amazonaws.com).
 
-Add additional notes about how to deploy this on a live system
+More features are currently in development including (1) a page summary of Characters that have been mastered, (2) animations for a livelier user experience.
 
-## Built With
+## Languages & Tools
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+###Frontend
+* JavaScript ES6
+* SCSS
+* HTML
+* Webpack - module bundler
+* Babel - transpiler
 
-## Contributing
+###Backend
+* NodeJS - backend server
+* Express - web API framework 
+* [PassportJS](http://www.passportjs.org/) - authentication library
+* MongoDB - database
+* [Mongoose](https://mongoosejs.com/) - data validation using schemas
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+## Getting Started
 
-## Versioning
+Install Dependencies:
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+```
+cd frontend
+npm install
+```
 
-## Authors
+```
+cd backend
+npm install
+```
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+To Build Frontend:
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+```
+cd frontend
+npm run build
+```
 
-## License
+To Start server:
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+```
+cd backend
+npm run start
+```
 
-## Acknowledgments
+To Visit App: 
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+localhost:27017
+
+
+
+
+
 
