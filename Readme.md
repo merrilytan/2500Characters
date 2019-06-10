@@ -28,7 +28,7 @@ More features are currently in development including (1) a page summary of Chara
 
 ## Getting Started
 
-Install Dependencies:
+#### Install Dependencies:
 
 ```
 cd frontend
@@ -40,21 +40,21 @@ cd backend
 npm install
 ```
 
-To Build Frontend:
+#### To Build Frontend:
 
 ```
 cd frontend
 npm run build
 ```
 
-To Start server:
+#### To Start server:
 
 ```
 cd backend
 npm run start
 ```
 
-To Visit App: 
+#### To Visit App: 
 
 localhost:27017
 
