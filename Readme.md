@@ -8,7 +8,7 @@
 
 This project is deployed to production which can be seen [here](http://ec2-18-216-160-159.us-east-2.compute.amazonaws.com).
 
-More features are currently in development including (1) a page summary of Characters that have been mastered, (2) animations for a livelier user experience.
+More features are currently in development including (1) a page summary of Characters that have been mastered, (2) animations for a more lively user experience.
 
 ## Languages & Tools
 
