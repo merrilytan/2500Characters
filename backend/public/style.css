@@ -107,6 +107,14 @@ body {
     cursor: pointer;
 }
 
+.btn-login:hover, .btn-register:hover {
+    background-color: #232526;
+}
+
+.comment a:hover {
+    color: #999;
+}
+
 .form-title {
     font-size: 2rem;
     font-weight: bold;

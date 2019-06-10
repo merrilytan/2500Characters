@@ -651,6 +651,11 @@ $menu-animation-timing:   ease-out;
   width: 400px;
 }
 
+.comingSoon {
+  width: 100%;
+  text-align: center;
+}
+
 @media only screen and (max-width: 380px) {
   .setContainer {
     margin-top: 85px;

@@ -84,7 +84,7 @@ const controlApp = async () => {
             }
         });
     } else if (view === 'characters') {
-
+        appView.renderCharacters();
     } else if (view === 'about') {
         appView.renderAbout();
     } else if (view.startsWith('set')){

@@ -1,6 +1,21 @@
 import { elements } from "./base";
 
 //-------------------------------------------------------------
+export const renderCharacters = () => {
+
+    let markup = `
+        <div class="setContainer">
+            <div class="comingSoon">
+                Coming Soon!
+            </div>
+        </div>
+    `;
+
+    elements.appInner.innerHTML = markup; 
+
+}
+
+//-------------------------------------------------------------
 export const renderPractice = (app) => {
 
     let markup = `
@@ -20,7 +35,6 @@ export const renderPractice = (app) => {
 
     elements.appInner.innerHTML = markup; 
 
-    console.log('app.setStatus', app.setStatus);
     app.setStatus.forEach((val, index) => {
 
         let icon, iconColor;

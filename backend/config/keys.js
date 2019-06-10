@@ -1,4 +1,10 @@
+
+require('dotenv').config()
+
+const DB_HOST = process.env.DB_HOST
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD= process.env.DB_PASSWORD
 module.exports = {
-    MongoURI: 'mongodb+srv://merrilytan:abc123abc123@2500characters-9fw24.mongodb.net/2500Characters?retryWrites=true'
+    MongoURI: `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}?retryWrites=true`
     
 }
