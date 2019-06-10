@@ -12,14 +12,14 @@ More features are currently in development including (1) a page summary of Chara
 
 ## Languages & Tools
 
-###Frontend
+### Frontend
 * JavaScript ES6
 * SCSS
 * HTML
 * Webpack - module bundler
 * Babel - transpiler
 
-###Backend
+### Backend
 * NodeJS - backend server
 * Express - web API framework 
 * [PassportJS](http://www.passportjs.org/) - authentication library
