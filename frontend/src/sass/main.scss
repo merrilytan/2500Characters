@@ -163,25 +163,10 @@ $font-small: 1.2rem;
   height: 27px;
 }
 
-/* .burgerMenu__txt {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 5px;
-  cursor: default;
-  transition: opacity 200ms ease-out, transform 200ms cubic-bezier(.34, .55, .25, .83);
-  
-  .isOpen & {
-    opacity: 0;
-    transform: translate3d(-50px, 0, 0);
-  }
-} */
-
 $menu-animation-duration: 400ms;
 $menu-animation-timing:   ease-out;
 
 .burgerMenu__piece {
-  //display: block;
   position: absolute;
   width: 30px;
   border-top: 3px solid $theme-color-darkest;
@@ -460,32 +445,6 @@ $menu-animation-timing:   ease-out;
   @include btn-solid($theme-color-darkest);
 }
 
-
-/* .card__flag {
-  color: white;
-  padding: 1.8% 0;
-  position: absolute;
-  right: -0.5%;
-  z-index: 9999;
-  font-size: 1.2rem;
-  top: 6%;
-  text-align: center;
-  display: none;
-}
-
-.card__flag--numberInSet {
-  width: 25%;
-  background-color: $theme-color1;
-}
-
-.card__flag--newCard {
-  width: 50%;
-  background-color: $new-color;
-  text-transform: uppercase;
-} */
-
-
-
 //CHARACTER LAYOUT------------------------------------ //
 
 .card__inner {
@@ -697,15 +656,6 @@ $menu-animation-timing:   ease-out;
   }
 }
 
-/* .setHeader {
-  @include header-font($theme-color1);
-  margin-bottom: 8%;
-
-  &--active{
-    color: $highlight-color;
-  }
-} */
-
 .fa, .fas {
   font-weight: 600;
   line-height: 24px;
@@ -736,20 +686,6 @@ $menu-animation-timing:   ease-out;
   background-color: $theme-color-darkest;
   color: $lightest;
 }
-/* 
-.btn-startSession {
-  font-size: 1.3rem;
-  border-color: $highlight-color;
-  color: $highlight-color;
-}
-
-.btn-locked {
-  font-size: 1.3rem;
-  border-color: $theme-color1;
-  color: $theme-color1;
-  pointer-events: none;
-} */
-
 
 //BUTTONS & POPUPS ------------------------------------------------------
 
