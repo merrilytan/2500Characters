@@ -7,10 +7,11 @@ const Character = require('../models/Character');
 // Get character data--------------------------------------------------------------------------
 router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
-/*     const lessThan = (id * 100) + 1;
-    const greaterThan = (id * 100) - 100; */
-    const lessThan = 11;
-    const greaterThan = 0;
+    
+    const lessThan = (id * 100) + 1;
+    const greaterThan = (id * 100) - 100;
+    // const lessThan = 11;
+    // const greaterThan = 0;
 
     Character.find({
         characterID: {$gt: greaterThan, $lt: lessThan}
